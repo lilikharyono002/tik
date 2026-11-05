@@ -521,25 +521,25 @@
         <!-- SOAL KUIS EVALUASI -->
         <div class="p-4 bg-slate-900/80 border border-slate-800 rounded-2xl space-y-3">
           <label class="block font-bold text-white flex items-center gap-2">
-            <i data-lucide="help-circle" class="w-4 h-4 text-cyan-400"></i> Soal Kuis Evaluasi Interaktif Siswa
+            <i data-lucide="help-circle" class="w-4 h-4 text-cyan-400"></i> Soal Kuis Evaluasi Interaktif Siswa <span class="text-slate-400 font-normal text-[11px]">(Opsional)</span>
           </label>
 
           <div class="space-y-3">
             <div>
-              <label class="block text-[11px] text-slate-400 mb-1">Pertanyaan Kuis *</label>
-              <input type="text" id="formQuizQuestion" required placeholder="Contoh: Perangkat komputer yang digunakan untuk menggetik adalah?" class="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white">
+              <label class="block text-[11px] text-slate-400 mb-1">Pertanyaan Kuis (Opsional)</label>
+              <input type="text" id="formQuizQuestion" placeholder="Contoh: Perangkat komputer yang digunakan untuk menggetik adalah?" class="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white">
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <input type="text" id="formQuizOptA" required placeholder="Pilihan A" class="p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white">
-              <input type="text" id="formQuizOptB" required placeholder="Pilihan B" class="p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white">
-              <input type="text" id="formQuizOptC" required placeholder="Pilihan C" class="p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white">
-              <input type="text" id="formQuizOptD" required placeholder="Pilihan D" class="p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white">
+              <input type="text" id="formQuizOptA" placeholder="Pilihan A" class="p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white">
+              <input type="text" id="formQuizOptB" placeholder="Pilihan B" class="p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white">
+              <input type="text" id="formQuizOptC" placeholder="Pilihan C" class="p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white">
+              <input type="text" id="formQuizOptD" placeholder="Pilihan D" class="p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white">
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label class="block text-[11px] text-slate-400 mb-1">Kunci Jawaban Benar *</label>
+                <label class="block text-[11px] text-slate-400 mb-1">Kunci Jawaban Benar</label>
                 <select id="formQuizCorrect" class="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white font-bold text-cyan-400">
                   <option value="0">Jawaban A</option>
                   <option value="1">Jawaban B</option>
@@ -549,8 +549,8 @@
               </div>
 
               <div class="sm:col-span-2">
-                <label class="block text-[11px] text-slate-400 mb-1">Pembahasan Singkat Soal *</label>
-                <input type="text" id="formQuizExplanation" required placeholder="Penjelasan singkat jawaban benar..." class="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white">
+                <label class="block text-[11px] text-slate-400 mb-1">Pembahasan Singkat Soal</label>
+                <input type="text" id="formQuizExplanation" placeholder="Penjelasan singkat jawaban benar..." class="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white">
               </div>
             </div>
           </div>
@@ -1308,8 +1308,15 @@
 
     function renderQuiz(mat) {
       const container = document.getElementById('quizContainer');
-      if (!mat.quiz) {
-        container.innerHTML = `<p class="text-slate-500 italic">Belum ada kuis evaluasi untuk materi ini.</p>`;
+      if (!mat.quiz || !mat.quiz.question) {
+        container.innerHTML = `
+          <div class="p-8 text-center space-y-2 bg-slate-900/60 border border-slate-800 rounded-2xl">
+            <i data-lucide="help-circle" class="w-10 h-10 text-slate-600 mx-auto"></i>
+            <h4 class="font-bold text-slate-300">Belum Ada Kuis Evaluasi</h4>
+            <p class="text-slate-500 text-xs">Materi ini belum dilengkapi dengan soal kuis evaluasi interaktif.</p>
+          </div>
+        `;
+        if (window.lucide) window.lucide.createIcons();
         return;
       }
 
@@ -1433,7 +1440,7 @@
       document.getElementById('formPracticalSteps').value = (mat.practicalSteps || []).join('\n');
       document.getElementById('formPdfUrl').value = mat.pdfUrl || '';
 
-      if (mat.quiz) {
+      if (mat.quiz && mat.quiz.question) {
         document.getElementById('formQuizQuestion').value = mat.quiz.question || '';
         document.getElementById('formQuizOptA').value = mat.quiz.options[0] || '';
         document.getElementById('formQuizOptB').value = mat.quiz.options[1] || '';
@@ -1441,6 +1448,14 @@
         document.getElementById('formQuizOptD').value = mat.quiz.options[3] || '';
         document.getElementById('formQuizCorrect').value = mat.quiz.correct || '0';
         document.getElementById('formQuizExplanation').value = mat.quiz.explanation || '';
+      } else {
+        document.getElementById('formQuizQuestion').value = '';
+        document.getElementById('formQuizOptA').value = '';
+        document.getElementById('formQuizOptB').value = '';
+        document.getElementById('formQuizOptC').value = '';
+        document.getElementById('formQuizOptD').value = '';
+        document.getElementById('formQuizCorrect').value = '0';
+        document.getElementById('formQuizExplanation').value = '';
       }
 
       updateLivePreview();
@@ -1520,6 +1535,22 @@
       const stepsText = document.getElementById('formPracticalSteps').value.trim();
       const practicalSteps = stepsText ? stepsText.split('\n').filter(s => s.trim()) : [];
 
+      const quizQuestion = document.getElementById('formQuizQuestion').value.trim();
+      let quizData = null;
+      if (quizQuestion) {
+        quizData = {
+          question: quizQuestion,
+          options: [
+            document.getElementById('formQuizOptA').value.trim(),
+            document.getElementById('formQuizOptB').value.trim(),
+            document.getElementById('formQuizOptC').value.trim(),
+            document.getElementById('formQuizOptD').value.trim()
+          ],
+          correct: parseInt(document.getElementById('formQuizCorrect').value) || 0,
+          explanation: document.getElementById('formQuizExplanation').value.trim()
+        };
+      }
+
       const materialData = {
         id: editingMaterialId || ('m_' + Date.now()),
         title: document.getElementById('formTitle').value.trim(),
@@ -1532,17 +1563,7 @@
         fullContent: document.getElementById('formFullContent').value.trim(),
         practicalSteps: practicalSteps,
         pdfUrl: finalPdf,
-        quiz: {
-          question: document.getElementById('formQuizQuestion').value.trim(),
-          options: [
-            document.getElementById('formQuizOptA').value.trim(),
-            document.getElementById('formQuizOptB').value.trim(),
-            document.getElementById('formQuizOptC').value.trim(),
-            document.getElementById('formQuizOptD').value.trim()
-          ],
-          correct: parseInt(document.getElementById('formQuizCorrect').value) || 0,
-          explanation: document.getElementById('formQuizExplanation').value.trim()
-        }
+        quiz: quizData
       };
 
       await saveMaterialToStorage(materialData);

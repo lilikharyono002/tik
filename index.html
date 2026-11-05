@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EduCode TIK - Portal Materi TIK, Coding & Informatika</title>
+  <title>EduCode Hub - Portal Materi TIK, Coding & Informatika</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -60,7 +60,7 @@
         <div class="inline-flex items-center justify-center w-14 h-14 bg-cyan-950 border border-cyan-800 text-cyan-400 rounded-2xl shadow-lg mb-1">
           <i data-lucide="code-2" class="w-8 h-8"></i>
         </div>
-        <h1 class="text-2xl font-extrabold text-white tracking-tight">EduCode TIK</h1>
+        <h1 class="text-2xl font-extrabold text-white tracking-tight">EduCode Hub</h1>
         <p class="text-xs text-slate-400">Portal Materi Pembelajaran TIK, Coding & Informatika</p>
       </div>
 
@@ -89,6 +89,10 @@
           Masuk ke Portal Pengajar
         </button>
       </form>
+
+      <div class="mt-6 pt-4 border-t border-slate-800/80 text-center">
+        <p class="text-[11px] text-slate-500">Kredensial Pengajar Demo: <span class="text-cyan-400 font-mono">admin</span> / <span class="text-cyan-400 font-mono">123456</span></p>
+      </div>
     </div>
   </div>
 
@@ -107,7 +111,7 @@
             <i data-lucide="code-2" class="w-5 h-5"></i>
           </div>
           <div>
-            <h2 class="font-extrabold text-white text-base leading-none">EduCode TIK</h2>
+            <h2 class="font-extrabold text-white text-base leading-none">EduCode Hub</h2>
             <span class="text-[10px] text-cyan-400 font-medium">Portal Pengajar TIK • Coding • Informatika</span>
           </div>
         </div>
@@ -136,7 +140,7 @@
       <div id="categoryPortalView" class="space-y-8">
         <div class="text-center max-w-2xl mx-auto space-y-2">
           <span class="px-3 py-1 bg-cyan-950 border border-cyan-800 text-cyan-400 text-[11px] font-bold rounded-full uppercase tracking-wider">
-            Selamat Datang, Pak Lilik
+            Selamat Datang, Pak Pengajar
           </span>
           <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Pilih Rumpun Kelas Pembelajaran</h2>
           <p class="text-xs sm:text-sm text-slate-400">Pilih salah satu rumpun di bawah untuk masuk ke dashboard kurikulum dan daftar modul lengkap.</p>
@@ -216,7 +220,14 @@
             <span>Kembali ke Menu Utama</span>
           </button>
 
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 flex-wrap">
+            <button onclick="exportDataJSON()" title="Download/Cadangkan Semua Data Materi ke File" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-cyan-400 border border-slate-800 rounded-xl text-xs font-bold flex items-center gap-1.5 transition">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i> Ekspor Data
+            </button>
+            <label title="Muat Data Materi dari File Cadangan" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-slate-800 rounded-xl text-xs font-bold flex items-center gap-1.5 transition cursor-pointer">
+              <i data-lucide="upload" class="w-3.5 h-3.5"></i> Impor Data
+              <input type="file" accept=".json" onchange="importDataJSON(event)" class="hidden">
+            </label>
             <button onclick="resetDefaultData()" title="Reset Data Sampel Default" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800 rounded-xl text-xs font-medium flex items-center gap-1.5 transition">
               <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset Sampel
             </button>
@@ -373,20 +384,20 @@
   <!-- ========================================== -->
   <!-- 4. MODAL TAMBAH & EDIT MATERI BARU -->
   <!-- ========================================== -->
-  <div id="addModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-    <div class="bg-[#111726] rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-800 overflow-hidden my-8">
+  <div id="addModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-[#111726] rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-800 overflow-hidden my-auto max-h-[90vh] flex flex-col">
       
-      <div class="px-6 py-4 bg-[#0B0F19] border-b border-slate-800 flex items-center justify-between">
+      <div class="px-6 py-4 bg-[#0B0F19] border-b border-slate-800 flex items-center justify-between shrink-0">
         <h3 class="font-bold text-white flex items-center gap-2 text-sm sm:text-base">
           <i data-lucide="edit-3" class="w-5 h-5 text-cyan-400"></i>
           <span id="addModalHeaderTitle">Form Tambah Materi Ajar Baru</span>
         </h3>
-        <button onclick="closeAddModal()" class="text-slate-400 hover:text-white">
+        <button type="button" onclick="closeAddModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <form id="addMaterialForm" onsubmit="handleAddMaterial(event)" class="p-6 space-y-4 text-xs">
+      <form id="addMaterialForm" onsubmit="handleAddMaterial(event)" class="p-6 space-y-4 text-xs overflow-y-auto flex-1">
         
         <div>
           <label class="block font-bold text-slate-300 mb-1">Judul Materi *</label>
@@ -541,9 +552,28 @@
 
 
   <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC SYSTEM -->
+  <!-- JAVASCRIPT LOGIC SYSTEM (CLOUD INTEGRATED) -->
   <!-- ========================================== -->
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // FIREBASE CLOUD DATABASE SETUP
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'educode-hub-app';
+    let firebaseConfig = {};
+    try {
+      if (typeof __firebase_config !== 'undefined') {
+        firebaseConfig = JSON.parse(__firebase_config);
+      }
+    } catch(e) {
+      console.error("Config error:", e);
+    }
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
     // HELPER: GOOGLE DRIVE LINK AUTO-CONVERTER
     function convertGoogleDriveUrl(url) {
       if (!url) return '';
@@ -872,39 +902,62 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
     let quizUserAnswers = {};
     let quizSubmitted = false;
 
-    // INITIALIZATION ON LOAD
-    window.addEventListener('DOMContentLoaded', () => {
-      loadStorage();
+    // INITIALIZATION ON LOAD WITH REAL-TIME CLOUD SYNC
+    window.addEventListener('DOMContentLoaded', async () => {
       checkAuth();
+      await initCloudStorage();
       lucide.createIcons();
     });
 
-    // STORAGE MANAGEMENT
-    function saveStorage() {
-      localStorage.setItem('educode_materials', JSON.stringify(materials));
-    }
-
-    function loadStorage() {
-      const stored = localStorage.getItem('educode_materials');
-      if (stored) {
-        try {
-          materials = JSON.parse(stored);
-        } catch(e) {
-          materials = [...DEFAULT_MATERIALS];
+    // REAL-TIME CLOUD STORAGE INIT
+    async function initCloudStorage() {
+      try {
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
         }
-      } else {
-        materials = [...DEFAULT_MATERIALS];
-        saveStorage();
+      } catch (err) {
+        console.warn("Auth fallback to anonymous:", err);
+        await signInAnonymously(auth);
+      }
+
+      // PUBLIC COLLECTION PATH FOR MULTI-DEVICE SYNC
+      const materialsRef = collection(db, 'artifacts', appId, 'public', 'data', 'materials');
+
+      // REAL-TIME LISTENER FOR ALL DEVICES
+      onSnapshot(materialsRef, (snapshot) => {
+        if (snapshot.empty) {
+          // SEED CLOUD DATABASE IF EMPTY
+          seedDefaultData(materialsRef);
+          return;
+        }
+
+        const items = [];
+        snapshot.forEach((docSnap) => {
+          items.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        materials = items;
+        if (activeSubject) {
+          renderSubjectDashboard();
+        }
+      }, (error) => {
+        console.error("Cloud listener error:", error);
+      });
+    }
+
+    async function seedDefaultData(materialsRef) {
+      for (const mat of DEFAULT_MATERIALS) {
+        const docRef = doc(materialsRef, mat.id);
+        await setDoc(docRef, mat);
       }
     }
 
-    function resetDefaultData() {
-      materials = [...DEFAULT_MATERIALS];
-      saveStorage();
-      if (activeSubject) {
-        renderSubjectDashboard();
-      }
-      showToast("Data sampel berhasil dikembalikan!");
+    async function resetDefaultData() {
+      const materialsRef = collection(db, 'artifacts', appId, 'public', 'data', 'materials');
+      await seedDefaultData(materialsRef);
+      showToast("Data sampel default berhasil disinkronkan ke Cloud!");
     }
 
     // AUTHENTICATION SYSTEM
@@ -933,7 +986,7 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
         localStorage.setItem('educode_user', JSON.stringify({ username: 'admin', role: 'Pengajar' }));
         errEl.classList.add('hidden');
         checkAuth();
-        showToast('Berhasil masuk! Selamat datang Pak Lilik.');
+        showToast('Berhasil masuk! Selamat datang Pak Pengajar.');
       } else {
         errEl.classList.remove('hidden');
       }
@@ -1490,7 +1543,7 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
       reader.readAsDataURL(file);
     }
 
-    function handleAddMaterial(e) {
+    async function handleAddMaterial(e) {
       e.preventDefault();
 
       const title = document.getElementById('addTitle').value.trim();
@@ -1505,57 +1558,37 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
 
       const practiceArray = practiceText ? practiceText.split('\n').filter(s => s.trim() !== '') : ["Praktikum laboratorium komputer."];
 
-      if (editingMaterialId) {
-        // Edit Mode
-        const index = materials.findIndex(m => m.id === editingMaterialId);
-        if (index !== -1) {
-          materials[index] = {
-            ...materials[index],
-            title,
-            grade,
-            subject,
-            imageUrl: imageUrl || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=80',
-            practiceImageUrl: practiceImageUrl || 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&auto=format&fit=crop&q=80',
-            pdfUrl: pdfUrl || '',
-            summary,
-            content,
-            practice: practiceArray
-          };
-          showToast("Materi ajar berhasil diperbarui!");
-        }
-      } else {
-        // Add Mode
-        const newLesson = {
-          id: 'mat-' + Date.now(),
-          title,
-          grade,
-          subject,
-          duration: '40 Menit',
-          imageUrl: imageUrl || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=80',
-          practiceImageUrl: practiceImageUrl || 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&auto=format&fit=crop&q=80',
-          pdfUrl: pdfUrl || '',
-          summary,
-          content: content,
-          practice: practiceArray,
-          quiz: [
-            {
-              question: `Latihan soal evaluasi untuk materi: ${title}?`,
-              options: ["Pilihan Jawaban A (Benar)", "Pilihan B", "Pilihan C", "Pilihan D"],
-              answer: 0,
-              explanation: "Pembahasan untuk latihan soal."
-            }
-          ]
-        };
-        materials.unshift(newLesson);
-        showToast("Materi ajar baru berhasil disimpan!");
-      }
+      const matId = editingMaterialId || ('mat-' + Date.now());
+      const existingMat = editingMaterialId ? materials.find(m => m.id === editingMaterialId) : null;
 
-      saveStorage();
+      const lessonData = {
+        id: matId,
+        title,
+        grade,
+        subject,
+        duration: '40 Menit',
+        imageUrl: imageUrl || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=80',
+        practiceImageUrl: practiceImageUrl || 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&auto=format&fit=crop&q=80',
+        pdfUrl: pdfUrl || '',
+        summary,
+        content,
+        practice: practiceArray,
+        quiz: existingMat ? (existingMat.quiz || []) : [
+          {
+            question: `Latihan soal evaluasi untuk materi: ${title}?`,
+            options: ["Pilihan Jawaban A (Benar)", "Pilihan B", "Pilihan C", "Pilihan D"],
+            answer: 0,
+            explanation: "Pembahasan untuk latihan soal."
+          }
+        ]
+      };
+
+      // SAVE DIRECTLY TO CLOUD DATABASE
+      const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'materials', matId);
+      await setDoc(docRef, lessonData);
+
+      showToast(editingMaterialId ? "Materi berhasil diperbarui di Cloud!" : "Materi baru tersimpan di Cloud!");
       closeAddModal();
-
-      if (activeSubject) {
-        renderSubjectDashboard();
-      }
     }
 
     function showToast(msg) {
@@ -1571,6 +1604,28 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
         setTimeout(() => toast.classList.add('hidden'), 300);
       }, 3000);
     }
+
+    // EXPOSE FUNCTIONS TO WINDOW FOR INLINE HTML EVENT HANDLERS
+    window.handleLogin = handleLogin;
+    window.handleLogout = handleLogout;
+    window.navigateToCategories = navigateToCategories;
+    window.openSubjectDashboard = openSubjectDashboard;
+    window.filterByGrade = filterByGrade;
+    window.handleSearch = handleSearch;
+    window.openDetailModal = openDetailModal;
+    window.closeDetailModal = closeDetailModal;
+    window.switchTab = switchTab;
+    window.selectQuizOption = selectQuizOption;
+    window.submitQuiz = submitQuiz;
+    window.openAddModal = openAddModal;
+    window.openEditModal = openEditModal;
+    window.closeAddModal = closeAddModal;
+    window.autoSelectSubjectByGrade = autoSelectSubjectByGrade;
+    window.insertHelperTag = insertHelperTag;
+    window.updateLivePreview = updateLivePreview;
+    window.handlePdfUpload = handlePdfUpload;
+    window.handleAddMaterial = handleAddMaterial;
+    window.resetDefaultData = resetDefaultData;
   </script>
 </body>
 </html>

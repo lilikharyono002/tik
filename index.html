@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduCode - Portal Materi Ajar TIK, Coding & Informatika</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            midnight: '#0B0F19',
+            cardBg: '#111726',
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #0B0F19; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0B0F19; }
+    ::-webkit-scrollbar-thumb { background: #1f293d; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #374151; }
+  </style>
+</head>
+
+<body class="bg-[#0B0F19] text-slate-100 min-h-full flex flex-col antialiased">
+
+  <!-- 1. HALAMAN LOGIN (AUTHENTICATION GATE) -->
+  <div id="loginScreen" class="fixed inset-0 z-50 bg-[#0B0F19] flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-[#111726] border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+      <!-- Ambient Glow Effects -->
+      <div class="absolute -top-12 -left-12 w-36 h-36 bg-teal-500/20 rounded-full blur-2xl pointer-events-none"></div>
+      <div class="absolute -bottom-12 -right-12 w-36 h-36 bg-purple-500/20 rounded-full blur-2xl pointer-events-none"></div>
+
+      <!-- Header Logo & Title -->
+      <div class="text-center space-y-3 mb-8 relative">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-indigo-600 via-cyan-500 to-teal-400 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
+          <i data-lucide="code-2" class="w-8 h-8"></i>
+        </div>
+        <h2 class="text-2xl font-extrabold tracking-tight text-white">EduCode<span class="text-cyan-400">Hub</span></h2>
+        <p class="text-xs text-slate-400">Portal Pengajar TIK, Coding & Informatika (Kelas 1 - 9)</p>
+      </div>
+
+      <!-- Demo Info Box -->
+      <div class="mb-6 p-3.5 bg-slate-900/80 border border-slate-800 rounded-2xl text-xs space-y-1">
+        <p class="font-bold text-cyan-400 flex items-center gap-1.5">
+          <i data-lucide="key-round" class="w-4 h-4"></i> Akun Demo Pengajar:
+        </p>
+        <div class="flex items-center justify-between text-slate-300 font-mono text-[11px] pt-1">
+          <span>Username: <strong class="text-white">admin</strong></span>
+          <span>Password: <strong class="text-white">123456</strong></span>
+        </div>
+      </div>
+
+      <!-- Login Form -->
+      <form onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1.5">Username Pengajar</label>
+          <div class="relative">
+            <i data-lucide="user" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"></i>
+            <input 
+              type="text" 
+              id="loginUsername"
+              required 
+              placeholder="Masukkan username..." 
+              value="admin"
+              class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-900/90 border border-slate-700/80 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-300 mb-1.5">Password</label>
+          <div class="relative">
+            <i data-lucide="lock" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"></i>
+            <input 
+              type="password" 
+              id="loginPassword"
+              required 
+              placeholder="Masukkan password..." 
+              value="123456"
+              class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-900/90 border border-slate-700/80 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition"
+            >
+          </div>
+        </div>
+
+        <div id="loginError" class="hidden text-xs text-red-400 bg-red-950/50 border border-red-800 p-2.5 rounded-xl text-center">
+          Username atau password salah. Silakan coba lagi!
+        </div>
+
+        <button 
+          type="submit" 
+          class="w-full py-3 bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:opacity-95 text-white font-bold text-sm rounded-xl shadow-lg shadow-indigo-600/30 transition active:scale-95 flex items-center justify-center gap-2"
+        >
+          <span>Masuk ke Dashboard</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- 2. MAIN APPLICATION SCREEN -->
+  <div id="appScreen" class="hidden flex-1 flex flex-col">
+    
+    <!-- TOP HEADER -->
+    <header class="sticky top-0 z-30 bg-[#0B0F19]/90 backdrop-blur-md border-b border-slate-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16 gap-4">
+          
+          <!-- Brand Logo -->
+          <div class="flex items-center gap-3 shrink-0">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-cyan-500 to-teal-400 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
+              <i data-lucide="code-2" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-white leading-none">
+                  EduCode<span class="text-cyan-400">Hub</span>
+                </h1>
+                <span class="bg-cyan-950 border border-cyan-800 text-cyan-400 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                  Pengajar Mode
+                </span>
+              </div>
+              <p class="text-xs text-slate-400 hidden sm:block mt-0.5">
+                Portal Materi TIK (1-4 SD) • Coding (5-6 SD) • Informatika (7-9 SMP)
+              </p>
+            </div>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="flex-1 max-w-md mx-2">
+            <div class="relative">
+              <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"></i>
+              <input 
+                type="text" 
+                id="searchInput"
+                oninput="handleSearch(this.value)"
+                placeholder="Cari materi (seperti Mouse, Scratch, Algoritma, HTML)..."
+                class="w-full pl-10 pr-4 py-2 text-sm bg-[#111726] border border-slate-700/80 rounded-xl focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition placeholder:text-slate-500 text-white"
+              >
+            </div>
+          </div>
+
+          <!-- User Profile & Action Controls -->
+          <div class="flex items-center gap-3">
+            <button 
+              onclick="openAddModal()" 
+              class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-2 rounded-xl text-xs font-semibold shadow-md transition active:scale-95 shrink-0"
+            >
+              <i data-lucide="plus-circle" class="w-4 h-4"></i>
+              <span class="hidden sm:inline">Tambah Materi</span>
+            </button>
+
+            <button 
+              onclick="handleLogout()"
+              title="Keluar dari akun pengajar"
+              class="p-2 rounded-xl text-slate-400 hover:text-red-400 hover:bg-slate-800 transition"
+            >
+              <i data-lucide="log-out" class="w-5 h-5"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </header>
+
+
+    <!-- CATEGORY CARDS SECTION (MATCHING REFERENCE IMAGE REPLICA) -->
+    <section class="py-8 bg-[#0B0F19] border-b border-slate-800/80">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          
+          <!-- Card 1: TIK SD (Kelas 1-4) -->
+          <div 
+            onclick="filterCategory('TIK')" 
+            class="cursor-pointer group relative p-5 rounded-2xl bg-[#0D1424] border border-teal-500/50 hover:border-teal-400 transition-all duration-300 flex items-center gap-4 hover:shadow-xl hover:shadow-teal-500/10 hover:-translate-y-0.5"
+          >
+            <!-- Custom Teal Icon Box -->
+            <div class="w-14 h-14 rounded-2xl bg-[#0A2628] border border-teal-500/60 flex items-center justify-center text-teal-400 group-hover:scale-105 transition shrink-0">
+              <i data-lucide="monitor" class="w-7 h-7"></i>
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <h3 class="font-bold text-base text-white group-hover:text-teal-300 transition">TIK SD</h3>
+                <span class="text-[11px] bg-teal-950 text-teal-300 border border-teal-800 px-2.5 py-0.5 rounded-full font-bold">
+                  Kelas 1 - 4
+                </span>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Perangkat Komputer, Fun Typing, Paint, & MS Word Dasar
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 2: Coding SD (Kelas 5-6) -->
+          <div 
+            onclick="filterCategory('Coding')" 
+            class="cursor-pointer group relative p-5 rounded-2xl bg-[#0D1424] border border-sky-500/50 hover:border-sky-400 transition-all duration-300 flex items-center gap-4 hover:shadow-xl hover:shadow-sky-500/10 hover:-translate-y-0.5"
+          >
+            <!-- Custom Blue Icon Box -->
+            <div class="w-14 h-14 rounded-2xl bg-[#0A233A] border border-sky-500/60 flex items-center justify-center text-sky-400 group-hover:scale-105 transition shrink-0">
+              <i data-lucide="blocks" class="w-7 h-7"></i>
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <h3 class="font-bold text-base text-white group-hover:text-sky-300 transition">Coding SD</h3>
+                <span class="text-[11px] bg-sky-950 text-sky-300 border border-sky-800 px-2.5 py-0.5 rounded-full font-bold">
+                  Kelas 5 - 6
+                </span>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Pemrograman Visual Scratch, Logika Loop & Game Design
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 3: Informatika SMP (Kelas 7-9) -->
+          <div 
+            onclick="filterCategory('Informatika')" 
+            class="cursor-pointer group relative p-5 rounded-2xl bg-[#0D1424] border border-purple-500/50 hover:border-purple-400 transition-all duration-300 flex items-center gap-4 hover:shadow-xl hover:shadow-purple-500/10 hover:-translate-y-0.5"
+          >
+            <!-- Custom Purple Icon Box -->
+            <div class="w-14 h-14 rounded-2xl bg-[#231238] border border-purple-500/60 flex items-center justify-center text-purple-400 group-hover:scale-105 transition shrink-0">
+              <i data-lucide="cpu" class="w-7 h-7"></i>
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <h3 class="font-bold text-base text-white group-hover:text-purple-300 transition">Informatika SMP</h3>
+                <span class="text-[11px] bg-purple-950 text-purple-300 border border-purple-800 px-2.5 py-0.5 rounded-full font-bold">
+                  Kelas 7 - 9
+                </span>
+              </div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Berpikir Komputasional, Algoritma, Flowchart & Web/Python
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full flex flex-col md:flex-row gap-8">
+      
+      <!-- SIDEBAR GRADE SELECTION -->
+      <aside class="w-full md:w-64 shrink-0 space-y-6">
+        <div class="bg-[#111726] rounded-2xl p-5 border border-slate-800 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <h2 class="font-bold text-xs uppercase text-slate-400 tracking-wider">Filter Tingkat Kelas</h2>
+            <button onclick="filterGrade('all')" class="text-xs text-cyan-400 hover:underline font-semibold">Semua</button>
+          </div>
+
+          <nav class="space-y-1 text-xs">
+            <!-- All Grades -->
+            <button 
+              data-grade="all" 
+              onclick="filterGrade('all')" 
+              class="grade-btn w-full flex items-center justify-between px-3 py-2 font-semibold rounded-xl transition text-slate-300 hover:bg-slate-800/80"
+            >
+              <span class="flex items-center gap-2">
+                <i data-lucide="layers" class="w-4 h-4 text-indigo-400"></i> Semua Kelas (1-9)
+              </span>
+              <span class="text-[11px] bg-slate-800 px-2 py-0.5 rounded-full text-slate-400" id="count-all">0</span>
+            </button>
+
+            <!-- TIK SD (1-4) -->
+            <div class="pt-3 pb-1">
+              <p class="text-[11px] font-bold uppercase text-teal-400 px-3 tracking-wider flex justify-between">
+                <span>TIK SD</span> <span class="text-slate-500 font-normal">1-4 SD</span>
+              </p>
+            </div>
+            <div class="space-y-1 pl-1">
+              <button data-grade="1" onclick="filterGrade('1')" class="grade-btn w-full px-3 py-2 font-medium rounded-xl border border-slate-800 text-left hover:border-teal-500 transition flex justify-between items-center text-slate-300">
+                <span>Kelas 1 SD</span> <span class="text-[10px] bg-teal-950 text-teal-300 px-1.5 py-0.5 rounded font-bold" id="count-1">0</span>
+              </button>
+              <button data-grade="2" onclick="filterGrade('2')" class="grade-btn w-full px-3 py-2 font-medium rounded-xl border border-slate-800 text-left hover:border-teal-500 transition flex justify-between items-center text-slate-300">
+                <span>Kelas 2 SD</span> <span class="text-[10px] bg-teal-950 text-teal-300 px-1.5 py-0.5 rounded font-bold" id="count-2">0</span>
+              </button>
+              <button data-grade="3" onclick="filterGrade('3')" class="grade-btn w-full px-3 py-2 font-medium rounded-xl border border-slate-800 text-left hover:border-teal-500 transition flex justify-between items-center text-slate-300">
+                <span>Kelas 3 SD</span> <span class="text-[10px] bg-teal-950 text-teal-300 px-1.5 py-0.5 rounded font-bold" id="count-3">0</span>
+              </button>
+              <button data-grade="4" onclick="filterGrade('4')" class="grade-btn w-full px-3 py-2 font-medium rounded-xl border border-slate-800 text-left hover:border-teal-500 transition flex justify-between items-center text-slate-300">
+                <span>Kelas 4 SD</span> <span class="text-[10px] bg-teal-950 text-teal-300 px-1.5 py-0.5 rounded font-bold" id="count-4">0</span>
+              </button>
+            </div>
+
+            <!-- Coding SD (5-6) -->
+            <div class="pt-4 pb-1">
+              <p class="text-[11px] font-bold uppercase text-sky-400 px-3 tracking-wider flex justify-between">
+                <span>Coding SD</span> <span class="text-slate-500 font-normal">5-6 SD</span>
+              </p>
+            </div>
+            <div class="space-y-1 pl-1">
+              <button data-grade="5" onclick="filterGrade('5')" class="grade-btn w-full px-3 py-2 font-medium rounded-xl border border-slate-800 text-left hover:border-sky-500 transition flex justify-between items-center text-slate-300">
+                <span>Kelas 5 SD</span> <span class="text-[10px] bg-sky-950 text-sky-300 px-1.5 py-0.5 rounded font-bold" id="count-5">0</span>
+              </button>
+              <button data-grade="6" onclick="filterGrade('6')" class="grade-btn w-full px-3 py-2 font-medium rounded-xl border border-slate-800 text-left hover:border-sky-500 transition flex justify-between items-center text-slate-300">
+                <span>Kelas 6 SD</span> <span class="text-[10px] bg-sky-950 text-sky-300 px-1.5 py-0.5 rounded font-bold" id="count-6">0</span>
+              </button>
+            </div>
+
+            <!-- Informatika SMP (7-9) -->
+            <div class="pt-4 pb-1">
+              <p class="text-[11px] font-bold uppercase text-purple-400 px-3 tracking-wider flex justify-between">
+                <span>Informatika SMP</span> <span class="text-slate-500 font-normal">7-9 SMP</span>
+              </p>
+            </div>
+            <div class="space-y-1 pl-1">
+              <button data-grade="7" onclick="filterGrade('7')" class="grade-btn w-full px-3 py-2 font-medium rounded-xl border border-slate-800 text-left hover:border-purple-500 transition flex justify-between items-center text-slate-300">
+                <span>Kelas 7 SMP (VII)</span> <span class="text-[10px] bg-purple-950 text-purple-300 px-1.5 py-0.5 rounded font-bold" id="count-7">0</span>
+              </button>
+              <button data-grade="8" onclick="filterGrade('8')" class="grade-btn w-full px-3 py-2 font-medium rounded-xl border border-slate-800 text-left hover:border-purple-500 transition flex justify-between items-center text-slate-300">
+                <span>Kelas 8 SMP (VIII)</span> <span class="text-[10px] bg-purple-950 text-purple-300 px-1.5 py-0.5 rounded font-bold" id="count-8">0</span>
+              </button>
+              <button data-grade="9" onclick="filterGrade('9')" class="grade-btn w-full px-3 py-2 font-medium rounded-xl border border-slate-800 text-left hover:border-purple-500 transition flex justify-between items-center text-slate-300">
+                <span>Kelas 9 SMP (IX)</span> <span class="text-[10px] bg-purple-950 text-purple-300 px-1.5 py-0.5 rounded font-bold" id="count-9">0</span>
+              </button>
+            </div>
+          </nav>
+        </div>
+      </aside>
+
+      <!-- MATERIALS LIST AREA -->
+      <main class="flex-1 space-y-6">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+          <div>
+            <h2 id="activeFilterTitle" class="text-xl font-extrabold text-white flex items-center gap-2">
+              Daftar Modul Pembelajaran
+            </h2>
+            <p id="activeFilterSubtitle" class="text-xs text-slate-400 mt-1">
+              Menampilkan daftar modul ajar TIK, Coding, dan Informatika dari Kelas 1 SD - 9 SMP
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2 text-xs text-slate-400 shrink-0">
+            <span>Urutan:</span>
+            <select id="sortSelect" onchange="handleSort(this.value)" class="bg-[#111726] border border-slate-700 rounded-xl text-xs py-1.5 px-3 text-slate-200 focus:outline-none focus:border-cyan-500">
+              <option value="grade">Tingkat Kelas (1 - 9)</option>
+              <option value="title">Judul (A-Z)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- MATERIAL CARDS GRID -->
+        <div id="materialsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+        <!-- EMPTY STATE -->
+        <div id="emptyState" class="hidden text-center py-16 bg-[#111726] rounded-2xl border border-dashed border-slate-800 p-8">
+          <div class="w-16 h-16 bg-slate-800 text-cyan-400 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="file-search" class="w-8 h-8"></i>
+          </div>
+          <h3 class="font-bold text-lg text-white">Tidak ada materi ditemukan</h3>
+          <p class="text-xs text-slate-400 max-w-sm mx-auto mt-1">Coba kata kunci pencarian lain atau pilih kelas yang berbeda.</p>
+          <button onclick="resetFilters()" class="mt-4 px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl text-xs font-semibold transition">
+            Tampilkan Semua Kelas
+          </button>
+        </div>
+
+      </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="mt-auto border-t border-slate-800/80 bg-[#111726] py-5 text-center text-xs text-slate-500">
+      <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p>© 2026 <strong>EduCode Hub</strong> • Portal Pengajar TIK & Informatika (Kelas 1 SD - IX SMP)</p>
+        <button onclick="resetDefaultData()" class="hover:text-cyan-400 transition text-[11px] underline">
+          Kembalikan Data Demo Awal
+        </button>
+      </div>
+    </footer>
+  </div>
+
+
+  <!-- 3. LESSON VIEWER MODAL (WITH CONTENT IMAGES & PRACTICUM DIAGRAMS) -->
+  <div id="detailModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+    <div class="bg-[#111726] rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-800 overflow-hidden my-auto">
+      
+      <!-- Modal Header -->
+      <div class="px-6 py-4 bg-[#0B0F19] border-b border-slate-800 flex items-start justify-between">
+        <div class="space-y-1.5 pr-6">
+          <div class="flex items-center gap-2 flex-wrap" id="modalBadges"></div>
+          <h2 id="modalTitle" class="text-xl font-bold text-white leading-snug"></h2>
+        </div>
+        <button onclick="closeDetailModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="px-6 border-b border-slate-800 flex gap-6 bg-[#0B0F19] text-xs sm:text-sm font-semibold">
+        <button id="tab-reading-btn" onclick="switchModalTab('reading')" class="py-3 border-b-2 border-cyan-400 text-cyan-400 flex items-center gap-2 transition">
+          <i data-lucide="book-open" class="w-4 h-4"></i> 1. Ringkasan & Konsep
+        </button>
+        <button id="tab-practice-btn" onclick="switchModalTab('practice')" class="py-3 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2 transition">
+          <i data-lucide="terminal" class="w-4 h-4"></i> 2. Panduan Praktikum
+        </button>
+        <button id="tab-quiz-btn" onclick="switchModalTab('quiz')" class="py-3 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2 transition">
+          <i data-lucide="help-circle" class="w-4 h-4"></i> 3. Kuis Evaluasi
+        </button>
+      </div>
+
+      <!-- Modal Body Content -->
+      <div class="p-6 overflow-y-auto flex-1 space-y-6">
+
+        <!-- TAB 1: RINGKASAN & GAMBAR MATERI -->
+        <div id="tab-reading-content" class="space-y-5">
+          <!-- Main Content Image Illustration -->
+          <div id="modalImageContainer" class="hidden rounded-2xl overflow-hidden border border-slate-800 bg-slate-900 shadow-md">
+            <img id="modalContentImage" src="" alt="Ilustrasi Materi" class="w-full max-h-72 object-cover">
+            <div class="p-2.5 bg-slate-900/90 text-[11px] text-slate-400 text-center font-medium border-t border-slate-800" id="modalImageCaption">
+              Diagram / Gambar Ilustrasi Pembelajaran
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+            <h4 class="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+              <i data-lucide="sparkles" class="w-4 h-4 text-cyan-400"></i> Poin Utama Pembelajaran
+            </h4>
+            <p id="modalSummary" class="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium"></p>
+          </div>
+
+          <div class="prose prose-invert max-w-none space-y-3 text-xs sm:text-sm text-slate-300 leading-relaxed" id="modalFullContent"></div>
+        </div>
+
+        <!-- TAB 2: PANDUAN PRAKTIKUM & GAMBAR SCREENSHOT -->
+        <div id="tab-practice-content" class="hidden space-y-5">
+          <!-- Practicum Diagram / Screenshot Image -->
+          <div id="modalPracticeImageContainer" class="hidden rounded-2xl overflow-hidden border border-slate-800 bg-slate-900 shadow-md">
+            <img id="modalPracticeImage" src="" alt="Langkah Praktikum" class="w-full max-h-64 object-cover">
+            <div class="p-2 bg-slate-900 text-[11px] text-slate-400 text-center font-mono border-t border-slate-800">
+              Tangkapan Layar / Diagram Panduan Praktikum Komputer
+            </div>
+          </div>
+
+          <div class="p-5 bg-[#090D16] rounded-2xl border border-slate-800 space-y-3 font-mono text-xs">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+              <span class="text-cyan-400 font-bold flex items-center gap-2">
+                <i data-lucide="laptop" class="w-4 h-4"></i> Computer Lab Guide & Steps
+              </span>
+              <span class="text-slate-500">EduCode Lab Mode</span>
+            </div>
+            <div id="practiceStepsContainer" class="space-y-3 text-slate-300 pt-1"></div>
+          </div>
+        </div>
+
+        <!-- TAB 3: KUIS EVALUASI INTERAKTIF -->
+        <div id="tab-quiz-content" class="hidden space-y-6">
+          <div class="flex items-center justify-between border-b pb-3 border-slate-800">
+            <div>
+              <h3 class="font-bold text-white flex items-center gap-2 text-sm sm:text-base">
+                <i data-lucide="award" class="w-5 h-5 text-amber-400"></i> Uji Pemahaman Siswa
+              </h3>
+              <p class="text-xs text-slate-400">Jawab pertanyaan berikut untuk menguji pemahaman.</p>
+            </div>
+            <div id="quizScoreBadge" class="hidden px-3 py-1 bg-emerald-950 text-emerald-300 border border-emerald-800 text-xs font-bold rounded-full">
+              Skor: <span id="quizScoreText">0/0</span>
+            </div>
+          </div>
+
+          <div id="quizQuestionsContainer" class="space-y-6"></div>
+
+          <div class="pt-4 border-t border-slate-800 flex justify-end gap-3">
+            <button id="resetQuizBtn" onclick="resetQuizState()" class="hidden px-4 py-2 border border-slate-700 text-slate-300 rounded-xl text-xs font-semibold hover:bg-slate-800">
+              Ulangi Kuis
+            </button>
+            <button id="submitQuizBtn" onclick="submitQuiz()" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center gap-2">
+              <i data-lucide="check-circle-2" class="w-4 h-4"></i> Periksa Jawaban
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- 4. MODAL TAMBAH / EDIT MATERI (TEACHER ADMIN FORM) -->
+  <div id="addModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-[#111726] rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-800 overflow-hidden my-8">
+      
+      <div class="px-6 py-4 bg-[#0B0F19] border-b border-slate-800 flex items-center justify-between">
+        <h3 class="font-bold text-white flex items-center gap-2 text-sm sm:text-base">
+          <i data-lucide="plus-circle" class="w-5 h-5 text-cyan-400"></i> Form Tambah Materi Ajar Baru
+        </h3>
+        <button onclick="closeAddModal()" class="text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="addMaterialForm" onsubmit="handleAddMaterial(event)" class="p-6 space-y-4 text-xs">
+        
+        <div>
+          <label class="block font-bold text-slate-300 mb-1">Judul Materi *</label>
+          <input type="text" id="addTitle" required placeholder="Contoh: Pengenalan Perangkat Hardware & Output Komputer" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-300 mb-1">Tingkat Kelas *</label>
+            <select id="addGrade" onchange="autoSelectSubjectByGrade()" required class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white font-medium">
+              <optgroup label="Sekolah Dasar (TIK)">
+                <option value="1">Kelas 1 SD (TIK)</option>
+                <option value="2">Kelas 2 SD (TIK)</option>
+                <option value="3">Kelas 3 SD (TIK)</option>
+                <option value="4">Kelas 4 SD (TIK)</option>
+              </optgroup>
+              <optgroup label="Sekolah Dasar (Coding)">
+                <option value="5">Kelas 5 SD (Coding)</option>
+                <option value="6">Kelas 6 SD (Coding)</option>
+              </optgroup>
+              <optgroup label="Sekolah Menengah Pertama (Informatika)">
+                <option value="7">Kelas 7 SMP (Informatika)</option>
+                <option value="8">Kelas 8 SMP (Informatika)</option>
+                <option value="9">Kelas 9 SMP (Informatika)</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-300 mb-1">Kategori Rumpun (Otomatis)</label>
+            <input type="text" id="addSubject" readonly value="TIK" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-cyan-400 font-bold cursor-not-allowed">
+          </div>
+        </div>
+
+        <!-- IMAGE INPUT FIELDS FOR MATERIAL & PRACTICE -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+          <div>
+            <label class="block font-bold text-slate-300 mb-1">URL Gambar Ilustrasi Materi (Opsional)</label>
+            <input type="url" id="addImageUrl" placeholder="https://images.unsplash.com/..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white">
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-300 mb-1">URL Gambar Diagram Praktikum (Opsional)</label>
+            <input type="url" id="addPracticeImageUrl" placeholder="https://images.unsplash.com/..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-300 mb-1">Ringkasan Materi Singkat *</label>
+          <input type="text" id="addSummary" required placeholder="Gambarkan garis besar topik dalam 1-2 kalimat..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white">
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-300 mb-1">Isi Pembahasan Materi Lengkap *</label>
+          <textarea id="addContent" rows="4" required placeholder="Tuliskan isi materi pelajaran selengkapnya..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white"></textarea>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-300 mb-1">Langkah Praktikum Komputer (Pisahkan dengan baris baru)</label>
+          <textarea id="addPractice" rows="3" placeholder="Langkah 1: Nyalakan Komputer&#10;Langkah 2: Buka aplikasi..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white"></textarea>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800 flex justify-end gap-3">
+          <button type="button" onclick="closeAddModal()" class="px-4 py-2 font-semibold text-slate-400 hover:bg-slate-800 rounded-xl">
+            Batal
+          </button>
+          <button type="submit" class="px-5 py-2 font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-md transition">
+            Simpan Materi Ajar
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+
+  <!-- TOAST NOTIFICATION -->
+  <

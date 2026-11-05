@@ -559,20 +559,23 @@
     import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    // FIREBASE CLOUD DATABASE SETUP
+    // FIREBASE CLOUD DATABASE SETUP WITH SAFE FALLBACK
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'educode-hub-app';
-    let firebaseConfig = {};
+    let firebaseConfig = null;
+    let app = null, auth = null, db = null;
+
     try {
-      if (typeof __firebase_config !== 'undefined') {
+      if (typeof __firebase_config !== 'undefined' && __firebase_config) {
         firebaseConfig = JSON.parse(__firebase_config);
+        if (firebaseConfig && firebaseConfig.apiKey) {
+          app = initializeApp(firebaseConfig);
+          auth = getAuth(app);
+          db = getFirestore(app);
+        }
       }
     } catch(e) {
-      console.error("Config error:", e);
+      console.warn("Firebase initialization skipped or running in offline mode:", e);
     }
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
 
     // HELPER: GOOGLE DRIVE LINK AUTO-CONVERTER
     function convertGoogleDriveUrl(url) {
@@ -894,23 +897,33 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
     ];
 
     // APPLICATION STATE VARIABLES
-    let materials = [];
+    let materials = [...DEFAULT_MATERIALS];
     let activeSubject = null; // 'TIK', 'Coding', 'Informatika'
     let activeGradeFilter = 'ALL';
     let activeMaterial = null;
     let editingMaterialId = null;
     let quizUserAnswers = {};
     let quizSubmitted = false;
+    let inMemoryUser = null;
 
     // INITIALIZATION ON LOAD WITH REAL-TIME CLOUD SYNC
     window.addEventListener('DOMContentLoaded', async () => {
       checkAuth();
       await initCloudStorage();
-      lucide.createIcons();
+      if (typeof lucide !== 'undefined') lucide.createIcons();
     });
 
-    // REAL-TIME CLOUD STORAGE INIT
+    // REAL-TIME CLOUD STORAGE INIT WITH SAFE FALLBACK
     async function initCloudStorage() {
+      if (!db || !auth) {
+        console.warn("Cloud DB tidak aktif. Menggunakan data lokal.");
+        materials = [...DEFAULT_MATERIALS];
+        if (activeSubject) {
+          renderSubjectDashboard();
+        }
+        return;
+      }
+
       try {
         if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
           await signInWithCustomToken(auth, __initial_auth_token);
@@ -919,7 +932,11 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
         }
       } catch (err) {
         console.warn("Auth fallback to anonymous:", err);
-        await signInAnonymously(auth);
+        try {
+          await signInAnonymously(auth);
+        } catch(e) {
+          console.error("Anonymous auth failed:", e);
+        }
       }
 
       // PUBLIC COLLECTION PATH FOR MULTI-DEVICE SYNC
@@ -928,7 +945,6 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
       // REAL-TIME LISTENER FOR ALL DEVICES
       onSnapshot(materialsRef, (snapshot) => {
         if (snapshot.empty) {
-          // SEED CLOUD DATABASE IF EMPTY
           seedDefaultData(materialsRef);
           return;
         }
@@ -944,10 +960,15 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
         }
       }, (error) => {
         console.error("Cloud listener error:", error);
+        if (materials.length === 0) {
+          materials = [...DEFAULT_MATERIALS];
+          if (activeSubject) renderSubjectDashboard();
+        }
       });
     }
 
     async function seedDefaultData(materialsRef) {
+      if (!db) return;
       for (const mat of DEFAULT_MATERIALS) {
         const docRef = doc(materialsRef, mat.id);
         await setDoc(docRef, mat);
@@ -955,14 +976,30 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
     }
 
     async function resetDefaultData() {
-      const materialsRef = collection(db, 'artifacts', appId, 'public', 'data', 'materials');
-      await seedDefaultData(materialsRef);
-      showToast("Data sampel default berhasil disinkronkan ke Cloud!");
+      if (db) {
+        const materialsRef = collection(db, 'artifacts', appId, 'public', 'data', 'materials');
+        await seedDefaultData(materialsRef);
+        showToast("Data sampel default berhasil disinkronkan ke Cloud!");
+      } else {
+        materials = [...DEFAULT_MATERIALS];
+        if (activeSubject) renderSubjectDashboard();
+        showToast("Data sampel default berhasil dimuat ulang!");
+      }
     }
 
-    // AUTHENTICATION SYSTEM
+    // AUTHENTICATION SYSTEM WITH IN-MEMORY FALLBACK
     function checkAuth() {
-      const user = localStorage.getItem('educode_user');
+      let user = null;
+      try {
+        user = localStorage.getItem('educode_user') || sessionStorage.getItem('educode_user');
+      } catch(e) {
+        user = inMemoryUser;
+      }
+
+      if (!user && inMemoryUser) {
+        user = inMemoryUser;
+      }
+
       const loginScreen = document.getElementById('loginScreen');
       const appScreen = document.getElementById('appScreen');
 
@@ -977,23 +1014,35 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
     }
 
     function handleLogin(e) {
-      e.preventDefault();
+      if (e && e.preventDefault) e.preventDefault();
       const u = document.getElementById('loginUsername').value.trim();
       const p = document.getElementById('loginPassword').value.trim();
       const errEl = document.getElementById('loginError');
 
       if (u === 'admin' && p === '123456') {
-        localStorage.setItem('educode_user', JSON.stringify({ username: 'admin', role: 'Pengajar' }));
-        errEl.classList.add('hidden');
+        const userData = JSON.stringify({ username: 'admin', role: 'Pengajar' });
+        inMemoryUser = userData;
+        try {
+          localStorage.setItem('educode_user', userData);
+        } catch(err) {
+          console.warn("Storage restricted, using in-memory auth.");
+        }
+        if (errEl) errEl.classList.add('hidden');
         checkAuth();
         showToast('Berhasil masuk! Selamat datang Pak Pengajar.');
       } else {
-        errEl.classList.remove('hidden');
+        if (errEl) errEl.classList.remove('hidden');
       }
     }
 
     function handleLogout() {
-      localStorage.removeItem('educode_user');
+      inMemoryUser = null;
+      try {
+        localStorage.removeItem('educode_user');
+        sessionStorage.removeItem('educode_user');
+      } catch(err) {
+        console.warn("Storage error on logout:", err);
+      }
       checkAuth();
       showToast('Berhasil keluar dari portal.');
     }
@@ -1409,30 +1458,17 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
       `;
     }
 
-    // FORM TAMBAH & EDIT MATERI
+    // FORM & MODAL MANAGEMENT FUNCTIONS
     function openAddModal() {
       editingMaterialId = null;
+      document.getElementById('addModalHeaderTitle').textContent = 'Form Tambah Materi Ajar Baru';
+      document.getElementById('addModalSubmitBtn').textContent = 'Simpan Materi Ajar';
       document.getElementById('addMaterialForm').reset();
       document.getElementById('addPdfData').value = '';
-      
-      const modalTitle = document.getElementById('addModalHeaderTitle');
-      if (modalTitle) modalTitle.textContent = 'Form Tambah Materi Ajar Baru';
-      const submitBtn = document.getElementById('addModalSubmitBtn');
-      if (submitBtn) submitBtn.textContent = 'Simpan Materi Ajar';
-
-      const gradeSelect = document.getElementById('addGrade');
-      if (activeSubject === 'Coding') {
-        gradeSelect.value = '5';
-      } else if (activeSubject === 'Informatika') {
-        gradeSelect.value = '7';
-      } else {
-        gradeSelect.value = '1';
-      }
-
+      document.getElementById('contentLivePreview').innerHTML = '<em class="text-slate-500 text-[11px]">Ketik materi atau klik tombol "+ Gambar di Teks" di atas untuk melihat tampilan live di sini...</em>';
       autoSelectSubjectByGrade();
-      updateLivePreview();
       document.getElementById('addModal').classList.remove('hidden');
-      lucide.createIcons();
+      if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
     function openEditModal(id) {
@@ -1440,51 +1476,41 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
       if (!mat) return;
 
       editingMaterialId = id;
-      document.getElementById('addMaterialForm').reset();
+      document.getElementById('addModalHeaderTitle').textContent = 'Form Edit Materi Pembelajaran';
+      document.getElementById('addModalSubmitBtn').textContent = 'Perbarui Materi';
 
       document.getElementById('addTitle').value = mat.title || '';
       document.getElementById('addGrade').value = mat.grade || '1';
       document.getElementById('addSubject').value = mat.subject || 'TIK';
       document.getElementById('addImageUrl').value = mat.imageUrl || '';
       document.getElementById('addPracticeImageUrl').value = mat.practiceImageUrl || '';
-      
-      if (mat.pdfUrl && mat.pdfUrl.startsWith('data:')) {
-        document.getElementById('addPdfData').value = mat.pdfUrl;
-        document.getElementById('addPdfUrl').value = '';
-      } else {
-        document.getElementById('addPdfData').value = '';
-        document.getElementById('addPdfUrl').value = mat.pdfUrl || '';
-      }
-
+      document.getElementById('addPdfUrl').value = mat.pdfUrl && !mat.pdfUrl.startsWith('data:') ? mat.pdfUrl : '';
+      document.getElementById('addPdfData').value = mat.pdfUrl && mat.pdfUrl.startsWith('data:') ? mat.pdfUrl : '';
       document.getElementById('addSummary').value = mat.summary || '';
       document.getElementById('addContent').value = mat.content || '';
       document.getElementById('addPractice').value = mat.practice ? mat.practice.join('\n') : '';
 
-      const modalTitle = document.getElementById('addModalHeaderTitle');
-      if (modalTitle) modalTitle.textContent = 'Form Edit Perubahan Materi';
-      const submitBtn = document.getElementById('addModalSubmitBtn');
-      if (submitBtn) submitBtn.textContent = 'Simpan Perubahan Materi';
-
-      autoSelectSubjectByGrade();
       updateLivePreview();
       document.getElementById('addModal').classList.remove('hidden');
-      lucide.createIcons();
+      if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
     function closeAddModal() {
-      editingMaterialId = null;
       document.getElementById('addModal').classList.add('hidden');
+      editingMaterialId = null;
     }
 
     function autoSelectSubjectByGrade() {
-      const gradeVal = parseInt(document.getElementById('addGrade').value);
-      const subjectInput = document.getElementById('addSubject');
-      if (gradeVal >= 1 && gradeVal <= 4) {
-        subjectInput.value = 'TIK';
-      } else if (gradeVal >= 5 && gradeVal <= 6) {
-        subjectInput.value = 'Coding';
-      } else if (gradeVal >= 7 && gradeVal <= 9) {
-        subjectInput.value = 'Informatika';
+      const grade = document.getElementById('addGrade').value;
+      const subjInput = document.getElementById('addSubject');
+      const gNum = parseInt(grade, 10);
+
+      if (gNum >= 1 && gNum <= 4) {
+        subjInput.value = 'TIK';
+      } else if (gNum >= 5 && gNum <= 6) {
+        subjInput.value = 'Coding';
+      } else if (gNum >= 7 && gNum <= 9) {
+        subjInput.value = 'Informatika';
       }
     }
 
@@ -1492,49 +1518,50 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
       const textarea = document.getElementById(textareaId);
       if (!textarea) return;
 
-      let start = textarea.selectionStart;
-      let end = textarea.selectionEnd;
-      let val = textarea.value;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = textarea.value;
 
-      let insertedText = '';
+      let insertText = '';
       if (tagType === 'image') {
-        const urlPrompt = prompt("Masukkan Link URL Gambar (Bisa link Google Drive atau Unsplash):");
-        if (!urlPrompt) return;
-        const captionPrompt = prompt("Masukkan Keterangan / Caption Gambar:", "Gambar Pembelajaran");
-        insertedText = `\n[gambar: ${urlPrompt} | ${captionPrompt || 'Gambar Pembelajaran'}]\n`;
+        const url = prompt('Masukkan URL Gambar (Bisa link Unsplash atau Google Drive):', 'https://images.unsplash.com/photo-1587831990711-23ca6441447b?w=800');
+        if (!url) return;
+        const caption = prompt('Masukkan Keterangan / Judul Gambar:', 'Gambar Ilustrasi');
+        insertText = `\n[gambar: ${url} | ${caption || 'Gambar'}]\n`;
       } else if (tagType === 'heading') {
-        insertedText = `\n### Judul Topik Bagian Baru\n`;
+        insertText = `\n### Judul Bagian Baru\n`;
       } else if (tagType === 'tip') {
-        insertedText = `\n[tips: Tuliskan catatan penting/tips singkat siswa di sini]\n`;
+        insertText = `\n[tips: Tuliskan catatan penting atau tips untuk siswa di sini]\n`;
       } else if (tagType === 'bold') {
-        insertedText = `**teks tebal**`;
+        const selected = text.substring(start, end) || 'teks tebal';
+        insertText = `**${selected}**`;
       }
 
-      textarea.value = val.substring(0, start) + insertedText + val.substring(end);
+      textarea.value = text.substring(0, start) + insertText + text.substring(end);
       textarea.focus();
       updateLivePreview();
     }
 
     function updateLivePreview() {
-      const text = document.getElementById('addContent').value;
-      const previewEl = document.getElementById('contentLivePreview');
-      if (!previewEl) return;
-      if (!text.trim()) {
-        previewEl.innerHTML = '<em class="text-slate-500 text-[11px]">Ketik materi atau klik tombol "+ Gambar di Teks" di atas untuk melihat tampilan live di sini...</em>';
+      const content = document.getElementById('addContent').value;
+      const previewBox = document.getElementById('contentLivePreview');
+      if (!content.trim()) {
+        previewBox.innerHTML = '<em class="text-slate-500 text-[11px]">Ketik materi atau klik tombol "+ Gambar di Teks" di atas untuk melihat tampilan live di sini...</em>';
         return;
       }
-      previewEl.innerHTML = parseCustomContent(text);
-      lucide.createIcons();
+      previewBox.innerHTML = parseCustomContent(content);
+      if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
     function handlePdfUpload(e) {
       const file = e.target.files[0];
       if (!file) return;
+
       if (file.type !== 'application/pdf') {
-        showToast('Mohon pilih file format PDF (.pdf)');
-        e.target.value = '';
+        showToast('File harus berupa format PDF!');
         return;
       }
+
       const reader = new FileReader();
       reader.onload = function(evt) {
         document.getElementById('addPdfData').value = evt.target.result;
@@ -1543,6 +1570,49 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
       reader.readAsDataURL(file);
     }
 
+    function exportDataJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(materials, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `EduCode_Materi_Backup_${Date.now()}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast('Data materi berhasil diekspor ke file JSON!');
+    }
+
+    function importDataJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async function(evt) {
+        try {
+          const importedData = JSON.parse(evt.target.result);
+          if (Array.isArray(importedData)) {
+            materials = importedData;
+            if (db) {
+              const materialsRef = collection(db, 'artifacts', appId, 'public', 'data', 'materials');
+              for (const mat of importedData) {
+                if (mat.id) {
+                  await setDoc(doc(materialsRef, mat.id), mat);
+                }
+              }
+            }
+            if (activeSubject) renderSubjectDashboard();
+            showToast('Data materi berhasil diimpor!');
+          } else {
+            showToast('Format file JSON tidak valid!');
+          }
+        } catch(err) {
+          console.error('Import error:', err);
+          showToast('Gagal membaca file JSON!');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // FORM TAMBAH & EDIT MATERI
     async function handleAddMaterial(e) {
       e.preventDefault();
 
@@ -1583,11 +1653,28 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
         ]
       };
 
-      // SAVE DIRECTLY TO CLOUD DATABASE
-      const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'materials', matId);
-      await setDoc(docRef, lessonData);
+      // SAVE TO CLOUD DATABASE OR LOCAL STATE
+      if (db) {
+        try {
+          const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'materials', matId);
+          await setDoc(docRef, lessonData);
+          showToast(editingMaterialId ? "Materi berhasil diperbarui di Cloud!" : "Materi baru tersimpan di Cloud!");
+        } catch (err) {
+          console.error("Error saving to cloud:", err);
+          const idx = materials.findIndex(m => m.id === matId);
+          if (idx >= 0) materials[idx] = lessonData;
+          else materials.push(lessonData);
+          if (activeSubject) renderSubjectDashboard();
+          showToast("Materi tersimpan lokal!");
+        }
+      } else {
+        const idx = materials.findIndex(m => m.id === matId);
+        if (idx >= 0) materials[idx] = lessonData;
+        else materials.push(lessonData);
+        if (activeSubject) renderSubjectDashboard();
+        showToast("Materi tersimpan secara lokal!");
+      }
 
-      showToast(editingMaterialId ? "Materi berhasil diperbarui di Cloud!" : "Materi baru tersimpan di Cloud!");
       closeAddModal();
     }
 
@@ -1626,6 +1713,8 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
     window.handlePdfUpload = handlePdfUpload;
     window.handleAddMaterial = handleAddMaterial;
     window.resetDefaultData = resetDefaultData;
+    window.exportDataJSON = exportDataJSON;
+    window.importDataJSON = importDataJSON;
   </script>
 </body>
 </html>

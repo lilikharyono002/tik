@@ -291,6 +291,288 @@
 
 
   <!-- ========================================== -->
+  <!-- MODAL DETAIL PEMBELAJARAN & KUIS EVALUASI -->
+  <!-- ========================================== -->
+  <div id="detailModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+    <div class="bg-[#111726] rounded-3xl max-w-4xl w-full shadow-2xl border border-slate-800 my-auto flex flex-col max-h-[90vh] overflow-hidden">
+      
+      <!-- MODAL HEADER -->
+      <div class="p-5 bg-[#0B0F19] border-b border-slate-800 flex items-start justify-between gap-4">
+        <div class="space-y-1">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span id="detailGradeBadge" class="px-2.5 py-0.5 bg-cyan-950 border border-cyan-800 text-cyan-300 text-[10px] font-bold rounded-full">Kelas 1 SD</span>
+            <span id="detailSubjectBadge" class="px-2.5 py-0.5 bg-slate-800 text-slate-300 text-[10px] font-bold rounded-full">TIK</span>
+            <span id="detailDurationBadge" class="text-[11px] text-slate-400 flex items-center gap-1">
+              <i data-lucide="clock" class="w-3.5 h-3.5"></i> 35 Menit
+            </span>
+          </div>
+          <h3 id="detailTitle" class="text-lg sm:text-xl font-extrabold text-white">Judul Materi Pembelajaran</h3>
+        </div>
+        
+        <button onclick="closeDetailModal()" class="p-2 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl border border-slate-800 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- MODAL TABS NAVIGATION -->
+      <div class="bg-[#0D1424] px-5 pt-3 border-b border-slate-800 flex gap-2 overflow-x-auto text-xs font-bold">
+        <button onclick="switchDetailTab(0)" id="detailTab0" class="px-4 py-2.5 border-b-2 border-cyan-400 text-cyan-400 flex items-center gap-2 transition">
+          <i data-lucide="book-open" class="w-4 h-4"></i> 1. Ringkasan & Konsep
+        </button>
+        <button onclick="switchDetailTab(1)" id="detailTab1" class="px-4 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition">
+          <i data-lucide="terminal" class="w-4 h-4"></i> 2. Langkah Praktikum
+        </button>
+        <button onclick="switchDetailTab(2)" id="detailTab2" class="px-4 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition">
+          <i data-lucide="help-circle" class="w-4 h-4"></i> 3. Evaluasi & Kuis
+        </button>
+        <button onclick="switchDetailTab(3)" id="detailTab3" class="px-4 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition hidden">
+          <i data-lucide="file-text" class="w-4 h-4"></i> 4. Modul PDF
+        </button>
+      </div>
+
+      <!-- MODAL CONTENT BODY -->
+      <div class="p-6 overflow-y-auto flex-1 space-y-6 text-xs leading-relaxed text-slate-300">
+        
+        <!-- TAB 1: RINGKASAN & TEORI -->
+        <div id="detailTabContent0" class="space-y-6">
+          <div id="detailHeaderImgContainer" class="rounded-2xl overflow-hidden border border-slate-800 max-h-72 bg-slate-950">
+            <img id="detailHeaderImg" src="" class="w-full h-full object-cover" alt="Ilustrasi Header" onerror="this.src='https://placehold.co/800x400/1e293b/94a3b8?text=Modul+Pembelajaran'">
+          </div>
+          
+          <div class="p-4 bg-slate-900/80 border border-slate-800 rounded-2xl space-y-1">
+            <span class="text-[10px] font-extrabold text-cyan-400 uppercase tracking-wider">Ringkasan Materi</span>
+            <p id="detailSummaryText" class="text-slate-300 font-medium leading-relaxed"></p>
+          </div>
+
+          <div id="detailFullContent" class="space-y-4 text-slate-200 leading-relaxed font-normal">
+            <!-- Rendered Formatted Content -->
+          </div>
+        </div>
+
+        <!-- TAB 2: LANGKAH PRAKTIKUM -->
+        <div id="detailTabContent1" class="hidden space-y-6">
+          <div id="detailPracticalImgContainer" class="rounded-2xl overflow-hidden border border-slate-800 max-h-72 bg-slate-950">
+            <img id="detailPracticalImg" src="" class="w-full h-full object-cover" alt="Diagram Praktikum" onerror="this.src='https://placehold.co/800x400/1e293b/38bdf8?text=Diagram+Praktikum'">
+          </div>
+
+          <div class="space-y-3">
+            <h4 class="font-extrabold text-white text-sm flex items-center gap-2">
+              <i data-lucide="play-circle" class="w-4 h-4 text-cyan-400"></i> Panduan Langkah Kerja Komputer / Praktikum:
+            </h4>
+            <div id="detailPracticalSteps" class="space-y-2.5">
+              <!-- Steps injected dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: KUIS EVALUASI INTERAKTIF -->
+        <div id="detailTabContent2" class="hidden space-y-6">
+          <div id="quizContainer" class="space-y-6">
+            <!-- Quiz injected dynamically -->
+          </div>
+        </div>
+
+        <!-- TAB 4: MODUL PDF VIEWER -->
+        <div id="detailTabContent3" class="hidden space-y-4">
+          <div class="flex items-center justify-between bg-slate-900 p-3 rounded-xl border border-slate-800">
+            <span class="font-bold text-white flex items-center gap-2">
+              <i data-lucide="file-text" class="w-4 h-4 text-rose-400"></i> File Dokumen PDF Pembelajaran
+            </span>
+            <a id="detailPdfDownloadBtn" href="#" target="_blank" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-lg text-[11px] flex items-center gap-1.5 transition">
+              <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Buka / Download PDF
+            </a>
+          </div>
+          <div class="border border-slate-800 rounded-2xl overflow-hidden h-[500px] bg-slate-950">
+            <iframe id="detailPdfFrame" src="" class="w-full h-full border-0"></iframe>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ========================================== -->
+  <!-- MODAL FORM TAMBAH / EDIT MATERI AJAR -->
+  <!-- ========================================== -->
+  <div id="addModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+    <div class="bg-[#111726] rounded-3xl max-w-3xl w-full shadow-2xl border border-slate-800 my-auto flex flex-col max-h-[90vh] overflow-hidden">
+      
+      <!-- FIXED MODAL HEADER -->
+      <div class="p-5 bg-[#0B0F19] border-b border-slate-800 flex items-center justify-between shrink-0">
+        <h3 id="formModalTitle" class="font-extrabold text-white text-base flex items-center gap-2">
+          <i data-lucide="plus-circle" class="w-5 h-5 text-cyan-400"></i> Tambah Materi Ajar Baru
+        </h3>
+        <button onclick="closeAddModal()" class="p-2 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white rounded-xl border border-slate-800 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- SCROLLABLE FORM BODY -->
+      <form onsubmit="handleAddMaterial(event)" class="p-6 overflow-y-auto flex-1 space-y-5 text-xs">
+        
+        <div class="space-y-1.5">
+          <label class="block font-bold text-slate-300">Judul Materi Pembelajaran *</label>
+          <input type="text" id="formTitle" required placeholder="Contoh: Pengenal Perangkat Komputer (Hardware) & Output" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white font-medium">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block font-bold text-slate-300 mb-1.5">Tingkat Kelas *</label>
+            <select id="formGrade" onchange="autoSelectSubjectByGrade()" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white font-medium">
+              <option value="Kelas 1 SD">Kelas 1 SD (TIK)</option>
+              <option value="Kelas 2 SD">Kelas 2 SD (TIK)</option>
+              <option value="Kelas 3 SD">Kelas 3 SD (TIK)</option>
+              <option value="Kelas 4 SD">Kelas 4 SD (TIK)</option>
+              <option value="Kelas 5 SD">Kelas 5 SD (Coding)</option>
+              <option value="Kelas 6 SD">Kelas 6 SD (Coding)</option>
+              <option value="Kelas 7 SMP">Kelas 7 SMP (Informatika)</option>
+              <option value="Kelas 8 SMP">Kelas 8 SMP (Informatika)</option>
+              <option value="Kelas 9 SMP">Kelas 9 SMP (Informatika)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-300 mb-1.5">Kategori Rumpun</label>
+            <input type="text" id="formSubject" readonly value="TIK" class="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-cyan-400 font-bold">
+          </div>
+
+          <div>
+            <label class="block font-bold text-slate-300 mb-1.5">Estimasi Waktu (Menit)</label>
+            <input type="number" id="formDuration" value="35" min="10" max="180" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white font-medium">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-300 mb-1.5">URL Gambar Header/Ilustrasi</label>
+            <input type="url" id="formHeaderImg" placeholder="https://images.unsplash.com/..." class="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white text-[11px]">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-300 mb-1.5">URL Gambar Diagram Praktikum</label>
+            <input type="url" id="formPracticalImg" placeholder="https://images.unsplash.com/..." class="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white text-[11px]">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-300 mb-1.5">Ringkasan Singkat Topik *</label>
+          <textarea id="formSummary" rows="2" required placeholder="Garis besar materi dalam 1-2 kalimat ringkas..." class="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white"></textarea>
+        </div>
+
+        <!-- CONTENT EDITOR WITH FORMATTING TOOLBAR -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <label class="block font-bold text-slate-300">Isi Pembahasan Materi *</label>
+            
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <button type="button" onclick="insertImageTag()" class="px-2.5 py-1 bg-cyan-950 hover:bg-cyan-900 text-cyan-300 border border-cyan-800 rounded-lg text-[11px] font-bold flex items-center gap-1">
+                <i data-lucide="image" class="w-3.5 h-3.5"></i> + Gambar di Teks
+              </button>
+              <button type="button" onclick="insertHelperTag('### ')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-[11px] font-bold">
+                📌 Sub Judul
+              </button>
+              <button type="button" onclick="insertHelperTag('[tips: Catatan penting di sini]')" class="px-2.5 py-1 bg-amber-950/60 hover:bg-amber-900/80 text-amber-300 border border-amber-800/80 rounded-lg text-[11px] font-bold">
+                💡 Tip
+              </button>
+              <button type="button" onclick="insertHelperTag('**teks tebal**')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-[11px] font-bold">
+                <b>B</b> Tebal
+              </button>
+            </div>
+          </div>
+
+          <textarea id="formFullContent" rows="6" required oninput="updateLivePreview()" placeholder="Tuliskan materi pelajaran selengkapnya... Gunakan tombol '+ Gambar di Teks' di atas untuk menyisipkan gambar di tengah-tengah paragraf!" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white font-mono leading-relaxed text-xs"></textarea>
+
+          <!-- LIVE PREVIEW BOX -->
+          <div class="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
+            <span class="text-[10px] font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1">
+              <i data-lucide="eye" class="w-3.5 h-3.5"></i> Real-time Preview Rendering Teks & Gambar:
+            </span>
+            <div id="livePreviewBox" class="text-slate-300 text-xs leading-relaxed space-y-2">
+              <em class="text-slate-500">Ketik materi atau klik tombol "+ Gambar di Teks" untuk melihat tampilan di sini...</em>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-300 mb-1.5">Langkah Praktikum (Pisahkan tiap langkah dengan baris baru)</label>
+          <textarea id="formPracticalSteps" rows="3" placeholder="Langkah 1: Nyalakan komputer&#10;Langkah 2: Buka aplikasi..." class="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white"></textarea>
+        </div>
+
+        <!-- UPLOAD / INTEGRASI DOKUMEN PDF -->
+        <div class="p-4 bg-slate-900/80 border border-slate-800 rounded-2xl space-y-3">
+          <label class="block font-bold text-white flex items-center gap-2">
+            <i data-lucide="file-text" class="w-4 h-4 text-rose-400"></i> Integrasi Modul PDF Pembelajaran (Opsional)
+          </label>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] font-medium text-slate-400 mb-1">Upload File PDF dari Komputer:</label>
+              <input type="file" id="formPdfFile" accept="application/pdf" onchange="handlePdfUpload(event)" class="w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-rose-950 file:text-rose-300 hover:file:bg-rose-900">
+            </div>
+
+            <div>
+              <label class="block text-[11px] font-medium text-slate-400 mb-1">Atau Link / URL Dokumen PDF Online:</label>
+              <input type="url" id="formPdfUrl" placeholder="https://example.com/modul.pdf" class="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white text-[11px] focus:outline-none focus:border-rose-500">
+            </div>
+          </div>
+        </div>
+
+        <!-- SOAL KUIS EVALUASI -->
+        <div class="p-4 bg-slate-900/80 border border-slate-800 rounded-2xl space-y-3">
+          <label class="block font-bold text-white flex items-center gap-2">
+            <i data-lucide="help-circle" class="w-4 h-4 text-cyan-400"></i> Soal Kuis Evaluasi Interaktif Siswa
+          </label>
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-[11px] text-slate-400 mb-1">Pertanyaan Kuis *</label>
+              <input type="text" id="formQuizQuestion" required placeholder="Contoh: Perangkat komputer yang digunakan untuk menggetik adalah?" class="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <input type="text" id="formQuizOptA" required placeholder="Pilihan A" class="p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white">
+              <input type="text" id="formQuizOptB" required placeholder="Pilihan B" class="p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white">
+              <input type="text" id="formQuizOptC" required placeholder="Pilihan C" class="p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white">
+              <input type="text" id="formQuizOptD" required placeholder="Pilihan D" class="p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-[11px] text-slate-400 mb-1">Kunci Jawaban Benar *</label>
+                <select id="formQuizCorrect" class="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white font-bold text-cyan-400">
+                  <option value="0">Jawaban A</option>
+                  <option value="1">Jawaban B</option>
+                  <option value="2">Jawaban C</option>
+                  <option value="3">Jawaban D</option>
+                </select>
+              </div>
+
+              <div class="sm:col-span-2">
+                <label class="block text-[11px] text-slate-400 mb-1">Pembahasan Singkat Soal *</label>
+                <input type="text" id="formQuizExplanation" required placeholder="Penjelasan singkat jawaban benar..." class="w-full p-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORM ACTION BUTTONS -->
+        <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+          <button type="button" onclick="closeAddModal()" class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-xl transition">
+            Batal
+          </button>
+          <button type="submit" class="px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl shadow-lg transition">
+            Simpan Materi Ajar
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+
+  <!-- ========================================== -->
   <!-- MODAL PENGATURAN CLOUD DATABASE CONFIG -->
   <!-- ========================================== -->
   <div id="cloudConfigModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
@@ -315,7 +597,7 @@
 
         <div class="space-y-2">
           <label class="block font-bold text-slate-300">Konfigurasi Custom Firebase (JSON Format)</label>
-          <p class="text-[11px] text-slate-400">Tempelkan JSON Firebase Config gratis dari Firebase Console jika Anda menghosting web ini di domain sendiri agar semua laptop/browser otomatis tersinkronisasi:</p>
+          <p class="text-[11px] text-slate-400">Tempelkan JSON Firebase Config jika Anda menggunakan proyek Firebase sendiri:</p>
           <textarea id="customFirebaseConfigInput" rows="4" placeholder='{"apiKey": "AIzaSy...", "authDomain": "...", "projectId": "..."}' class="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl font-mono text-[11px] text-cyan-300 focus:outline-none focus:border-cyan-500"></textarea>
         </div>
 
@@ -341,638 +623,487 @@
 
 
   <!-- ========================================== -->
-  <!-- JAVASCRIPT LOGIC SYSTEM (CLOUD INTEGRATED) -->
+  <!-- JAVASCRIPT LOGIC SYSTEM (FULL MODULE) -->
   <!-- ========================================== -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    // FIREBASE CLOUD DATABASE SETUP WITH LOCAL BACKUP & SAFE FALLBACK
+    // FIREBASE CLOUD DATABASE SETUP WITH USER'S PROJECT CONFIG
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'educode-hub-app';
-    let firebaseConfig = null;
-    let app = null, auth = null, db = null;
+    
+    const DEFAULT_FIREBASE_CONFIG = {
+      apiKey: "AIzaSyAZlAyA9OiEf5bhCjMn1INI4uGrcwpizsk",
+      authDomain: "database-materi-tik.firebaseapp.com",
+      projectId: "database-materi-tik",
+      storageBucket: "database-materi-tik.firebasestorage.app",
+      messagingSenderId: "726092477613",
+      appId: "1:726092477613:web:008cfd1da85eebfc7f0224",
+      measurementId: "G-CYCCTZB0NT"
+    };
 
-    try {
-      if (typeof __firebase_config !== 'undefined' && __firebase_config) {
-        firebaseConfig = JSON.parse(__firebase_config);
-        if (firebaseConfig && firebaseConfig.apiKey) {
-          app = initializeApp(firebaseConfig);
-          auth = getAuth(app);
-          db = getFirestore(app);
-        }
-      }
-    } catch(e) {
-      console.warn("Firebase initialization skipped or running in offline mode:", e);
-    }
+    let firebaseApp = null, auth = null, db = null;
+    let isCloudOnline = false;
 
-    // HELPER: GOOGLE DRIVE LINK AUTO-CONVERTER
-    function convertGoogleDriveUrl(url) {
-      if (!url) return '';
-      url = url.trim();
-      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
-      if (match && match[1]) {
-        return `https://lh3.googleusercontent.com/d/${match[1]}`;
-      }
-      return url;
-    }
+    // STATE SYSTEM
+    let materials = [];
+    let activeSubject = null; // 'TIK', 'Coding', 'Informatika'
+    let activeGradeFilter = 'ALL';
+    let searchQuery = '';
+    let editingMaterialId = null;
+    let currentUploadedPdfData = '';
+    let selectedQuizAnswers = {};
 
-    // DEFAULT CURRICULUM SEED DATA WITH INLINE IMAGES & DEMO PDF
+    // 9 DEFAULT SAMPLE MATERIALS (FOR INITIALIZATION)
     const DEFAULT_MATERIALS = [
-      // KELAS 1 SD - TIK
       {
-        id: 'mat-k1',
-        title: 'Mengenal Perangkat Utama Komputer (Hardware)',
-        grade: '1',
-        subject: 'TIK',
-        duration: '35 Menit',
-        imageUrl: 'https://images.unsplash.com/photo-1587831990711-23ca6441447b?w=800&auto=format&fit=crop&q=80',
-        practiceImageUrl: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&auto=format&fit=crop&q=80',
-        pdfUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-        summary: 'Mengenal bagian-bagian fisik utama komputer seperti Monitor, CPU, Keyboard, dan Mouse secara visual.',
-        content: `
-### 1. Apa itu Komputer?
-Komputer adalah alat elektronik pintar yang membantu manusia untuk belajar, membuat gambar, dan mengetik tulisan.
-
-[gambar: https://images.unsplash.com/photo-1587831990711-23ca6441447b?w=800&auto=format&fit=crop&q=80 | Gambar 1.1: Komputer Meja (Desktop PC)]
-
-### 2. 4 Bagian Utama Komputer:
-- **Monitor**: Layar kaca tempat kita melihat gambar dan tulisan.
-- **CPU (Otak Komputer)**: Tempat mesin komputer bekerja dan memproses data.
-- **Keyboard (Papan Ketik)**: Papan berisi tombol huruf A-Z dan angka.
-- **Mouse (Tikus Komputer)**: Alat genggam untuk menggerakkan kursor panah di layar.
-
-[gambar: https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&auto=format&fit=crop&q=80 | Gambar 1.2: Perangkat Mouse dan Keyboard]
-
-[tips: Selalu gunakan alas mouse (mouse pad) agar pergerakan kursor di layar komputer tetap lancar!]
-        `,
-        practice: [
-          "Langkah 1: Pegang Mouse dengan lembut menggunakan tangan kanan.",
-          "Langkah 2: Coba geser mouse ke atas dan bawah, perhatikan panah di layar monitor.",
-          "Langkah 3: Latihan Klik Kiri 1 kali pada ikon aplikasi di desktop."
+        id: "m1",
+        title: "Mengenal Perangkat Komputer (Hardware) & Output",
+        subject: "TIK",
+        grade: "Kelas 1 SD",
+        duration: 35,
+        headerImg: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=800&q=80",
+        practicalImg: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80",
+        summary: "Mengenal bagian utama komputer seperti Monitor, CPU, Keyboard, dan Mouse secara menyenangkan.",
+        fullContent: "Komputer adalah alat elektronik yang membantu kita belajar dan bermain!\n\n### Bagian Utama Komputer:\n1. **Monitor**: Layar yang menampilkan gambar dan angka.\n2. **CPU**: Otak komputer yang memproses perintah.\n3. **Keyboard**: Papan ketik untuk memasukkan huruf.\n\n[gambar: https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=800&q=80 | Skema Komputer Desktop]\n\n[tips: Jaga jarak pandang mata dengan layar monitor minimal 50 cm!]",
+        practicalSteps: [
+          "Langkah 1: Tekan tombol Power pada CPU hingga lampu menyala.",
+          "Langkah 2: Tekan tombol Power pada layar Monitor.",
+          "Langkah 3: Pegang Mouse dengan telapak tangan kanan dengan santai."
         ],
-        quiz: [
-          {
-            question: "Bagian komputer yang digunakan untuk melihat layar gambar adalah...",
-            options: ["Mouse", "Monitor", "Keyboard", "Printer"],
-            answer: 1,
-            explanation: "Monitor berfungsi menampilkan gambar visual di layar."
-          },
-          {
-            question: "Alat genggam yang digunakan untuk memindahkan panah di layar dinamakan...",
-            options: ["CPU", "Mouse", "Keyboard", "Speaker"],
-            answer: 1,
-            explanation: "Mouse mengontrol kursor/panah di layar komputer."
-          }
-        ]
+        pdfUrl: "",
+        quiz: {
+          question: "Bagian komputer yang berfungsi sebagai 'otak' untuk berpikir adalah?",
+          options: ["Monitor", "CPU", "Keyboard", "Mouse"],
+          correct: 1,
+          explanation: "CPU (Central Processing Unit) adalah pusat pemrosesan perintah atau otak dari komputer."
+        }
       },
-      // KELAS 2 SD - TIK
       {
-        id: 'mat-k2',
-        title: 'Kreativitas Mewarnai & Menggambar Digital di MS Paint',
-        grade: '2',
-        subject: 'TIK',
-        duration: '35 Menit',
-        imageUrl: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&auto=format&fit=crop&q=80',
-        practiceImageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80',
-        summary: 'Mengembangkan kreativitas seni digital menggunakan alat Shapes (Bentuk) dan Fill with Color (Ember Cat).',
-        content: `
-### 1. Mengenal MS Paint
-MS Paint adalah aplikasi sederhana di komputer Windows untuk melukis dan menggambar bentuk visual secara digital.
-
-[gambar: https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&auto=format&fit=crop&q=80 | Gambar 2.1: Karya Seni Digital Mewarnai di Komputer]
-
-### 2. Tool Menggambar Penting:
-- **Shapes**: Membuat bentuk dasar seperti lingkaran, persegi, dan bintang.
-- **Fill with Color (Ember Cat)**: Mewarnai bidang gambar secara instan.
-- **Eraser (Penghapus)**: Menghapus garis atau bagian gambar yang keliru.
-        `,
-        practice: [
-          "Langkah 1: Buka aplikasi MS Paint dari menu Start.",
-          "Langkah 2: Pilih bentuk 'Rectangle' lalu buat bentuk rumah di lembar putih.",
-          "Langkah 3: Ambil ikon Ember Cat (Fill with Color), pilih warna merah lalu klik di bagian atap rumah."
+        id: "m2",
+        title: "Kreativitas Mewarnai Digital dengan MS Paint",
+        subject: "TIK",
+        grade: "Kelas 2 SD",
+        duration: 40,
+        headerImg: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80",
+        practicalImg: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=800&q=80",
+        summary: "Melatih koordinasi motorik tangan dan kreativitas mewarnai bentuk geometris.",
+        fullContent: "Di kelas 2, kita belajar mewarnai gambar secara digital menggunakan aplikasi Paint.\n\n### Alat Penting Paint:\n- **Fill with Color (Ember Cat)**: Untuk mewarnai bidang tertutup.\n- **Shapes**: Membuat lingkaran, kotak, dan bintang.",
+        practicalSteps: [
+          "Langkah 1: Buka aplikasi Paint dari menu Start.",
+          "Langkah 2: Pilih ikon Shapes Rectangle untuk membuat rumah.",
+          "Langkah 3: Klik ikon Ember Cat dan pilih warna kesukaanmu."
         ],
-        quiz: [
-          {
-            question: "Tool berbentuk Ember Cat pada MS Paint berfungsi untuk...",
-            options: ["Menghapus gambar", "Mewarnai bidang gambar", "Menulis kalimat", "Memotong gambar"],
-            answer: 1,
-            explanation: "Fill with Color digunakan untuk mewarnai bagian bidang gambar."
-          }
-        ]
+        pdfUrl: "",
+        quiz: {
+          question: "Ikon berbentuk ember tumpah di aplikasi Paint digunakan untuk?",
+          options: ["Menghapus gambar", "Mewarnai bidang", "Memotong gambar", "Membuat garis"],
+          correct: 1,
+          explanation: "Ikon Fill with Color (Ember Cat) digunakan untuk memberi warna pada area gambar."
+        }
       },
-      // KELAS 3 SD - TIK
       {
-        id: 'mat-k3',
-        title: 'Pengolah Kata Dasar & Mengetik Cerita Singkat',
-        grade: '3',
-        subject: 'TIK',
-        duration: '40 Menit',
-        imageUrl: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=80',
-        practiceImageUrl: 'https://images.unsplash.com/photo-1587614382346-4ec70e388b28?w=800&auto=format&fit=crop&q=80',
-        summary: 'Belajar membuat dokumen teks sederhana, menebalkan huruf (Bold), dan mengatur ukuran tulisan.',
-        content: `
-### 1. Pengolah Teks (Word Processor)
-Aplikasi pengolah kata digunakan untuk mengetik cerita, surat, dan tugas sekolah.
-
-### 2. Format Teks Utama:
-- **Bold (B)**: Menebalkan teks tulisan.
-- **Italic (I)**: Memiringkan teks tulisan.
-- **Underline (U)**: Memberi garis bawah pada tulisan.
-
-[gambar: https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=80 | Gambar 3.1: Mengetik Dokumen di Komputer]
-        `,
-        practice: [
-          "Langkah 1: Buka aplikasi Microsoft Word atau Notepad.",
-          "Langkah 2: Ketikkan teks: 'Saya Suka Belajar Komputer'.",
-          "Langkah 3: Blok teks tersebut, lalu klik tombol Bold (B) untuk menebalkan tulisan."
+        id: "m3",
+        title: "Mengetik Cerita Pendek di MS Word Dasar",
+        subject: "TIK",
+        grade: "Kelas 3 SD",
+        duration: 45,
+        headerImg: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&q=80",
+        practicalImg: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&q=80",
+        summary: "Belajar membuat dokumen teks, menggunakan font menarik, serta mengubah warna teks.",
+        fullContent: "Microsoft Word adalah program pengolah kata yang digunakan untuk menulis cerita dan tugas sekolah.",
+        practicalSteps: [
+          "Langkah 1: Buka MS Word.",
+          "Langkah 2: Ketikkan judul cerita menggunakan tombol CAPS LOCK.",
+          "Langkah 3: Blok teks lalu ubah Font Size menjadi 16."
         ],
-        quiz: [
-          {
-            question: "Tombol keyboard yang berguna untuk memberi jarak spasi antar kata adalah...",
-            options: ["Enter", "Spacebar", "Caps Lock", "Shift"],
-            answer: 1,
-            explanation: "Spacebar berguna membuat spasi antar kata."
-          }
-        ]
+        pdfUrl: "",
+        quiz: {
+          question: "Tombol pada keyboard yang digunakan untuk membuat huruf menjadi KAPITAL adalah?",
+          options: ["Enter", "Spacebar", "Caps Lock", "Backspace"],
+          correct: 2,
+          explanation: "Caps Lock mengaktifkan mode huruf besar/kapital."
+        }
       },
-      // KELAS 4 SD - TIK
       {
-        id: 'mat-k4',
-        title: 'Presentasi Visual & Etika Berselancar Internet Aman',
-        grade: '4',
-        subject: 'TIK',
-        duration: '40 Menit',
-        imageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=80',
-        practiceImageUrl: 'https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=800&auto=format&fit=crop&q=80',
-        summary: 'Membuat slide presentasi dan memahami aturan keamanan pribadi saat menjelajah internet.',
-        content: `
-### 1. Slide Presentasi Visual
-Penyampaian informasi menggunakan gabungan Teks, Gambar, dan Warna yang menarik bagi pendengar.
-
-### 2. Keamanan Internet (Internet Safety)
-[tips: Jaga kerahasiaan password dan informasi identitas pribadi Anda! Jangan pernah membagikannya di media sosial.]
-        `,
-        practice: [
-          "Langkah 1: Buka MS PowerPoint lalu pilih template presentasi.",
-          "Langkah 2: Tuliskan Judul: 'Hobi Saya' pada halaman slide pertama."
+        id: "m4",
+        title: "Membuat Presentasi Sederhana & Etika Internet Aman",
+        subject: "TIK",
+        grade: "Kelas 4 SD",
+        duration: 45,
+        headerImg: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&q=80",
+        practicalImg: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80",
+        summary: "Desain slide presentasi berwarna-warni dan prinsip bijak berselancar di internet.",
+        fullContent: "Membuat slide presentasi dengan PowerPoint dan mengenal aturan keamanan internet.",
+        practicalSteps: [
+          "Langkah 1: Buka Microsoft PowerPoint.",
+          "Langkah 2: Pilih Blank Presentation dan ketik judul materi.",
+          "Langkah 3: Tambahkan gambar dari menu Insert > Pictures."
         ],
-        quiz: [
-          {
-            question: "Informasi pribadi yang TIDAK boleh disebarkan secara sembarangan di internet adalah...",
-            options: ["Judul Buku", "Password / Kata Sandi", "Nama Hobi", "Warna Kesukaan"],
-            answer: 1,
-            explanation: "Password adalah kerahasiaan pribadi demi keamanan akun."
-          }
-        ]
+        pdfUrl: "",
+        quiz: {
+          question: "Saat berselancar di internet, hal yang TIDAK boleh diberikan kepada orang asing adalah?",
+          options: ["Nama panggil", "Hobi", "Password akun", "Warna favorit"],
+          correct: 2,
+          explanation: "Password adalah informasi rahasia yang harus dijaga dari orang lain."
+        }
       },
-      // KELAS 5 SD - CODING
       {
-        id: 'mat-k5',
-        title: 'Pemrograman Visual Scratch: Events & Motion Block',
-        grade: '5',
-        subject: 'Coding',
-        duration: '45 Menit',
-        imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=80',
-        practiceImageUrl: 'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=800&auto=format&fit=crop&q=80',
-        summary: 'Pengenalan konsep logika pemrograman blok, karakter Sprite, dan perintah pergerakan (Motion) di Scratch.',
-        content: `
-### 1. Apa itu Block Coding Scratch?
-Cara membuat aplikasi atau game interaktif dengan menyusun blok puzzle perintah komputer tanpa menulis sintaks kode yang rumit.
-
-[gambar: https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=80 | Gambar 5.1: Contoh Penyusunan Blok Perintah Pemrograman Visual]
-
-### 2. Komponen Utama Scratch:
-- **Sprite**: Karakter atau objek yang bergerak dalam game.
-- **Event Block**: Blok pemicu awal perintah (seperti *When Green Flag Clicked*).
-        `,
-        practice: [
-          "Langkah 1: Buka editor Scratch di browser.",
-          "Langkah 2: Tarik blok 'when green flag clicked' dari menu Events.",
-          "Langkah 3: Sambungkan dengan blok 'move 10 steps' dari menu Motion."
+        id: "m5",
+        title: "Pemrograman Visual Scratch: Events & Motion Block",
+        subject: "Coding",
+        grade: "Kelas 5 SD",
+        duration: 45,
+        headerImg: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80",
+        practicalImg: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=800&q=80",
+        summary: "Pengenalan logika pemrogram blok Scratch, karakter Sprite, dan perintah pergerakan (Motion).",
+        fullContent: "Coding visual Scratch memudahkan kita menyusun logika pemrograman seperti menyusun puzzle!",
+        practicalSteps: [
+          "Langkah 1: Buka Scratch di browser (scratch.mit.edu).",
+          "Langkah 2: Drag blok 'when green flag clicked' dari kategori Events.",
+          "Langkah 3: Hubungkan dengan blok 'move 10 steps' dari kategori Motion."
         ],
-        quiz: [
-          {
-            question: "Kategori blok Scratch yang berwarna kuning dan berfungsi sebagai pemicu awal program dinamakan...",
-            options: ["Motion", "Events", "Looks", "Sound"],
-            answer: 1,
-            explanation: "Blok Events berfungsi memicu dimulainya sebuah urutan program."
-          }
-        ]
+        pdfUrl: "",
+        quiz: {
+          question: "Blok di Scratch yang digunakan untuk memulai program saat bendera hijau diklik adalah?",
+          options: ["Motion Block", "Events Block", "Looks Block", "Sound Block"],
+          correct: 1,
+          explanation: "Events Block mengatur pemicu awal berjalannya suatu script program."
+        }
       },
-      // KELAS 6 SD - CODING
       {
-        id: 'mat-k6',
-        title: 'Logika Perulangan (Loop), Variabel & Game Scratch',
-        grade: '6',
-        subject: 'Coding',
-        duration: '45 Menit',
-        imageUrl: 'https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?w=800&auto=format&fit=crop&q=80',
-        practiceImageUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&auto=format&fit=crop&q=80',
-        summary: 'Menggunakan blok perulangan (Forever), variabel Skor, dan percabangan kondisi (If-Then) dalam game.',
-        content: `
-### 1. Perulangan (Loop)
-Loop menjalankan serangkaian perintah komputer secara berulang kali otomatis.
-
-### 2. Variabel Skor Game
-[tips: Variabel berfungsi sebagai tempat menyimpan angka nilai/skor pemain yang bertambah setiap kali karakter mengambil poin.]
-        `,
-        practice: [
-          "Langkah 1: Buat variabel baru dengan nama 'Skor'.",
-          "Langkah 2: Gunakan blok 'forever' -> 'if touching Apple then change Skor by 1'."
+        id: "m6",
+        title: "Logika Perulangan (Loop), Variabel & Game Scratch",
+        subject: "Coding",
+        grade: "Kelas 6 SD",
+        duration: 50,
+        headerImg: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&q=80",
+        practicalImg: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&q=80",
+        summary: "Menggunakan blok perulangan (Forever), variabel Skor, dan percabangan kondisi (If-Then) dalam game.",
+        fullContent: "Membuat game interaktif tangkap buah menggunakan perulangan dan variabel skor.",
+        practicalSteps: [
+          "Langkah 1: Buat variabel baru bernama 'Skor'.",
+          "Langkah 2: Gunakan blok 'forever' untuk membuat buah jatuh terus menerus.",
+          "Langkah 3: Tambahkan logika 'if touching Cat then change Skor by 1'."
         ],
-        quiz: [
-          {
-            question: "Fungsi utama dari Variabel dalam pembuatan game Scratch adalah...",
-            options: ["Mengubah gambar latar", "Menyimpan data nilai / skor yang dapat berubah", "Menghapus objek karakter", "Memperbesar suara"],
-            answer: 1,
-            explanation: "Variabel berguna menyimpan nilai dinamis seperti Skor."
-          }
-        ]
+        pdfUrl: "",
+        quiz: {
+          question: "Untuk menyimpan nilai yang dapat berubah-ubah seperti nilai angka pada game digunakan?",
+          options: ["Sprite", "Stage", "Variabel", "Backdrop"],
+          correct: 2,
+          explanation: "Variabel berfungsi sebagai wadah untuk menyimpan nilai data angka atau teks."
+        }
       },
-      // KELAS 7 SMP - INFORMATIKA
       {
-        id: 'mat-k7',
-        title: 'Berpikir Komputasional & Perancangan Flowchart Algoritma',
-        grade: '7',
-        subject: 'Informatika',
-        duration: '45 Menit',
-        imageUrl: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=800&auto=format&fit=crop&q=80',
-        practiceImageUrl: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&auto=format&fit=crop&q=80',
-        summary: 'Penerapan 4 pilar Berpikir Komputasional (Dekomposisi, Pola, Abstraksi, Algoritma) dan diagram Flowchart.',
-        content: `
-### 1. 4 Pilar Computational Thinking
-- **Dekomposisi**: Memecah masalah besar menjadi bagian-bagian kecil.
-- **Pengenalan Pola**: Mencari kesamaan atau pola dari masalah.
-- **Abstraksi**: Fokus pada informasi penting dan mengabaikan detail tidak relevan.
-- **Algoritma**: Menyusun langkah-langkah penyelesaian secara logis dan terurut.
-
-[gambar: https://images.unsplash.com/photo-1509228468518-180dd4864904?w=800&auto=format&fit=crop&q=80 | Gambar 7.1: Diagram Alur Kerja & Pemikiran Algoritma]
-        `,
-        practice: [
-          "Langkah 1: Gambarkan simbol Flowchart cara menyeduh teh manis di buku modul.",
-          "Langkah 2: Gunakan simbol Oval untuk START dan Belah Ketupat untuk mengecek rasa manis."
+        id: "m7",
+        title: "Berpikir Komputasional & Perancangan Flowchart Algoritma",
+        subject: "Informatika",
+        grade: "Kelas 7 SMP",
+        duration: 45,
+        headerImg: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80",
+        practicalImg: "https://images.unsplash.com/photo-1618401471353-b98aedd04e11?w=800&q=80",
+        summary: "Mempelajari 4 pilar Berpikir Komputasional dan menggambarkan urutan logika langkah dengan simbol flowchart.",
+        fullContent: "Berpikir Komputasional meliputi: Dekomposisi, Pengenalan Pola, Abstraksi, dan Perancangan Algoritma.",
+        practicalSteps: [
+          "Langkah 1: Identifikasi masalah yang akan dibuat algoritmanya.",
+          "Langkah 2: Gunakan simbol Oval (Terminator) untuk Start/End.",
+          "Langkah 3: Gunakan simbol Jajar Genjang untuk Input/Output."
         ],
-        quiz: [
-          {
-            question: "Teknik memecah masalah kompleks menjadi komponen-komponen kecil dinamakan...",
-            options: ["Abstraksi", "Dekomposisi", "Algoritma", "Pengenalan Pola"],
-            answer: 1,
-            explanation: "Dekomposisi adalah proses memecah masalah besar menjadi bagian kecil."
-          }
-        ]
+        pdfUrl: "",
+        quiz: {
+          question: "Simbol flowchart berbentuk belah ketupat (Decision) berfungsi untuk?",
+          options: ["Memulai program", "Proses perhitungan", "Percabangan kondisi / keputusan", "Menampilkan output"],
+          correct: 2,
+          explanation: "Simbol Belah Ketupat merepresentasikan percabangan atau pengambilan keputusan (Ya/Tidak)."
+        }
       },
-      // KELAS 8 SMP - INFORMATIKA
       {
-        id: 'mat-k8',
-        title: 'Jaringan Komputer (LAN/WAN), IP Address & Struktur Data',
-        grade: '8',
-        subject: 'Informatika',
-        duration: '50 Menit',
-        imageUrl: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&auto=format&fit=crop&q=80',
-        practiceImageUrl: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&auto=format&fit=crop&q=80',
-        summary: 'Memahami jaringan lokal LAN, internet global WAN, serta IP Address identitas perangkat.',
-        content: `
-### 1. Jaringan Lokal (LAN) vs Global (WAN)
-LAN menghubungkan komputer dalam satu lab sekolah, sedangkan WAN menghubungkan komputer antar negara di seluruh dunia.
-
-[gambar: https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&auto=format&fit=crop&q=80 | Gambar 8.1: Kabel dan Perangkat Jaringan Server Network]
-        `,
-        practice: [
-          "Langkah 1: Buka Command Prompt (cmd).",
-          "Langkah 2: Ketikkan perintah 'ipconfig' lalu amati nomor IP Address."
+        id: "m8",
+        title: "Jaringan Komputer (LAN/WAN) & Struktur Data",
+        subject: "Informatika",
+        grade: "Kelas 8 SMP",
+        duration: 50,
+        headerImg: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&q=80",
+        practicalImg: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80",
+        summary: "Memahami cara komputer saling terhubung, konsep IP Address, serta struktur data Tree & Graph.",
+        fullContent: "Jaringan komputer menghubungkan berbagai perangkat untuk berbagi data dan daya.",
+        practicalSteps: [
+          "Langkah 1: Buka Command Prompt (cmd) di Windows.",
+          "Langkah 2: Ketikkan perintah 'ipconfig' lalu tekan Enter.",
+          "Langkah 3: Catat IPv4 Address komputer Anda."
         ],
-        quiz: [
-          {
-            question: "Jaringan komputer yang menghubungkan perangkat dalam area lokal seperti lab sekolah dinamakan...",
-            options: ["WAN", "LAN", "MAN", "SAN"],
-            answer: 1,
-            explanation: "LAN (Local Area Network) digunakan untuk jaringan area lokal."
-          }
-        ]
+        pdfUrl: "",
+        quiz: {
+          question: "Jaringan komputer yang menghubungkan perangkat dalam area terbatas seperti ruang lab komputer dinamakan?",
+          options: ["WAN", "LAN", "MAN", "INTERNET"],
+          correct: 1,
+          explanation: "LAN (Local Area Network) menghubungkan perangkat dalam cakupan area lokal yang kecil."
+        }
       },
-      // KELAS 9 SMP - INFORMATIKA
       {
-        id: 'mat-k9',
-        title: 'Pemrograman Web (HTML/CSS) & Logika Dasar Python',
-        grade: '9',
-        subject: 'Informatika',
-        duration: '50 Menit',
-        imageUrl: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&auto=format&fit=crop&q=80',
-        practiceImageUrl: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800&auto=format&fit=crop&q=80',
-        summary: 'Membuat halaman web sederhana menggunakan tag HTML/CSS dan dasar sintaks pemrograman Python.',
-        content: `
-### 1. Struktur Pemrograman Web (HTML)
-HTML digunakan untuk membuat struktur halaman web.
-
-### 2. Dasar Pemrograman Python
-Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar terminal Python.
-
-[gambar: https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&auto=format&fit=crop&q=80 | Gambar 9.1: Kode Program Python & Web Development]
-        `,
-        practice: [
-          "Langkah 1: Buat file baru index.html.",
-          "Langkah 2: Tuliskan kode <h1>Selamat Datang</h1> lalu buka di Chrome."
+        id: "m9",
+        title: "Pemrograman Web (HTML/CSS) & Dasar Python",
+        subject: "Informatika",
+        grade: "Kelas 9 SMP",
+        duration: 60,
+        headerImg: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80",
+        practicalImg: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=800&q=80",
+        summary: "Membuat struktur halaman web HTML serta menulis sintaks program Python dasar.",
+        fullContent: "Di kelas 9, siswa mempraktikkan langsung bahasa markup HTML dan kode Python.",
+        practicalSteps: [
+          "Langkah 1: Buka kode editor.",
+          "Langkah 2: Tuliskan sintaks print('Hello World!') pada Python.",
+          "Langkah 3: Jalankan script dan periksa output pada terminal."
         ],
-        quiz: [
-          {
-            question: "Tag HTML yang digunakan untuk membuat heading / judul paling besar adalah...",
-            options: ["<p>", "<h1>", "<a>", "<img>"],
-            answer: 1,
-            explanation: "<h1> membuat teks judul tingkat utama paling besar."
-          }
-        ]
+        pdfUrl: "",
+        quiz: {
+          question: "Perintah pada bahasa pemrograman Python yang digunakan untuk menampilkan teks ke layar adalah?",
+          options: ["echo()", "console.log()", "print()", "system.out()"],
+          correct: 2,
+          explanation: "Fungsi print() digunakan di Python untuk mencetak output ke konsol."
+        }
       }
     ];
 
-    // APPLICATION STATE VARIABLES
-    let materials = [...DEFAULT_MATERIALS];
-    let activeSubject = null; // 'TIK', 'Coding', 'Informatika'
-    let activeGradeFilter = 'ALL';
-    let activeMaterial = null;
-    let editingMaterialId = null;
-    let quizUserAnswers = {};
-    let quizSubmitted = false;
-    let inMemoryUser = null;
-
-    // INITIALIZATION ON LOAD WITH REAL-TIME CLOUD SYNC
-    window.addEventListener('DOMContentLoaded', async () => {
-      checkAuth();
-      await initCloudStorage();
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-    });
-
-    // REAL-TIME CLOUD STORAGE INIT WITH AUTO LOCAL FALLBACK
-    async function initCloudStorage() {
-      // Load local storage materials first to prevent empty screen
-      loadFromLocalStorage();
-
-      let cfg = null;
-      try {
-        if (typeof __firebase_config !== 'undefined' && __firebase_config) {
-          cfg = JSON.parse(__firebase_config);
-        } else {
-          const savedCustom = localStorage.getItem('educode_custom_firebase_config');
-          if (savedCustom) cfg = JSON.parse(savedCustom);
-        }
-      } catch(e) {
-        console.warn("Firebase config parse error:", e);
-      }
-
-      if (cfg && cfg.apiKey) {
+    // LOCAL STORAGE FALLBACK HELPERS
+    function loadFromLocalStorage() {
+      const saved = localStorage.getItem('educode_materials_data');
+      if (saved) {
         try {
-          app = initializeApp(cfg);
-          auth = getAuth(app);
-          db = getFirestore(app);
-
-          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-            await signInWithCustomToken(auth, __initial_auth_token);
-          } else {
-            await signInAnonymously(auth);
-          }
-
-          // PUBLIC COLLECTION PATH FOR MULTI-DEVICE SYNC
-          const materialsRef = collection(db, 'artifacts', appId, 'public', 'data', 'materials');
-
-          // REAL-TIME LISTENER FOR ALL DEVICES
-          onSnapshot(materialsRef, (snapshot) => {
-            if (snapshot.empty) {
-              seedDefaultData(materialsRef);
-              return;
-            }
-
-            const items = [];
-            snapshot.forEach((docSnap) => {
-              items.push({ id: docSnap.id, ...docSnap.data() });
-            });
-
-            materials = items;
-            saveToLocalStorage();
-            if (activeSubject) renderSubjectDashboard();
-            updateCloudStatus(true, "Terhubung ke Database Cloud (Sinkron Otomatis Multi-Device)");
-          }, (error) => {
-            console.warn("Cloud listener fallback to local:", error);
-            updateCloudStatus(false, "Storage Lokal (Akses Offline/Perangkat Terpisah)");
-          });
-          return;
-        } catch (err) {
-          console.warn("Cloud auth/connection error:", err);
-          updateCloudStatus(false, "Mode Lokal (Konfigurasi Cloud Belum Aktif)");
+          materials = JSON.parse(saved);
+        } catch(e) {
+          materials = DEFAULT_MATERIALS;
         }
       } else {
-        updateCloudStatus(false, "Storage Lokal (Buka modal Setting Cloud DB untuk menghubungkan database)");
-      }
-    }
-
-    function loadFromLocalStorage() {
-      try {
-        const saved = localStorage.getItem('educode_materials_backup');
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            materials = parsed;
-          }
-        }
-      } catch(e) {
-        console.warn("Failed loading from localStorage:", e);
+        materials = DEFAULT_MATERIALS;
+        saveToLocalStorage();
       }
     }
 
     function saveToLocalStorage() {
+      localStorage.setItem('educode_materials_data', JSON.stringify(materials));
+    }
+
+    // INITIALIZE CLOUD DATABASE
+    async function initCloudStorage() {
+      loadFromLocalStorage();
+
+      let cfg = DEFAULT_FIREBASE_CONFIG;
       try {
-        localStorage.setItem('educode_materials_backup', JSON.stringify(materials));
+        const savedCustom = localStorage.getItem('educode_custom_firebase_config');
+        if (savedCustom) cfg = JSON.parse(savedCustom);
       } catch(e) {
-        console.warn("Failed saving to localStorage:", e);
+        cfg = DEFAULT_FIREBASE_CONFIG;
+      }
+
+      if (cfg && cfg.apiKey) {
+        try {
+          firebaseApp = initializeApp(cfg);
+          auth = getAuth(firebaseApp);
+          db = getFirestore(firebaseApp);
+
+          try {
+            await signInAnonymously(auth);
+          } catch(e) {
+            console.log("Auth notice:", e);
+          }
+
+          const materialsCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'materials');
+
+          onSnapshot(materialsCollectionRef, (snapshot) => {
+            if (snapshot.empty) {
+              seedDefaultDataCloud(materialsCollectionRef);
+              return;
+            }
+
+            const cloudItems = [];
+            snapshot.forEach((docSnap) => {
+              cloudItems.push({ id: docSnap.id, ...docSnap.data() });
+            });
+
+            materials = cloudItems;
+            isCloudOnline = true;
+            saveToLocalStorage();
+            if (activeSubject) renderSubjectDashboard();
+            updateCloudStatus(true, `🟢 Terhubung ke Cloud (${cfg.projectId})`);
+          }, (err) => {
+            console.warn("Firestore listener fallback:", err);
+            isCloudOnline = false;
+            updateCloudStatus(false, "Mode Storage Lokal (Firestore perlu diaktifkan di Console)");
+          });
+
+        } catch(err) {
+          console.warn("Firebase Init fallback:", err);
+          isCloudOnline = false;
+          updateCloudStatus(false, "Mode Storage Lokal / Offline");
+        }
+      } else {
+        isCloudOnline = false;
+        updateCloudStatus(false, "Mode Storage Lokal");
       }
     }
 
-    function updateCloudStatus(isConnected, message) {
+    async function seedDefaultDataCloud(collectionRef) {
+      for (const mat of DEFAULT_MATERIALS) {
+        try {
+          await setDoc(doc(collectionRef, mat.id), mat);
+        } catch(e) {
+          console.warn("Seed doc error:", e);
+        }
+      }
+    }
+
+    async function saveMaterialToStorage(materialData) {
+      const existingIdx = materials.findIndex(m => m.id === materialData.id);
+      if (existingIdx >= 0) {
+        materials[existingIdx] = materialData;
+      } else {
+        materials.unshift(materialData);
+      }
+      saveToLocalStorage();
+
+      if (isCloudOnline && db) {
+        try {
+          const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'materials', materialData.id);
+          await setDoc(docRef, materialData);
+        } catch(e) {
+          console.warn("Save cloud doc fallback:", e);
+        }
+      }
+    }
+
+    async function deleteMaterialFromStorage(materialId) {
+      materials = materials.filter(m => m.id !== materialId);
+      saveToLocalStorage();
+
+      if (isCloudOnline && db) {
+        try {
+          const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'materials', materialId);
+          await deleteDoc(docRef);
+        } catch(e) {
+          console.warn("Delete cloud doc fallback:", e);
+        }
+      }
+    }
+
+    function updateCloudStatus(online, message) {
       const badge = document.getElementById('cloudStatusBadge');
       const text = document.getElementById('cloudStatusText');
-      const desc = document.getElementById('cloudConfigStatusDesc');
+      if (!badge || !text) return;
 
-      if (isConnected) {
+      if (online) {
         badge.className = "px-3 py-1.5 rounded-xl border text-[11px] font-bold flex items-center gap-1.5 cursor-pointer transition bg-emerald-950/80 border-emerald-800 text-emerald-300";
-        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Cloud Sync: Aktif`;
+        text.innerHTML = message;
       } else {
-        badge.className = "px-3 py-1.5 rounded-xl border text-[11px] font-bold flex items-center gap-1.5 cursor-pointer transition bg-amber-950/80 border-amber-800 text-amber-300";
-        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span> Mode Storage Lokal`;
+        badge.className = "px-3 py-1.5 rounded-xl border text-[11px] font-bold flex items-center gap-1.5 cursor-pointer transition bg-amber-950/60 border-amber-800 text-amber-300";
+        text.innerHTML = message;
       }
 
-      if (desc) desc.textContent = message || (isConnected ? "Sistem terhubung ke Database Cloud." : "Sistem menggunakan penyimpanan lokal browser.");
+      const desc = document.getElementById('cloudConfigStatusDesc');
+      if (desc) desc.innerText = message;
     }
 
-    function openCloudConfigModal() {
-      const saved = localStorage.getItem('educode_custom_firebase_config') || '';
-      document.getElementById('customFirebaseConfigInput').value = saved;
-      document.getElementById('cloudConfigModal').classList.remove('hidden');
-      if (typeof lucide !== 'undefined') lucide.createIcons();
+    // HELPER UTILITIES
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const msgElem = document.getElementById('toastMessage');
+      if (!toast || !msgElem) return;
+
+      msgElem.innerText = msg;
+      toast.classList.remove('hidden', 'translate-y-10', 'opacity-0', 'pointer-events-none');
+      
+      setTimeout(() => {
+        toast.classList.add('translate-y-10', 'opacity-0', 'pointer-events-none');
+        setTimeout(() => toast.classList.add('hidden'), 300);
+      }, 3000);
     }
 
-    function closeCloudConfigModal() {
-      document.getElementById('cloudConfigModal').classList.add('hidden');
-    }
-
-    function saveCustomCloudConfig() {
-      const val = document.getElementById('customFirebaseConfigInput').value.trim();
-      if (!val) {
-        clearCustomCloudConfig();
-        return;
+    function convertGoogleDriveUrl(url) {
+      if (!url) return '';
+      if (url.includes('drive.google.com')) {
+        const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+        if (match && match[1]) {
+          return `https://lh3.googleusercontent.com/d/${match[1]}`;
+        }
       }
-      try {
-        JSON.parse(val);
-        localStorage.setItem('educode_custom_firebase_config', val);
-        showToast('Konfigurasi Cloud disimpan! Memuat ulang koneksi...');
-        closeCloudConfigModal();
-        initCloudStorage();
-      } catch(e) {
-        showToast('Format JSON Firebase Config tidak valid!');
-      }
+      return url;
     }
 
-    function clearCustomCloudConfig() {
-      localStorage.removeItem('educode_custom_firebase_config');
-      document.getElementById('customFirebaseConfigInput').value = '';
-      showToast('Konfigurasi Cloud direset ke default.');
-      closeCloudConfigModal();
-      initCloudStorage();
-    }
-
-    async function seedDefaultData(materialsRef) {
-      if (!db) return;
-      for (const mat of DEFAULT_MATERIALS) {
-        const docRef = doc(materialsRef, mat.id);
-        await setDoc(docRef, mat);
-      }
-    }
-
-    async function resetDefaultData() {
-      if (db) {
-        const materialsRef = collection(db, 'artifacts', appId, 'public', 'data', 'materials');
-        await seedDefaultData(materialsRef);
-        showToast("Data sampel default berhasil disinkronkan ke Cloud!");
-      } else {
-        materials = [...DEFAULT_MATERIALS];
-        saveToLocalStorage();
-        if (activeSubject) renderSubjectDashboard();
-        showToast("Data sampel default berhasil dimuat ulang!");
-      }
-    }
-
-    // AUTHENTICATION SYSTEM WITH IN-MEMORY FALLBACK
-    function checkAuth() {
-      let user = null;
-      try {
-        user = localStorage.getItem('educode_user') || sessionStorage.getItem('educode_user');
-      } catch(e) {
-        user = inMemoryUser;
-      }
-
-      if (!user && inMemoryUser) {
-        user = inMemoryUser;
-      }
-
-      const loginScreen = document.getElementById('loginScreen');
-      const appScreen = document.getElementById('appScreen');
-
-      if (user) {
-        loginScreen.classList.add('hidden');
-        appScreen.classList.remove('hidden');
-        navigateToCategories();
-      } else {
-        loginScreen.classList.remove('hidden');
-        appScreen.classList.add('hidden');
-      }
-    }
-
-    function handleLogin(e) {
-      if (e && e.preventDefault) e.preventDefault();
-      const u = document.getElementById('loginUsername').value.trim();
-      const p = document.getElementById('loginPassword').value.trim();
-      const errEl = document.getElementById('loginError');
+    // AUTH HANDLERS
+    window.handleLogin = function(event) {
+      if (event) event.preventDefault();
+      const u = document.getElementById('loginUsername').value;
+      const p = document.getElementById('loginPassword').value;
 
       if (u === 'admin' && p === '123456') {
-        const userData = JSON.stringify({ username: 'admin', role: 'Pengajar' });
-        inMemoryUser = userData;
-        try {
-          localStorage.setItem('educode_user', userData);
-        } catch(err) {
-          console.warn("Storage restricted, using in-memory auth.");
-        }
-        if (errEl) errEl.classList.add('hidden');
-        checkAuth();
-        showToast('Berhasil masuk! Selamat datang Pak Pengajar.');
+        localStorage.setItem('educode_logged_in', 'true');
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('appScreen').classList.remove('hidden');
+        navigateToCategories();
       } else {
-        if (errEl) errEl.classList.remove('hidden');
+        document.getElementById('loginError').classList.remove('hidden');
       }
-    }
+    };
 
-    function handleLogout() {
-      inMemoryUser = null;
-      try {
-        localStorage.removeItem('educode_user');
-        sessionStorage.removeItem('educode_user');
-      } catch(err) {
-        console.warn("Storage error on logout:", err);
-      }
-      checkAuth();
-      showToast('Berhasil keluar dari portal.');
-    }
+    window.handleLogout = function() {
+      localStorage.removeItem('educode_logged_in');
+      document.getElementById('appScreen').classList.add('hidden');
+      document.getElementById('loginScreen').classList.remove('hidden');
+    };
 
-    // NAVIGATION SYSTEM
-    function navigateToCategories() {
+    // NAVIGATION VIEW SWITCHERS
+    window.navigateToCategories = function() {
       activeSubject = null;
       document.getElementById('categoryPortalView').classList.remove('hidden');
       document.getElementById('subjectDashboardView').classList.add('hidden');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+      if (window.lucide) window.lucide.createIcons();
+    };
 
-    function openSubjectDashboard(subject) {
-      activeSubject = subject;
+    window.openSubjectDashboard = function(subjectKey) {
+      activeSubject = subjectKey;
       activeGradeFilter = 'ALL';
-      
+      searchQuery = '';
+
       document.getElementById('categoryPortalView').classList.add('hidden');
       document.getElementById('subjectDashboardView').classList.remove('hidden');
-      
-      const iconBox = document.getElementById('subjectHeaderIcon');
-      const titleEl = document.getElementById('subjectHeaderTitle');
-      const subtitleEl = document.getElementById('subjectHeaderSubtitle');
 
-      if (subject === 'TIK') {
-        iconBox.className = "w-10 h-10 rounded-xl bg-teal-950 border border-teal-800 flex items-center justify-center text-teal-400";
-        iconBox.innerHTML = `<i data-lucide="monitor" class="w-5 h-5"></i>`;
-        titleEl.textContent = "TIK SD";
-        subtitleEl.textContent = "Modul Pembelajaran Perangkat Komputer, Fun Typing, Paint & Word (Kelas 1 - 4)";
-      } else if (subject === 'Coding') {
-        iconBox.className = "w-10 h-10 rounded-xl bg-sky-950 border border-sky-800 flex items-center justify-center text-sky-400";
-        iconBox.innerHTML = `<i data-lucide="blocks" class="w-5 h-5"></i>`;
-        titleEl.textContent = "Coding SD";
-        subtitleEl.textContent = "Modul Pembelajaran Pemrograman Visual Scratch & Logika Game (Kelas 5 - 6)";
-      } else if (subject === 'Informatika') {
-        iconBox.className = "w-10 h-10 rounded-xl bg-purple-950 border border-purple-800 flex items-center justify-center text-purple-400";
-        iconBox.innerHTML = `<i data-lucide="cpu" class="w-5 h-5"></i>`;
-        titleEl.textContent = "Informatika SMP";
-        subtitleEl.textContent = "Modul Pembelajaran Algoritma, Flowchart, Jaringan & Web/Python (Kelas 7 - 9)";
+      const headerIcon = document.getElementById('subjectHeaderIcon');
+      const headerTitle = document.getElementById('subjectHeaderTitle');
+      const headerSubtitle = document.getElementById('subjectHeaderSubtitle');
+
+      if (subjectKey === 'TIK') {
+        headerIcon.className = "w-12 h-12 rounded-2xl bg-teal-950 border border-teal-800 text-teal-400 flex items-center justify-center shrink-0";
+        headerIcon.innerHTML = `<i data-lucide="monitor" class="w-6 h-6"></i>`;
+        headerTitle.innerText = "TIK SD (Kelas 1 - 4)";
+        headerSubtitle.innerText = "Modul Perangkat Komputer, Fun Typing, Paint & MS Word Dasar";
+      } else if (subjectKey === 'Coding') {
+        headerIcon.className = "w-12 h-12 rounded-2xl bg-sky-950 border border-sky-800 text-sky-400 flex items-center justify-center shrink-0";
+        headerIcon.innerHTML = `<i data-lucide="blocks" class="w-6 h-6"></i>`;
+        headerTitle.innerText = "Coding SD (Kelas 5 - 6)";
+        headerSubtitle.innerText = "Modul Pemrograman Visual Scratch, Logika Loop & Game Design";
+      } else {
+        headerIcon.className = "w-12 h-12 rounded-2xl bg-purple-950 border border-purple-800 text-purple-400 flex items-center justify-center shrink-0";
+        headerIcon.innerHTML = `<i data-lucide="cpu" class="w-6 h-6"></i>`;
+        headerTitle.innerText = "Informatika SMP (Kelas 7 - 9)";
+        headerSubtitle.innerText = "Modul Berpikir Komputasional, Algoritma, Flowchart & Web/Python";
       }
 
       renderGradePills();
       renderSubjectDashboard();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    };
 
     function renderGradePills() {
       const container = document.getElementById('gradePillsContainer');
-      let grades = [];
+      if (!container) return;
 
-      if (activeSubject === 'TIK') grades = ['1', '2', '3', '4'];
-      else if (activeSubject === 'Coding') grades = ['5', '6'];
-      else if (activeSubject === 'Informatika') grades = ['7', '8', '9'];
+      let grades = [];
+      if (activeSubject === 'TIK') grades = ['Kelas 1 SD', 'Kelas 2 SD', 'Kelas 3 SD', 'Kelas 4 SD'];
+      else if (activeSubject === 'Coding') grades = ['Kelas 5 SD', 'Kelas 6 SD'];
+      else grades = ['Kelas 7 SMP', 'Kelas 8 SMP', 'Kelas 9 SMP'];
 
       let html = `
-        <button 
-          onclick="filterByGrade('ALL')" 
-          class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap ${activeGradeFilter === 'ALL' ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20' : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700'}"
-        >
+        <button onclick="filterByGrade('ALL')" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition shrink-0 ${activeGradeFilter === 'ALL' ? 'bg-cyan-500 text-slate-950 shadow-md' : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800'}">
           Semua ${activeSubject}
         </button>
       `;
@@ -980,11 +1111,8 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
       grades.forEach(g => {
         const isActive = activeGradeFilter === g;
         html += `
-          <button 
-            onclick="filterByGrade('${g}')" 
-            class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap ${isActive ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20' : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700'}"
-          >
-            Kelas ${g} ${activeSubject === 'Informatika' ? 'SMP' : 'SD'}
+          <button onclick="filterByGrade('${g}')" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition shrink-0 ${isActive ? 'bg-cyan-500 text-slate-950 shadow-md' : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800'}">
+            ${g}
           </button>
         `;
       });
@@ -992,19 +1120,21 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
       container.innerHTML = html;
     }
 
-    function filterByGrade(grade) {
+    window.filterByGrade = function(grade) {
       activeGradeFilter = grade;
       renderGradePills();
       renderSubjectDashboard();
-    }
+    };
 
-    function handleSearch(query) {
-      renderSubjectDashboard(query);
-    }
+    window.handleSearch = function(query) {
+      searchQuery = query.toLowerCase();
+      renderSubjectDashboard();
+    };
 
-    function renderSubjectDashboard(searchQuery = '') {
+    function renderSubjectDashboard() {
       const grid = document.getElementById('subjectMaterialsGrid');
       const emptyState = document.getElementById('subjectEmptyState');
+      if (!grid || !emptyState) return;
 
       let filtered = materials.filter(m => m.subject === activeSubject);
 
@@ -1012,437 +1142,419 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
         filtered = filtered.filter(m => m.grade === activeGradeFilter);
       }
 
-      if (searchQuery.trim() !== '') {
-        const q = searchQuery.toLowerCase();
+      if (searchQuery) {
         filtered = filtered.filter(m => 
-          m.title.toLowerCase().includes(q) || 
-          m.summary.toLowerCase().includes(q) ||
-          m.content.toLowerCase().includes(q)
+          m.title.toLowerCase().includes(searchQuery) || 
+          m.summary.toLowerCase().includes(searchQuery)
         );
       }
 
       if (filtered.length === 0) {
         grid.innerHTML = '';
         emptyState.classList.remove('hidden');
-        lucide.createIcons();
         return;
       }
 
       emptyState.classList.add('hidden');
 
-      grid.innerHTML = filtered.map(m => {
-        let badgeColor = "bg-teal-950 text-teal-300 border-teal-800";
-        if (m.subject === "Coding") badgeColor = "bg-sky-950 text-sky-300 border-sky-800";
-        if (m.subject === "Informatika") badgeColor = "bg-purple-950 text-purple-300 border-purple-800";
-
-        const displayImg = convertGoogleDriveUrl(m.imageUrl);
-
-        return `
-          <div class="bg-[#111726] border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition-all duration-300 flex flex-col group shadow-lg">
-            <div class="relative h-44 overflow-hidden bg-slate-900">
-              <img 
-                src="${displayImg}" 
-                alt="${m.title}" 
-                onerror="this.src='https://placehold.co/600x300/111726/38bdf8?text=${encodeURIComponent(m.title)}'"
-                class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-              >
+      let html = '';
+      filtered.forEach(m => {
+        const headerImg = convertGoogleDriveUrl(m.headerImg) || 'https://placehold.co/800x400/1e293b/94a3b8?text=Modul+Ajar';
+        
+        html += `
+          <div class="bg-[#111726] border border-slate-800 hover:border-slate-700 rounded-2xl overflow-hidden transition duration-300 flex flex-col shadow-lg group">
+            <div class="relative h-44 overflow-hidden bg-slate-950">
+              <img src="${headerImg}" alt="${m.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/800x400/1e293b/94a3b8?text=Modul+Ajar'">
               <div class="absolute inset-0 bg-gradient-to-t from-[#111726] via-transparent to-transparent"></div>
-              <div class="absolute top-3 left-3 flex gap-2">
-                <span class="px-2.5 py-1 text-[11px] font-bold rounded-lg border backdrop-blur-md ${badgeColor}">
-                  Kelas ${m.grade}
-                </span>
+              
+              <div class="absolute top-3 left-3 flex items-center gap-2">
+                <span class="px-2.5 py-0.5 bg-slate-900/90 backdrop-blur-md border border-slate-700 text-cyan-300 text-[10px] font-bold rounded-full">${m.grade}</span>
               </div>
-              <div class="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded-lg border border-slate-800 text-[10px] text-slate-300 flex items-center gap-1 font-mono">
-                <i data-lucide="clock" class="w-3 h-3 text-cyan-400"></i> ${m.duration || '40 Menit'}
+
+              <div class="absolute bottom-3 right-3 px-2 py-1 bg-slate-900/90 backdrop-blur-md border border-slate-800 text-slate-300 text-[10px] font-medium rounded-lg flex items-center gap-1">
+                <i data-lucide="clock" class="w-3 h-3 text-cyan-400"></i> ${m.duration} Menit
               </div>
             </div>
 
             <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
               <div class="space-y-2">
-                <h3 class="font-bold text-white text-base leading-snug group-hover:text-cyan-400 transition">
-                  ${m.title}
-                </h3>
-                <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed">
-                  ${m.summary}
-                </p>
+                <h3 class="font-extrabold text-white text-sm leading-snug group-hover:text-cyan-300 transition line-clamp-2">${m.title}</h3>
+                <p class="text-xs text-slate-400 leading-relaxed line-clamp-2">${m.summary}</p>
               </div>
 
-              <div class="flex items-center gap-2 pt-2">
-                <button 
-                  onclick="openDetailModal('${m.id}')"
-                  class="flex-1 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-cyan-400 font-bold text-xs transition flex items-center justify-center gap-2 group-hover:border-cyan-500/50"
-                >
+              <div class="pt-2 flex items-center gap-2">
+                <button onclick="openDetailModal('${m.id}')" class="flex-1 py-2 px-3 bg-slate-900 hover:bg-cyan-950 hover:text-cyan-300 border border-slate-700 hover:border-cyan-800 text-white font-bold rounded-xl text-xs transition flex items-center justify-center gap-2">
                   <span>Buka Modul & Kuis</span>
-                  <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                  <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                 </button>
-                
-                <button 
-                  onclick="openEditModal('${m.id}')"
-                  title="Edit Materi Ini"
-                  class="p-2.5 rounded-xl bg-slate-900 hover:bg-amber-950/60 border border-slate-700/80 hover:border-amber-500/50 text-slate-400 hover:text-amber-400 font-bold text-xs transition flex items-center justify-center shrink-0"
-                >
+                <button onclick="openEditModal('${m.id}')" title="Edit Materi" class="p-2 bg-slate-900 hover:bg-amber-950/60 border border-slate-700 hover:border-amber-700 text-slate-400 hover:text-amber-300 rounded-xl transition">
                   <i data-lucide="pencil" class="w-4 h-4"></i>
+                </button>
+                <button onclick="deleteMaterial('${m.id}')" title="Hapus Materi" class="p-2 bg-slate-900 hover:bg-red-950/60 border border-slate-700 hover:border-red-700 text-slate-400 hover:text-red-400 rounded-xl transition">
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
                 </button>
               </div>
             </div>
           </div>
         `;
-      }).join('');
-
-      lucide.createIcons();
-    }
-
-    // PARSER TEXT & INLINE IMAGES SYSTEM
-    function parseCustomContent(text) {
-      if (!text) return '';
-      let lines = text.split('\n');
-      let html = '';
-
-      lines.forEach(line => {
-        let trimmed = line.trim();
-        if (!trimmed) return;
-
-        // Inline Image Parser [gambar: URL | Caption]
-        if (trimmed.startsWith('[gambar:') && trimmed.endsWith(']')) {
-          let inner = trimmed.substring(8, trimmed.length - 1);
-          let parts = inner.split('|');
-          let url = convertGoogleDriveUrl(parts[0].trim());
-          let caption = parts[1] ? parts[1].trim() : 'Gambar Pembelajaran';
-          
-          html += `
-            <div class="my-4 rounded-2xl overflow-hidden border border-slate-800 bg-slate-950/90 p-2 space-y-2">
-              <img src="${url}" alt="${caption}" onerror="this.src='https://placehold.co/600x350/0B0F19/38bdf8?text=Gambar+Materi'" class="w-full h-auto rounded-xl max-h-80 object-cover">
-              <p class="text-center text-[11px] text-cyan-400 font-medium italic">${caption}</p>
-            </div>
-          `;
-          return;
-        }
-
-        // Subtitle Heading ###
-        if (trimmed.startsWith('###')) {
-          html += `<h3 class="font-extrabold text-white text-sm sm:text-base mt-4 mb-2 text-cyan-300 flex items-center gap-2">📌 ${trimmed.replace(/^###\s*/, '')}</h3>`;
-          return;
-        }
-
-        // Tip Box [tips: Note]
-        if (trimmed.startsWith('[tips:') && trimmed.endsWith(']')) {
-          let tipText = trimmed.substring(6, trimmed.length - 1).trim();
-          html += `
-            <div class="my-3 p-3.5 bg-amber-950/40 border border-amber-800/80 rounded-xl text-amber-200 text-xs flex items-start gap-2.5">
-              <i data-lucide="lightbulb" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
-              <div class="leading-relaxed font-medium">${tipText}</div>
-            </div>
-          `;
-          return;
-        }
-
-        // Bold formatting **text**
-        let formattedLine = trimmed.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>');
-        html += `<p class="mb-2 leading-relaxed text-slate-300">${formattedLine}</p>`;
       });
 
-      return html;
+      grid.innerHTML = html;
+      if (window.lucide) window.lucide.createIcons();
     }
 
-    // DETAIL MODAL & TAB SYSTEM
-    function openDetailModal(id) {
-      activeMaterial = materials.find(m => m.id === id);
-      if (!activeMaterial) return;
+    // MODAL DETAIL VIEWER & QUIZ LOGIC
+    window.openDetailModal = function(id) {
+      const mat = materials.find(m => m.id === id);
+      if (!mat) return;
 
-      document.getElementById('detailTitle').textContent = activeMaterial.title;
-      document.getElementById('detailGradeBadge').textContent = `Kelas ${activeMaterial.grade} ${activeMaterial.subject === 'Informatika' ? 'SMP' : 'SD'}`;
-      document.getElementById('detailHeroImage').src = convertGoogleDriveUrl(activeMaterial.imageUrl);
-      document.getElementById('detailPracticeImage').src = convertGoogleDriveUrl(activeMaterial.practiceImageUrl || activeMaterial.imageUrl);
-      document.getElementById('detailSummaryText').textContent = activeMaterial.summary;
-      
-      // Tab 1 Teori
-      document.getElementById('detailParsedContent').innerHTML = parseCustomContent(activeMaterial.content);
+      document.getElementById('detailTitle').innerText = mat.title;
+      document.getElementById('detailGradeBadge').innerText = mat.grade;
+      document.getElementById('detailSubjectBadge').innerText = mat.subject;
+      document.getElementById('detailDurationBadge').innerHTML = `<i data-lucide="clock" class="w-3.5 h-3.5"></i> ${mat.duration} Menit`;
 
-      // Tab 2 Praktikum
-      const practiceList = document.getElementById('detailPracticeList');
-      if (activeMaterial.practice && activeMaterial.practice.length > 0) {
-        practiceList.innerHTML = activeMaterial.practice.map(step => `
-          <li class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-start gap-2 text-xs">
-            <span class="text-cyan-400 font-bold shrink-0">•</span>
-            <span>${step}</span>
-          </li>
+      const headerImgUrl = convertGoogleDriveUrl(mat.headerImg) || 'https://placehold.co/800x400/1e293b/94a3b8?text=Modul+Pembelajaran';
+      document.getElementById('detailHeaderImg').src = headerImgUrl;
+      document.getElementById('detailSummaryText').innerText = mat.summary;
+
+      document.getElementById('detailFullContent').innerHTML = parseFormattedContent(mat.fullContent);
+
+      const practicalImgUrl = convertGoogleDriveUrl(mat.practicalImg) || 'https://placehold.co/800x400/1e293b/38bdf8?text=Diagram+Praktikum';
+      document.getElementById('detailPracticalImg').src = practicalImgUrl;
+
+      const stepsContainer = document.getElementById('detailPracticalSteps');
+      if (mat.practicalSteps && mat.practicalSteps.length > 0) {
+        stepsContainer.innerHTML = mat.practicalSteps.map(s => `
+          <div class="p-3 bg-slate-900 border border-slate-800 rounded-xl text-slate-300 font-medium leading-relaxed">
+            ${s}
+          </div>
         `).join('');
       } else {
-        practiceList.innerHTML = '<li class="text-slate-500">Tidak ada petunjuk praktikum khusus.</li>';
+        stepsContainer.innerHTML = `<p class="text-slate-500 italic">Belum ada panduan praktikum khusus.</p>`;
       }
 
-      // Tab 3 Kuis State Reset & Render
-      quizUserAnswers = {};
-      quizSubmitted = false;
-      renderQuizTab();
+      // PDF TAB SETUP
+      const pdfTabBtn = document.getElementById('detailTab3');
+      const pdfUrl = mat.pdfUrl || '';
+      if (pdfUrl) {
+        pdfTabBtn.classList.remove('hidden');
+        document.getElementById('detailPdfDownloadBtn').href = pdfUrl;
+        document.getElementById('detailPdfFrame').src = pdfUrl;
+      } else {
+        pdfTabBtn.classList.add('hidden');
+      }
 
-      // Tab 4 PDF Render
-      renderPdfTab();
+      // QUIZ SETUP
+      selectedQuizAnswers[mat.id] = null;
+      renderQuiz(mat);
 
-      switchTab(1);
+      switchDetailTab(0);
       document.getElementById('detailModal').classList.remove('hidden');
-      lucide.createIcons();
-    }
+      if (window.lucide) window.lucide.createIcons();
+    };
 
-    function closeDetailModal() {
+    window.closeDetailModal = function() {
       document.getElementById('detailModal').classList.add('hidden');
-    }
+    };
 
-    function switchTab(tabIndex) {
-      for (let i = 1; i <= 4; i++) {
-        const btn = document.getElementById(`tabBtn${i}`);
-        const content = document.getElementById(`tabContent${i}`);
-        if (i === tabIndex) {
-          btn.className = "px-4 py-3 text-xs font-bold border-b-2 border-cyan-400 text-cyan-400 flex items-center gap-2 whitespace-nowrap";
+    window.switchDetailTab = function(idx) {
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`detailTab${i}`);
+        const content = document.getElementById(`detailTabContent${i}`);
+        if (!btn || !content) continue;
+
+        if (i === idx) {
+          btn.className = "px-4 py-2.5 border-b-2 border-cyan-400 text-cyan-400 flex items-center gap-2 transition";
           content.classList.remove('hidden');
         } else {
-          btn.className = "px-4 py-3 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 whitespace-nowrap";
+          btn.className = "px-4 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition";
           content.classList.add('hidden');
         }
       }
-      lucide.createIcons();
-    }
+      if (window.lucide) window.lucide.createIcons();
+    };
 
-    // QUIZ LOGIC
-    function renderQuizTab() {
-      const container = document.getElementById('quizContainer');
-      const submitBtn = document.getElementById('submitQuizBtn');
-      const resultBox = document.getElementById('quizResultBox');
+    function parseFormattedContent(text) {
+      if (!text) return '';
 
-      resultBox.classList.add('hidden');
-      submitBtn.classList.remove('hidden');
-
-      if (!activeMaterial.quiz || activeMaterial.quiz.length === 0) {
-        container.innerHTML = '<p class="text-slate-500 italic text-center py-6">Kuis evaluasi belum ditambahkan pada materi ini.</p>';
-        submitBtn.classList.add('hidden');
-        return;
-      }
-
-      container.innerHTML = activeMaterial.quiz.map((q, qIndex) => `
-        <div class="p-4 bg-slate-900 border border-slate-800 rounded-2xl space-y-3">
-          <h4 class="font-bold text-white text-xs sm:text-sm leading-relaxed">
-            ${qIndex + 1}. ${q.question}
-          </h4>
-          <div class="space-y-2">
-            ${q.options.map((opt, oIndex) => {
-              const isSelected = quizUserAnswers[qIndex] === oIndex;
-              let btnStyle = "bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700";
-
-              if (quizSubmitted) {
-                if (oIndex === q.answer) {
-                  btnStyle = "bg-emerald-950 border-emerald-600 text-emerald-200 font-bold";
-                } else if (isSelected && oIndex !== q.answer) {
-                  btnStyle = "bg-red-950 border-red-600 text-red-200";
-                }
-              } else if (isSelected) {
-                btnStyle = "bg-cyan-950 border-cyan-500 text-cyan-300 font-bold";
-              }
-
-              return `
-                <button 
-                  onclick="selectQuizOption(${qIndex}, ${oIndex})" 
-                  ${quizSubmitted ? 'disabled' : ''}
-                  class="w-full text-left p-3 rounded-xl border text-xs transition flex items-center justify-between ${btnStyle}"
-                >
-                  <span>${String.fromCharCode(65 + oIndex)}. ${opt}</span>
-                  ${isSelected ? '<i data-lucide="check" class="w-4 h-4 text-cyan-400"></i>' : ''}
-                </button>
-              `;
-            }).join('')}
-          </div>
-          ${quizSubmitted ? `
-            <div class="mt-2 p-3 bg-slate-950 border border-slate-800 rounded-xl text-[11px] text-slate-400 space-y-1">
-              <span class="font-bold text-cyan-400">Penjelasan / Pembahasan:</span>
-              <p>${q.explanation || 'Jawaban yang tepat adalah opsi ' + String.fromCharCode(65 + q.answer)}</p>
-            </div>
-          ` : ''}
-        </div>
-      `).join('');
-
-      lucide.createIcons();
-    }
-
-    function selectQuizOption(qIndex, oIndex) {
-      if (quizSubmitted) return;
-      quizUserAnswers[qIndex] = oIndex;
-      renderQuizTab();
-    }
-
-    function submitQuiz() {
-      if (!activeMaterial.quiz || activeMaterial.quiz.length === 0) return;
-
-      const total = activeMaterial.quiz.length;
-      let correct = 0;
-
-      activeMaterial.quiz.forEach((q, idx) => {
-        if (quizUserAnswers[idx] === q.answer) {
-          correct++;
-        }
-      });
-
-      quizSubmitted = true;
-      renderQuizTab();
-
-      const score = Math.round((correct / total) * 100);
-      const resultBox = document.getElementById('quizResultBox');
-      const scoreTitle = document.getElementById('quizScoreTitle');
-      const scoreSub = document.getElementById('quizScoreSubtitle');
-
-      scoreTitle.textContent = `Nilai Kuis Siswa: ${score} / 100`;
-      scoreSub.textContent = `Menjawab benar ${correct} dari ${total} soal evaluasi.`;
-      resultBox.classList.remove('hidden');
-
-      document.getElementById('submitQuizBtn').classList.add('hidden');
-
-      if (score >= 70 && typeof confetti === 'function') {
-        confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
-      }
-    }
-
-    // PDF READER TAB LOGIC
-    function renderPdfTab() {
-      const container = document.getElementById('pdfContainer');
-      const pdfUrl = activeMaterial.pdfUrl;
-
-      if (!pdfUrl) {
-        container.innerHTML = `
-          <div class="p-8 text-center bg-slate-900 border border-slate-800 rounded-2xl space-y-3">
-            <i data-lucide="file-minus" class="w-10 h-10 text-slate-600 mx-auto"></i>
-            <h4 class="font-bold text-white text-sm">Dokumen PDF Belum Diunggah</h4>
-            <p class="text-xs text-slate-400">Pengajar belum menyisipkan modul PDF untuk materi ini. Gunakan tombol Edit untuk mengunggah PDF.</p>
+      let formatted = text.replace(/\[gambar:\s*(.*?)\s*\|\s*(.*?)\]/g, (match, url, caption) => {
+        const imgUrl = convertGoogleDriveUrl(url.trim());
+        return `
+          <div class="my-4 p-2 bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden space-y-2">
+            <img src="${imgUrl}" class="w-full rounded-xl object-cover max-h-72" alt="${caption}" onerror="this.src='https://placehold.co/800x400/1e293b/94a3b8?text=Gambar+Materi'">
+            <p class="text-[11px] text-center text-slate-400 italic font-medium">${caption}</p>
           </div>
         `;
+      });
+
+      formatted = formatted.replace(/\[tips:\s*(.*?)\]/g, (match, tipText) => `
+        <div class="p-3.5 my-3 bg-amber-950/40 border border-amber-800/80 rounded-2xl text-amber-200 text-xs font-medium flex items-start gap-2.5">
+          <i data-lucide="lightbulb" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
+          <div>${tipText}</div>
+        </div>
+      `);
+
+      formatted = formatted.replace(/### (.*)/g, '<h4 class="font-extrabold text-white text-sm pt-2">${1}</h4>');
+      formatted = formatted.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">${1}</strong>');
+
+      return formatted.split('\n\n').map(p => `<p class="leading-relaxed text-slate-300">${p}</p>`).join('');
+    }
+
+    function renderQuiz(mat) {
+      const container = document.getElementById('quizContainer');
+      if (!mat.quiz) {
+        container.innerHTML = `<p class="text-slate-500 italic">Belum ada kuis evaluasi untuk materi ini.</p>`;
         return;
       }
 
+      const q = mat.quiz;
+      const userChoice = selectedQuizAnswers[mat.id];
+
       container.innerHTML = `
-        <div class="flex items-center justify-between bg-slate-900 border border-slate-800 p-3 rounded-2xl">
-          <span class="font-bold text-white text-xs flex items-center gap-2">
-            <i data-lucide="file-text" class="w-4 h-4 text-cyan-400"></i> Modul File PDF Pembelajaran
-          </span>
-          <a href="${pdfUrl}" target="_blank" download="Modul-${activeMaterial.title}.pdf" class="px-3 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1.5 transition">
-            <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Buka / Download PDF
-          </a>
-        </div>
-        <div class="w-full h-[450px] bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-          <iframe src="${pdfUrl}" class="w-full h-full border-0"></iframe>
+        <div class="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-4">
+          <span class="text-[10px] font-bold text-cyan-400 uppercase tracking-wider">Kuis Soal Evaluasi Siswa</span>
+          <h4 class="font-bold text-white text-sm leading-relaxed">${q.question}</h4>
+
+          <div class="space-y-2.5">
+            ${q.options.map((opt, idx) => `
+              <button onclick="selectQuizOption('${mat.id}', ${idx})" class="w-full p-3 rounded-xl border text-left transition flex items-center justify-between text-xs font-medium ${userChoice === idx ? 'bg-cyan-950 border-cyan-500 text-cyan-200' : 'bg-slate-950 border-slate-800 text-slate-300 hover:bg-slate-800'}">
+                <span>${String.fromCharCode(65 + idx)}. ${opt}</span>
+                ${userChoice === idx ? '<i data-lucide="check-circle" class="w-4 h-4 text-cyan-400"></i>' : ''}
+              </button>
+            `).join('')}
+          </div>
+
+          <div class="pt-2 flex items-center justify-between">
+            <button onclick="submitQuiz('${mat.id}')" ${userChoice === null ? 'disabled' : ''} class="px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 disabled:opacity-50 text-slate-950 font-bold rounded-xl transition text-xs shadow-md">
+              Periksa Jawaban
+            </button>
+          </div>
+
+          <div id="quizResultBox" class="hidden p-4 rounded-2xl border space-y-2 text-xs">
+            <!-- Results dynamically inserted -->
+          </div>
         </div>
       `;
+      if (window.lucide) window.lucide.createIcons();
     }
 
-    // FORM & MODAL MANAGEMENT FUNCTIONS
-    function openAddModal() {
+    window.selectQuizOption = function(matId, optionIdx) {
+      selectedQuizAnswers[matId] = optionIdx;
+      const mat = materials.find(m => m.id === matId);
+      if (mat) renderQuiz(mat);
+    };
+
+    window.submitQuiz = function(matId) {
+      const mat = materials.find(m => m.id === matId);
+      if (!mat || !mat.quiz) return;
+
+      const userChoice = selectedQuizAnswers[matId];
+      const q = mat.quiz;
+      const isCorrect = userChoice === q.correct;
+
+      const resultBox = document.getElementById('quizResultBox');
+      if (!resultBox) return;
+
+      resultBox.classList.remove('hidden');
+      if (isCorrect) {
+        resultBox.className = "p-4 bg-emerald-950/80 border border-emerald-800 text-emerald-200 rounded-2xl space-y-2 text-xs";
+        resultBox.innerHTML = `
+          <div class="font-bold text-emerald-300 flex items-center gap-2 text-sm">
+            <i data-lucide="award" class="w-5 h-5 text-emerald-400"></i> Jawaban Benar! Selamat! 🎉
+          </div>
+          <p class="leading-relaxed">${q.explanation}</p>
+        `;
+        if (window.confetti) window.confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
+      } else {
+        resultBox.className = "p-4 bg-red-950/80 border border-red-800 text-red-200 rounded-2xl space-y-2 text-xs";
+        resultBox.innerHTML = `
+          <div class="font-bold text-red-300 flex items-center gap-2 text-sm">
+            <i data-lucide="alert-circle" class="w-5 h-5 text-red-400"></i> Jawaban Kurang Tepat
+          </div>
+          <p class="leading-relaxed">Jawaban yang benar adalah <strong>${String.fromCharCode(65 + q.correct)}. ${q.options[q.correct]}</strong>.</p>
+          <p class="text-red-300/80 leading-relaxed">${q.explanation}</p>
+        `;
+      }
+      if (window.lucide) window.lucide.createIcons();
+    };
+
+    // MODAL ADD / EDIT MATERIAL FORM LOGIC
+    window.openAddModal = function() {
       editingMaterialId = null;
-      document.getElementById('addModalHeaderTitle').textContent = 'Form Tambah Materi Ajar Baru';
-      document.getElementById('addModalSubmitBtn').textContent = 'Simpan Materi Ajar';
-      document.getElementById('addMaterialForm').reset();
-      document.getElementById('addPdfData').value = '';
-      document.getElementById('contentLivePreview').innerHTML = '<em class="text-slate-500 text-[11px]">Ketik materi atau klik tombol "+ Gambar di Teks" di atas untuk melihat tampilan live di sini...</em>';
+      currentUploadedPdfData = '';
+      document.getElementById('formModalTitle').innerText = "Tambah Materi Ajar Baru";
+      
+      document.getElementById('formTitle').value = '';
+      document.getElementById('formGrade').value = activeSubject === 'Coding' ? 'Kelas 5 SD' : (activeSubject === 'Informatika' ? 'Kelas 7 SMP' : 'Kelas 1 SD');
       autoSelectSubjectByGrade();
-      document.getElementById('addModal').classList.remove('hidden');
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-    }
+      document.getElementById('formDuration').value = 35;
+      document.getElementById('formHeaderImg').value = '';
+      document.getElementById('formPracticalImg').value = '';
+      document.getElementById('formSummary').value = '';
+      document.getElementById('formFullContent').value = '';
+      document.getElementById('formPracticalSteps').value = '';
+      document.getElementById('formPdfUrl').value = '';
+      
+      document.getElementById('formQuizQuestion').value = '';
+      document.getElementById('formQuizOptA').value = '';
+      document.getElementById('formQuizOptB').value = '';
+      document.getElementById('formQuizOptC').value = '';
+      document.getElementById('formQuizOptD').value = '';
+      document.getElementById('formQuizCorrect').value = '0';
+      document.getElementById('formQuizExplanation').value = '';
 
-    function openEditModal(id) {
+      updateLivePreview();
+      document.getElementById('addModal').classList.remove('hidden');
+      if (window.lucide) window.lucide.createIcons();
+    };
+
+    window.openEditModal = function(id) {
       const mat = materials.find(m => m.id === id);
       if (!mat) return;
 
       editingMaterialId = id;
-      document.getElementById('addModalHeaderTitle').textContent = 'Form Edit Materi Pembelajaran';
-      document.getElementById('addModalSubmitBtn').textContent = 'Perbarui Materi';
+      currentUploadedPdfData = mat.pdfUrl || '';
 
-      document.getElementById('addTitle').value = mat.title || '';
-      document.getElementById('addGrade').value = mat.grade || '1';
-      document.getElementById('addSubject').value = mat.subject || 'TIK';
-      document.getElementById('addImageUrl').value = mat.imageUrl || '';
-      document.getElementById('addPracticeImageUrl').value = mat.practiceImageUrl || '';
-      document.getElementById('addPdfUrl').value = mat.pdfUrl && !mat.pdfUrl.startsWith('data:') ? mat.pdfUrl : '';
-      document.getElementById('addPdfData').value = mat.pdfUrl && mat.pdfUrl.startsWith('data:') ? mat.pdfUrl : '';
-      document.getElementById('addSummary').value = mat.summary || '';
-      document.getElementById('addContent').value = mat.content || '';
-      document.getElementById('addPractice').value = mat.practice ? mat.practice.join('\n') : '';
+      document.getElementById('formModalTitle').innerText = "Edit Materi Pembelajaran";
+      document.getElementById('formTitle').value = mat.title;
+      document.getElementById('formGrade').value = mat.grade;
+      autoSelectSubjectByGrade();
+      document.getElementById('formDuration').value = mat.duration;
+      document.getElementById('formHeaderImg').value = mat.headerImg || '';
+      document.getElementById('formPracticalImg').value = mat.practicalImg || '';
+      document.getElementById('formSummary').value = mat.summary;
+      document.getElementById('formFullContent').value = mat.fullContent;
+      document.getElementById('formPracticalSteps').value = (mat.practicalSteps || []).join('\n');
+      document.getElementById('formPdfUrl').value = mat.pdfUrl || '';
+
+      if (mat.quiz) {
+        document.getElementById('formQuizQuestion').value = mat.quiz.question || '';
+        document.getElementById('formQuizOptA').value = mat.quiz.options[0] || '';
+        document.getElementById('formQuizOptB').value = mat.quiz.options[1] || '';
+        document.getElementById('formQuizOptC').value = mat.quiz.options[2] || '';
+        document.getElementById('formQuizOptD').value = mat.quiz.options[3] || '';
+        document.getElementById('formQuizCorrect').value = mat.quiz.correct || '0';
+        document.getElementById('formQuizExplanation').value = mat.quiz.explanation || '';
+      }
 
       updateLivePreview();
       document.getElementById('addModal').classList.remove('hidden');
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-    }
+      if (window.lucide) window.lucide.createIcons();
+    };
 
-    function closeAddModal() {
+    window.closeAddModal = function() {
       document.getElementById('addModal').classList.add('hidden');
-      editingMaterialId = null;
-    }
+    };
 
-    function autoSelectSubjectByGrade() {
-      const grade = document.getElementById('addGrade').value;
-      const subjInput = document.getElementById('addSubject');
-      const gNum = parseInt(grade, 10);
-
-      if (gNum >= 1 && gNum <= 4) {
+    window.autoSelectSubjectByGrade = function() {
+      const grade = document.getElementById('formGrade').value;
+      const subjInput = document.getElementById('formSubject');
+      if (grade.includes('1') || grade.includes('2') || grade.includes('3') || grade.includes('4')) {
         subjInput.value = 'TIK';
-      } else if (gNum >= 5 && gNum <= 6) {
+      } else if (grade.includes('5') || grade.includes('6')) {
         subjInput.value = 'Coding';
-      } else if (gNum >= 7 && gNum <= 9) {
+      } else {
         subjInput.value = 'Informatika';
       }
-    }
+    };
 
-    function insertHelperTag(textareaId, tagType) {
-      const textarea = document.getElementById(textareaId);
-      if (!textarea) return;
-
+    window.insertImageTag = function() {
+      const url = prompt("Masukkan URL Gambar (Bisa link Google Drive):");
+      if (!url) return;
+      const caption = prompt("Masukkan keterangan/caption gambar:", "Diagram Ilustrasi") || "Ilustrasi Materi";
+      
+      const tag = `\n\n[gambar: ${url} | ${caption}]\n\n`;
+      const textarea = document.getElementById('formFullContent');
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
-      const text = textarea.value;
-
-      let insertText = '';
-      if (tagType === 'image') {
-        const url = prompt('Masukkan URL Gambar (Bisa link Unsplash atau Google Drive):', 'https://images.unsplash.com/photo-1587831990711-23ca6441447b?w=800');
-        if (!url) return;
-        const caption = prompt('Masukkan Keterangan / Judul Gambar:', 'Gambar Ilustrasi');
-        insertText = `\n[gambar: ${url} | ${caption || 'Gambar'}]\n`;
-      } else if (tagType === 'heading') {
-        insertText = `\n### Judul Bagian Baru\n`;
-      } else if (tagType === 'tip') {
-        insertText = `\n[tips: Tuliskan catatan penting atau tips untuk siswa di sini]\n`;
-      } else if (tagType === 'bold') {
-        const selected = text.substring(start, end) || 'teks tebal';
-        insertText = `**${selected}**`;
-      }
-
-      textarea.value = text.substring(0, start) + insertText + text.substring(end);
-      textarea.focus();
+      
+      textarea.value = textarea.value.substring(0, start) + tag + textarea.value.substring(end);
       updateLivePreview();
-    }
+    };
 
-    function updateLivePreview() {
-      const content = document.getElementById('addContent').value;
-      const previewBox = document.getElementById('contentLivePreview');
-      if (!content.trim()) {
-        previewBox.innerHTML = '<em class="text-slate-500 text-[11px]">Ketik materi atau klik tombol "+ Gambar di Teks" di atas untuk melihat tampilan live di sini...</em>';
-        return;
+    window.insertHelperTag = function(tagStr) {
+      const textarea = document.getElementById('formFullContent');
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      textarea.value = textarea.value.substring(0, start) + tagStr + textarea.value.substring(end);
+      updateLivePreview();
+    };
+
+    window.updateLivePreview = function() {
+      const val = document.getElementById('formFullContent').value;
+      const box = document.getElementById('livePreviewBox');
+      if (!box) return;
+
+      if (!val.trim()) {
+        box.innerHTML = `<em class="text-slate-500">Ketik materi atau klik tombol "+ Gambar di Teks" untuk melihat tampilan di sini...</em>`;
+      } else {
+        box.innerHTML = parseFormattedContent(val);
       }
-      previewBox.innerHTML = parseCustomContent(content);
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-    }
+      if (window.lucide) window.lucide.createIcons();
+    };
 
-    function handlePdfUpload(e) {
-      const file = e.target.files[0];
+    window.handlePdfUpload = function(event) {
+      const file = event.target.files[0];
       if (!file) return;
 
-      if (file.type !== 'application/pdf') {
-        showToast('File harus berupa format PDF!');
-        return;
-      }
-
       const reader = new FileReader();
-      reader.onload = function(evt) {
-        document.getElementById('addPdfData').value = evt.target.result;
-        showToast('File PDF berhasil dimuat!');
+      reader.onload = function(e) {
+        currentUploadedPdfData = e.target.result;
+        showToast("File PDF berhasil diproses!");
       };
       reader.readAsDataURL(file);
-    }
+    };
 
-    function exportDataJSON() {
+    window.handleAddMaterial = async function(event) {
+      event.preventDefault();
+
+      const pdfUrlInput = document.getElementById('formPdfUrl').value.trim();
+      const finalPdf = currentUploadedPdfData || pdfUrlInput;
+
+      const stepsText = document.getElementById('formPracticalSteps').value.trim();
+      const practicalSteps = stepsText ? stepsText.split('\n').filter(s => s.trim()) : [];
+
+      const materialData = {
+        id: editingMaterialId || ('m_' + Date.now()),
+        title: document.getElementById('formTitle').value.trim(),
+        grade: document.getElementById('formGrade').value,
+        subject: document.getElementById('formSubject').value,
+        duration: parseInt(document.getElementById('formDuration').value) || 35,
+        headerImg: document.getElementById('formHeaderImg').value.trim(),
+        practicalImg: document.getElementById('formPracticalImg').value.trim(),
+        summary: document.getElementById('formSummary').value.trim(),
+        fullContent: document.getElementById('formFullContent').value.trim(),
+        practicalSteps: practicalSteps,
+        pdfUrl: finalPdf,
+        quiz: {
+          question: document.getElementById('formQuizQuestion').value.trim(),
+          options: [
+            document.getElementById('formQuizOptA').value.trim(),
+            document.getElementById('formQuizOptB').value.trim(),
+            document.getElementById('formQuizOptC').value.trim(),
+            document.getElementById('formQuizOptD').value.trim()
+          ],
+          correct: parseInt(document.getElementById('formQuizCorrect').value) || 0,
+          explanation: document.getElementById('formQuizExplanation').value.trim()
+        }
+      };
+
+      await saveMaterialToStorage(materialData);
+      closeAddModal();
+      showToast(editingMaterialId ? "Materi berhasil diperbarui!" : "Materi baru berhasil disimpan!");
+      
+      if (activeSubject) renderSubjectDashboard();
+    };
+
+    window.deleteMaterial = async function(id) {
+      if (!confirm("Apakah Anda yakin ingin menghapus materi ini?")) return;
+      await deleteMaterialFromStorage(id);
+      showToast("Materi berhasil dihapus.");
+      if (activeSubject) renderSubjectDashboard();
+    };
+
+    // EXPORT / IMPORT JSON
+    window.exportDataJSON = function() {
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(materials, null, 2));
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", dataStr);
@@ -1450,146 +1562,90 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
-      showToast('Data materi berhasil diekspor ke file JSON!');
-    }
+      showToast("File cadangan materi berhasil diunduh.");
+    };
 
-    function importDataJSON(e) {
-      const file = e.target.files[0];
+    window.importDataJSON = function(event) {
+      const file = event.target.files[0];
       if (!file) return;
 
       const reader = new FileReader();
-      reader.onload = async function(evt) {
+      reader.onload = async function(e) {
         try {
-          const importedData = JSON.parse(evt.target.result);
-          if (Array.isArray(importedData)) {
-            materials = importedData;
-            if (db) {
-              const materialsRef = collection(db, 'artifacts', appId, 'public', 'data', 'materials');
-              for (const mat of importedData) {
-                if (mat.id) {
-                  await setDoc(doc(materialsRef, mat.id), mat);
-                }
-              }
+          const imported = JSON.parse(e.target.result);
+          if (Array.isArray(imported)) {
+            materials = imported;
+            saveToLocalStorage();
+            for (const mat of materials) {
+              await saveMaterialToStorage(mat);
             }
+            showToast("Data materi berhasil diimpor!");
             if (activeSubject) renderSubjectDashboard();
-            showToast('Data materi berhasil diimpor!');
           } else {
-            showToast('Format file JSON tidak valid!');
+            alert("Format file JSON tidak valid.");
           }
         } catch(err) {
-          console.error('Import error:', err);
-          showToast('Gagal membaca file JSON!');
+          alert("Gagal membaca file JSON.");
         }
       };
       reader.readAsText(file);
-    }
+    };
 
-    // FORM TAMBAH & EDIT MATERI
-    async function handleAddMaterial(e) {
-      e.preventDefault();
-
-      const title = document.getElementById('addTitle').value.trim();
-      const grade = document.getElementById('addGrade').value;
-      const subject = document.getElementById('addSubject').value;
-      const imageUrl = document.getElementById('addImageUrl').value.trim();
-      const practiceImageUrl = document.getElementById('addPracticeImageUrl').value.trim();
-      const pdfUrl = document.getElementById('addPdfData').value || document.getElementById('addPdfUrl').value.trim();
-      const summary = document.getElementById('addSummary').value.trim();
-      const content = document.getElementById('addContent').value.trim();
-      const practiceText = document.getElementById('addPractice').value.trim();
-
-      const practiceArray = practiceText ? practiceText.split('\n').filter(s => s.trim() !== '') : ["Praktikum laboratorium komputer."];
-
-      const matId = editingMaterialId || ('mat-' + Date.now());
-      const existingMat = editingMaterialId ? materials.find(m => m.id === editingMaterialId) : null;
-
-      const lessonData = {
-        id: matId,
-        title,
-        grade,
-        subject,
-        duration: '40 Menit',
-        imageUrl: imageUrl || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=80',
-        practiceImageUrl: practiceImageUrl || 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&auto=format&fit=crop&q=80',
-        pdfUrl: pdfUrl || '',
-        summary,
-        content,
-        practice: practiceArray,
-        quiz: existingMat ? (existingMat.quiz || []) : [
-          {
-            question: `Latihan soal evaluasi untuk materi: ${title}?`,
-            options: ["Pilihan Jawaban A (Benar)", "Pilihan B", "Pilihan C", "Pilihan D"],
-            answer: 0,
-            explanation: "Pembahasan untuk latihan soal."
-          }
-        ]
-      };
-
-      // SAVE TO CLOUD DATABASE AND LOCAL STORAGE
-      const idx = materials.findIndex(m => m.id === matId);
-      if (idx >= 0) materials[idx] = lessonData;
-      else materials.push(lessonData);
-      
+    window.resetDefaultData = function() {
+      if (!confirm("Kembalikan seluruh materi ke sampel default awal? Data buatan Anda akan direset.")) return;
+      materials = DEFAULT_MATERIALS;
       saveToLocalStorage();
+      showToast("Data sampel berhasil direset.");
+      if (activeSubject) renderSubjectDashboard();
+    };
 
-      if (db) {
-        try {
-          const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'materials', matId);
-          await setDoc(docRef, lessonData);
-          showToast(editingMaterialId ? "Materi diperbarui & tersimpan di Cloud!" : "Materi baru tersimpan di Cloud!");
-        } catch (err) {
-          console.error("Error saving to cloud:", err);
-          showToast("Materi tersimpan lokal (Cloud gagal terhubung).");
-        }
-      } else {
-        showToast("Materi tersimpan di Storage Lokal browser!");
+    // CLOUD DB CONFIG MODAL HANDLERS
+    window.openCloudConfigModal = function() {
+      const savedCustom = localStorage.getItem('educode_custom_firebase_config');
+      if (savedCustom) {
+        document.getElementById('customFirebaseConfigInput').value = savedCustom;
+      }
+      document.getElementById('cloudConfigModal').classList.remove('hidden');
+    };
+
+    window.closeCloudConfigModal = function() {
+      document.getElementById('cloudConfigModal').classList.add('hidden');
+    };
+
+    window.saveCustomCloudConfig = function() {
+      const val = document.getElementById('customFirebaseConfigInput').value.trim();
+      if (!val) return;
+      try {
+        JSON.parse(val);
+        localStorage.setItem('educode_custom_firebase_config', val);
+        showToast("Konfigurasi tersimpan. Memuat ulang koneksi...");
+        closeCloudConfigModal();
+        setTimeout(() => location.reload(), 1000);
+      } catch(e) {
+        alert("Format JSON tidak valid!");
+      }
+    };
+
+    window.clearCustomCloudConfig = function() {
+      localStorage.removeItem('educode_custom_firebase_config');
+      showToast("Reset ke konfigurasi default. Memuat ulang...");
+      closeCloudConfigModal();
+      setTimeout(() => location.reload(), 1000);
+    };
+
+    // ON LOAD INITIALIZATION
+    window.addEventListener('DOMContentLoaded', () => {
+      initCloudStorage();
+
+      if (localStorage.getItem('educode_logged_in') === 'true') {
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('appScreen').classList.remove('hidden');
+        navigateToCategories();
       }
 
-      if (activeSubject) renderSubjectDashboard();
-      closeAddModal();
-    }
-
-    function showToast(msg) {
-      const toast = document.getElementById('toast');
-      document.getElementById('toastMessage').textContent = msg;
-      
-      toast.classList.remove('hidden', 'translate-y-10', 'opacity-0');
-      toast.classList.add('translate-y-0', 'opacity-100');
-
-      setTimeout(() => {
-        toast.classList.remove('translate-y-0', 'opacity-100');
-        toast.classList.add('translate-y-10', 'opacity-0');
-        setTimeout(() => toast.classList.add('hidden'), 300);
-      }, 3000);
-    }
-
-    // EXPOSE FUNCTIONS TO WINDOW FOR INLINE HTML EVENT HANDLERS
-    window.handleLogin = handleLogin;
-    window.handleLogout = handleLogout;
-    window.navigateToCategories = navigateToCategories;
-    window.openSubjectDashboard = openSubjectDashboard;
-    window.filterByGrade = filterByGrade;
-    window.handleSearch = handleSearch;
-    window.openDetailModal = openDetailModal;
-    window.closeDetailModal = closeDetailModal;
-    window.switchTab = switchTab;
-    window.selectQuizOption = selectQuizOption;
-    window.submitQuiz = submitQuiz;
-    window.openAddModal = openAddModal;
-    window.openEditModal = openEditModal;
-    window.closeAddModal = closeAddModal;
-    window.autoSelectSubjectByGrade = autoSelectSubjectByGrade;
-    window.insertHelperTag = insertHelperTag;
-    window.updateLivePreview = updateLivePreview;
-    window.handlePdfUpload = handlePdfUpload;
-    window.handleAddMaterial = handleAddMaterial;
-    window.resetDefaultData = resetDefaultData;
-    window.exportDataJSON = exportDataJSON;
-    window.importDataJSON = importDataJSON;
-    window.openCloudConfigModal = openCloudConfigModal;
-    window.closeCloudConfigModal = closeCloudConfigModal;
-    window.saveCustomCloudConfig = saveCustomCloudConfig;
-    window.clearCustomCloudConfig = clearCustomCloudConfig;
+      if (window.lucide) window.lucide.createIcons();
+    });
   </script>
+
 </body>
 </html>

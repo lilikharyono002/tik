@@ -117,6 +117,12 @@
         </div>
 
         <div class="flex items-center gap-3">
+          <!-- INDIKATOR STATUS CLOUD SYNC -->
+          <div id="cloudStatusBadge" onclick="openCloudConfigModal()" class="px-3 py-1.5 rounded-xl border text-[11px] font-bold flex items-center gap-1.5 cursor-pointer transition bg-amber-950/60 border-amber-800 text-amber-300">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <span id="cloudStatusText">Mode Lokal / Offline</span>
+          </div>
+
           <button onclick="openAddModal()" class="px-3.5 py-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-md transition">
             <i data-lucide="plus" class="w-4 h-4"></i>
             <span class="hidden sm:inline">Tambah Materi Baru</span>
@@ -221,6 +227,9 @@
           </button>
 
           <div class="flex items-center gap-2 flex-wrap">
+            <button onclick="openCloudConfigModal()" title="Pengaturan Database Cloud Sync" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-amber-400 border border-slate-800 rounded-xl text-xs font-bold flex items-center gap-1.5 transition">
+              <i data-lucide="settings" class="w-3.5 h-3.5"></i> Setting Cloud DB
+            </button>
             <button onclick="exportDataJSON()" title="Download/Cadangkan Semua Data Materi ke File" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-cyan-400 border border-slate-800 rounded-xl text-xs font-bold flex items-center gap-1.5 transition">
               <i data-lucide="download" class="w-3.5 h-3.5"></i> Ekspor Data
             </button>
@@ -282,265 +291,45 @@
 
 
   <!-- ========================================== -->
-  <!-- 3. MODAL DETAIL MATERI & KUIS (4 TAB VIEWER) -->
+  <!-- MODAL PENGATURAN CLOUD DATABASE CONFIG -->
   <!-- ========================================== -->
-  <div id="detailModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-    <div class="bg-[#111726] rounded-3xl max-w-4xl w-full shadow-2xl border border-slate-800 overflow-hidden my-auto max-h-[92vh] flex flex-col">
-      
-      <!-- Modal Header -->
-      <div class="px-6 py-4 bg-[#0B0F19] border-b border-slate-800 flex items-center justify-between shrink-0">
-        <div class="flex items-center gap-3">
-          <span id="detailGradeBadge" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-cyan-950 text-cyan-300 border border-cyan-800">
-            Kelas 1 SD
-          </span>
-          <h3 id="detailTitle" class="font-bold text-white text-sm sm:text-base line-clamp-1">
-            Judul Modul Pembelajaran
-          </h3>
-        </div>
-        <button onclick="closeDetailModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <!-- Tab Navigation Bar -->
-      <div class="flex border-b border-slate-800 bg-slate-900/60 px-6 shrink-0 overflow-x-auto">
-        <button id="tabBtn1" onclick="switchTab(1)" class="px-4 py-3 text-xs font-bold border-b-2 border-cyan-400 text-cyan-400 flex items-center gap-2 whitespace-nowrap">
-          <i data-lucide="book-open" class="w-4 h-4"></i> 1. Ringkasan & Teori
-        </button>
-        <button id="tabBtn2" onclick="switchTab(2)" class="px-4 py-3 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 whitespace-nowrap">
-          <i data-lucide="wrench" class="w-4 h-4"></i> 2. Langkah Praktikum
-        </button>
-        <button id="tabBtn3" onclick="switchTab(3)" class="px-4 py-3 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 whitespace-nowrap">
-          <i data-lucide="help-circle" class="w-4 h-4"></i> 3. Evaluasi Kuis
-        </button>
-        <button id="tabBtn4" onclick="switchTab(4)" class="px-4 py-3 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 whitespace-nowrap">
-          <i data-lucide="file-text" class="w-4 h-4"></i> 4. Modul PDF
-        </button>
-      </div>
-
-      <!-- Modal Body Tab Contents -->
-      <div class="p-6 overflow-y-auto flex-1 space-y-6 text-xs text-slate-300">
-        
-        <!-- TAB 1: TEORI & RINGKASAN -->
-        <div id="tabContent1" class="space-y-4">
-          <div class="rounded-2xl overflow-hidden max-h-64 bg-slate-900 border border-slate-800">
-            <img id="detailHeroImage" src="" alt="Modul Image" class="w-full h-full object-cover">
-          </div>
-          <div class="p-4 bg-slate-900/60 border border-slate-800 rounded-2xl">
-            <h4 class="font-bold text-white text-sm mb-1">Garis Besar Ringkasan:</h4>
-            <p id="detailSummaryText" class="text-slate-300 leading-relaxed"></p>
-          </div>
-          <div id="detailParsedContent" class="space-y-4 leading-relaxed">
-            <!-- Parsed Content HTML injected here -->
-          </div>
-        </div>
-
-        <!-- TAB 2: PRAKTIKUM -->
-        <div id="tabContent2" class="hidden space-y-4">
-          <div class="rounded-2xl overflow-hidden max-h-60 bg-slate-900 border border-slate-800">
-            <img id="detailPracticeImage" src="" alt="Practice Diagram" class="w-full h-full object-cover">
-          </div>
-          <div class="p-4 bg-slate-900/60 border border-slate-800 rounded-2xl space-y-3">
-            <h4 class="font-bold text-white text-sm flex items-center gap-2">
-              <i data-lucide="terminal" class="w-4 h-4 text-cyan-400"></i> Instuksi Kerja Praktikum Komputer:
-            </h4>
-            <ul id="detailPracticeList" class="space-y-2 font-mono text-slate-300">
-              <!-- Injected Practice Steps -->
-            </ul>
-          </div>
-        </div>
-
-        <!-- TAB 3: KUIS INTERAKTIF -->
-        <div id="tabContent3" class="hidden space-y-6">
-          <div id="quizContainer" class="space-y-6">
-            <!-- Injected Quiz Questions -->
-          </div>
-
-          <div id="quizResultBox" class="hidden p-5 bg-slate-900 border border-slate-800 rounded-2xl text-center space-y-2">
-            <h4 id="quizScoreTitle" class="text-lg font-extrabold text-white">Hasil Evaluasi Kuis</h4>
-            <p id="quizScoreSubtitle" class="text-xs text-slate-400"></p>
-          </div>
-
-          <div class="flex justify-end gap-3 pt-2">
-            <button id="submitQuizBtn" onclick="submitQuiz()" class="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-bold rounded-xl text-xs shadow-md hover:from-emerald-400">
-              Kirim Jawaban Kuis
-            </button>
-          </div>
-        </div>
-
-        <!-- TAB 4: MODUL PDF READER -->
-        <div id="tabContent4" class="hidden space-y-4">
-          <div id="pdfContainer" class="space-y-3">
-            <!-- PDF Viewer dynamic content -->
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-
-
-  <!-- ========================================== -->
-  <!-- 4. MODAL TAMBAH & EDIT MATERI BARU -->
-  <!-- ========================================== -->
-  <div id="addModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-    <div class="bg-[#111726] rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-800 overflow-hidden my-auto max-h-[90vh] flex flex-col">
-      
-      <div class="px-6 py-4 bg-[#0B0F19] border-b border-slate-800 flex items-center justify-between shrink-0">
-        <h3 class="font-bold text-white flex items-center gap-2 text-sm sm:text-base">
-          <i data-lucide="edit-3" class="w-5 h-5 text-cyan-400"></i>
-          <span id="addModalHeaderTitle">Form Tambah Materi Ajar Baru</span>
+  <div id="cloudConfigModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-[#111726] rounded-3xl max-w-lg w-full shadow-2xl border border-slate-800 overflow-hidden">
+      <div class="px-6 py-4 bg-[#0B0F19] border-b border-slate-800 flex items-center justify-between">
+        <h3 class="font-bold text-white flex items-center gap-2 text-sm">
+          <i data-lucide="database" class="w-4 h-4 text-cyan-400"></i> Pengaturan Cloud Database Sync
         </h3>
-        <button type="button" onclick="closeAddModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800">
+        <button onclick="closeCloudConfigModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
-
-      <form id="addMaterialForm" onsubmit="handleAddMaterial(event)" class="p-6 space-y-4 text-xs overflow-y-auto flex-1">
-        
-        <div>
-          <label class="block font-bold text-slate-300 mb-1">Judul Materi *</label>
-          <input type="text" id="addTitle" required placeholder="Contoh: Pengenalan Perangkat Hardware & Output Komputer" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white">
+      <div class="p-6 space-y-4 text-xs">
+        <div class="p-3.5 bg-slate-900 border border-slate-800 rounded-2xl space-y-1.5">
+          <div class="flex items-center gap-2 font-bold text-white">
+            <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Status Cloud Saat Ini:
+          </div>
+          <p id="cloudConfigStatusDesc" class="text-slate-400 leading-relaxed">
+            Menghubungkan ke server database...
+          </p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block font-bold text-slate-300 mb-1">Tingkat Kelas *</label>
-            <select id="addGrade" onchange="autoSelectSubjectByGrade()" required class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white font-medium">
-              <optgroup label="Sekolah Dasar (TIK)">
-                <option value="1">Kelas 1 SD (TIK)</option>
-                <option value="2">Kelas 2 SD (TIK)</option>
-                <option value="3">Kelas 3 SD (TIK)</option>
-                <option value="4">Kelas 4 SD (TIK)</option>
-              </optgroup>
-              <optgroup label="Sekolah Dasar (Coding)">
-                <option value="5">Kelas 5 SD (Coding)</option>
-                <option value="6">Kelas 6 SD (Coding)</option>
-              </optgroup>
-              <optgroup label="Sekolah Menengah Pertama (Informatika)">
-                <option value="7">Kelas 7 SMP (Informatika)</option>
-                <option value="8">Kelas 8 SMP (Informatika)</option>
-                <option value="9">Kelas 9 SMP (Informatika)</option>
-              </optgroup>
-            </select>
-          </div>
-
-          <div>
-            <label class="block font-bold text-slate-300 mb-1">Kategori Rumpun (Otomatis)</label>
-            <input type="text" id="addSubject" readonly value="TIK" class="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-cyan-400 font-bold cursor-not-allowed">
-          </div>
+        <div class="space-y-2">
+          <label class="block font-bold text-slate-300">Konfigurasi Custom Firebase (JSON Format)</label>
+          <p class="text-[11px] text-slate-400">Tempelkan JSON Firebase Config gratis dari Firebase Console jika Anda menghosting web ini di domain sendiri agar semua laptop/browser otomatis tersinkronisasi:</p>
+          <textarea id="customFirebaseConfigInput" rows="4" placeholder='{"apiKey": "AIzaSy...", "authDomain": "...", "projectId": "..."}' class="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl font-mono text-[11px] text-cyan-300 focus:outline-none focus:border-cyan-500"></textarea>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
-          <div>
-            <label class="block font-bold text-slate-300 mb-1">URL Gambar Ilustrasi Materi (Bisa Link Google Drive)</label>
-            <input type="url" id="addImageUrl" placeholder="https://images.unsplash.com/... atau Google Drive share link" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white">
-          </div>
-
-          <div>
-            <label class="block font-bold text-slate-300 mb-1">URL Gambar Diagram Praktikum</label>
-            <input type="url" id="addPracticeImageUrl" placeholder="https://images.unsplash.com/... atau Google Drive share link" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white">
-          </div>
-        </div>
-
-        <!-- BOX UPLOAD FILE PDF / LINK PDF -->
-        <div class="p-3.5 bg-slate-900/90 border border-slate-700/80 rounded-2xl space-y-2.5">
-          <label class="block font-bold text-cyan-400 flex items-center gap-1.5 text-xs">
-            <i data-lucide="file-up" class="w-4 h-4"></i> File Modul PDF Pembelajaran (Opsional)
-          </label>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <span class="text-[11px] text-slate-400 block mb-1">📁 Upload PDF dari Laptop/Komputer:</span>
-              <input 
-                type="file" 
-                id="addPdfFile" 
-                accept="application/pdf" 
-                onchange="handlePdfUpload(event)"
-                class="w-full text-[11px] text-slate-400 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-cyan-950 file:text-cyan-400 hover:file:bg-cyan-900 border border-slate-800 rounded-xl bg-slate-950 p-1 cursor-pointer"
-              >
-            </div>
-            <div>
-              <span class="text-[11px] text-slate-400 block mb-1">🔗 Atau Tuliskan Link / URL File PDF:</span>
-              <input 
-                type="url" 
-                id="addPdfUrl" 
-                placeholder="https://example.com/modul.pdf" 
-                class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl focus:border-cyan-500 focus:outline-none text-white text-xs"
-              >
-            </div>
-          </div>
-          <input type="hidden" id="addPdfData">
-        </div>
-
-        <div>
-          <label class="block font-bold text-slate-300 mb-1">Ringkasan Ringkas *</label>
-          <input type="text" id="addSummary" required placeholder="Gambarkan garis besar topik dalam 1-2 kalimat..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white">
-        </div>
-
-        <!-- FORM INPUT PEMBAHASAN DENGAN INLINE IMAGE TOOLBAR & LIVE PREVIEW -->
-        <div>
-          <div class="flex items-center justify-between mb-1.5 flex-wrap gap-2">
-            <label class="block font-bold text-slate-300">Isi Pembahasan Materi Lengkap *</label>
-            
-            <!-- Quick Helper Toolbar -->
-            <div class="flex items-center gap-1.5 text-[11px]">
-              <button type="button" onclick="insertHelperTag('addContent', 'image')" class="px-2.5 py-1 bg-cyan-950 hover:bg-cyan-900 text-cyan-300 rounded-lg font-bold border border-cyan-700 flex items-center gap-1 transition">
-                <i data-lucide="image-plus" class="w-3.5 h-3.5"></i> + Gambar di Teks
-              </button>
-              <button type="button" onclick="insertHelperTag('addContent', 'heading')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg font-medium border border-slate-700">
-                📌 Sub Judul
-              </button>
-              <button type="button" onclick="insertHelperTag('addContent', 'tip')" class="px-2 py-1 bg-amber-950/60 hover:bg-amber-900/80 text-amber-300 rounded-lg font-medium border border-amber-800">
-                💡 Tip/Catatan
-              </button>
-              <button type="button" onclick="insertHelperTag('addContent', 'bold')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg font-medium border border-slate-700">
-                <b>B</b> Tebal
-              </button>
-            </div>
-          </div>
-
-          <textarea 
-            id="addContent" 
-            rows="5" 
-            required 
-            oninput="updateLivePreview()" 
-            placeholder="Tuliskan isi materi pelajaran selengkapnya... Gunakan tombol '+ Gambar di Teks' di atas untuk menyisipkan gambar di tengah-tengah paragraf!" 
-            class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white font-mono text-xs leading-relaxed"
-          ></textarea>
-
-          <!-- Real-Time Live Preview Box -->
-          <div class="mt-2.5 border border-slate-800 rounded-2xl bg-slate-950/80 p-3.5 space-y-2">
-            <div class="flex items-center justify-between border-b border-slate-800/80 pb-2">
-              <span class="text-[11px] font-bold text-cyan-400 flex items-center gap-1.5">
-                <i data-lucide="eye" class="w-3.5 h-3.5"></i> 👁️ Live Preview Pratinjau Teks & Gambar
-              </span>
-              <span class="text-[10px] text-slate-500 font-mono">Real-time Renderer</span>
-            </div>
-            <div id="contentLivePreview" class="prose prose-invert max-w-none text-xs text-slate-300 min-h-[50px] leading-relaxed">
-              <em class="text-slate-500 text-[11px]">Ketik materi atau klik tombol "+ Gambar di Teks" di atas untuk melihat tampilan live di sini...</em>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <label class="block font-bold text-slate-300 mb-1">Langkah Praktikum (Pisahkan baris)</label>
-          <textarea id="addPractice" rows="3" placeholder="Langkah 1: Nyalakan Komputer&#10;Langkah 2: Buka aplikasi..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white"></textarea>
-        </div>
-
-        <div class="pt-4 border-t border-slate-800 flex justify-end gap-3">
-          <button type="button" onclick="closeAddModal()" class="px-4 py-2 font-semibold text-slate-400 hover:bg-slate-800 rounded-xl">
-            Batal
+        <div class="flex justify-end gap-2 pt-2">
+          <button onclick="clearCustomCloudConfig()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl">
+            Reset ke Default
           </button>
-          <button type="submit" id="addModalSubmitBtn" class="px-5 py-2 font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-md transition">
-            Simpan Materi Ajar
+          <button onclick="saveCustomCloudConfig()" class="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl shadow-md">
+            Simpan & Sambungkan
           </button>
         </div>
-
-      </form>
+      </div>
     </div>
   </div>
-
 
   <!-- TOAST NOTIFICATION -->
   <div id="toast" class="fixed bottom-6 right-6 z-50 hidden transform transition-all duration-300 translate-y-10 opacity-0 pointer-events-none">
@@ -559,7 +348,7 @@
     import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, doc, setDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    // FIREBASE CLOUD DATABASE SETUP WITH SAFE FALLBACK
+    // FIREBASE CLOUD DATABASE SETUP WITH LOCAL BACKUP & SAFE FALLBACK
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'educode-hub-app';
     let firebaseConfig = null;
     let app = null, auth = null, db = null;
@@ -913,58 +702,140 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
       if (typeof lucide !== 'undefined') lucide.createIcons();
     });
 
-    // REAL-TIME CLOUD STORAGE INIT WITH SAFE FALLBACK
+    // REAL-TIME CLOUD STORAGE INIT WITH AUTO LOCAL FALLBACK
     async function initCloudStorage() {
-      if (!db || !auth) {
-        console.warn("Cloud DB tidak aktif. Menggunakan data lokal.");
-        materials = [...DEFAULT_MATERIALS];
-        if (activeSubject) {
-          renderSubjectDashboard();
+      // Load local storage materials first to prevent empty screen
+      loadFromLocalStorage();
+
+      let cfg = null;
+      try {
+        if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+          cfg = JSON.parse(__firebase_config);
+        } else {
+          const savedCustom = localStorage.getItem('educode_custom_firebase_config');
+          if (savedCustom) cfg = JSON.parse(savedCustom);
         }
+      } catch(e) {
+        console.warn("Firebase config parse error:", e);
+      }
+
+      if (cfg && cfg.apiKey) {
+        try {
+          app = initializeApp(cfg);
+          auth = getAuth(app);
+          db = getFirestore(app);
+
+          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } else {
+            await signInAnonymously(auth);
+          }
+
+          // PUBLIC COLLECTION PATH FOR MULTI-DEVICE SYNC
+          const materialsRef = collection(db, 'artifacts', appId, 'public', 'data', 'materials');
+
+          // REAL-TIME LISTENER FOR ALL DEVICES
+          onSnapshot(materialsRef, (snapshot) => {
+            if (snapshot.empty) {
+              seedDefaultData(materialsRef);
+              return;
+            }
+
+            const items = [];
+            snapshot.forEach((docSnap) => {
+              items.push({ id: docSnap.id, ...docSnap.data() });
+            });
+
+            materials = items;
+            saveToLocalStorage();
+            if (activeSubject) renderSubjectDashboard();
+            updateCloudStatus(true, "Terhubung ke Database Cloud (Sinkron Otomatis Multi-Device)");
+          }, (error) => {
+            console.warn("Cloud listener fallback to local:", error);
+            updateCloudStatus(false, "Storage Lokal (Akses Offline/Perangkat Terpisah)");
+          });
+          return;
+        } catch (err) {
+          console.warn("Cloud auth/connection error:", err);
+          updateCloudStatus(false, "Mode Lokal (Konfigurasi Cloud Belum Aktif)");
+        }
+      } else {
+        updateCloudStatus(false, "Storage Lokal (Buka modal Setting Cloud DB untuk menghubungkan database)");
+      }
+    }
+
+    function loadFromLocalStorage() {
+      try {
+        const saved = localStorage.getItem('educode_materials_backup');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            materials = parsed;
+          }
+        }
+      } catch(e) {
+        console.warn("Failed loading from localStorage:", e);
+      }
+    }
+
+    function saveToLocalStorage() {
+      try {
+        localStorage.setItem('educode_materials_backup', JSON.stringify(materials));
+      } catch(e) {
+        console.warn("Failed saving to localStorage:", e);
+      }
+    }
+
+    function updateCloudStatus(isConnected, message) {
+      const badge = document.getElementById('cloudStatusBadge');
+      const text = document.getElementById('cloudStatusText');
+      const desc = document.getElementById('cloudConfigStatusDesc');
+
+      if (isConnected) {
+        badge.className = "px-3 py-1.5 rounded-xl border text-[11px] font-bold flex items-center gap-1.5 cursor-pointer transition bg-emerald-950/80 border-emerald-800 text-emerald-300";
+        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Cloud Sync: Aktif`;
+      } else {
+        badge.className = "px-3 py-1.5 rounded-xl border text-[11px] font-bold flex items-center gap-1.5 cursor-pointer transition bg-amber-950/80 border-amber-800 text-amber-300";
+        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400"></span> Mode Storage Lokal`;
+      }
+
+      if (desc) desc.textContent = message || (isConnected ? "Sistem terhubung ke Database Cloud." : "Sistem menggunakan penyimpanan lokal browser.");
+    }
+
+    function openCloudConfigModal() {
+      const saved = localStorage.getItem('educode_custom_firebase_config') || '';
+      document.getElementById('customFirebaseConfigInput').value = saved;
+      document.getElementById('cloudConfigModal').classList.remove('hidden');
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function closeCloudConfigModal() {
+      document.getElementById('cloudConfigModal').classList.add('hidden');
+    }
+
+    function saveCustomCloudConfig() {
+      const val = document.getElementById('customFirebaseConfigInput').value.trim();
+      if (!val) {
+        clearCustomCloudConfig();
         return;
       }
-
       try {
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-          await signInWithCustomToken(auth, __initial_auth_token);
-        } else {
-          await signInAnonymously(auth);
-        }
-      } catch (err) {
-        console.warn("Auth fallback to anonymous:", err);
-        try {
-          await signInAnonymously(auth);
-        } catch(e) {
-          console.error("Anonymous auth failed:", e);
-        }
+        JSON.parse(val);
+        localStorage.setItem('educode_custom_firebase_config', val);
+        showToast('Konfigurasi Cloud disimpan! Memuat ulang koneksi...');
+        closeCloudConfigModal();
+        initCloudStorage();
+      } catch(e) {
+        showToast('Format JSON Firebase Config tidak valid!');
       }
+    }
 
-      // PUBLIC COLLECTION PATH FOR MULTI-DEVICE SYNC
-      const materialsRef = collection(db, 'artifacts', appId, 'public', 'data', 'materials');
-
-      // REAL-TIME LISTENER FOR ALL DEVICES
-      onSnapshot(materialsRef, (snapshot) => {
-        if (snapshot.empty) {
-          seedDefaultData(materialsRef);
-          return;
-        }
-
-        const items = [];
-        snapshot.forEach((docSnap) => {
-          items.push({ id: docSnap.id, ...docSnap.data() });
-        });
-
-        materials = items;
-        if (activeSubject) {
-          renderSubjectDashboard();
-        }
-      }, (error) => {
-        console.error("Cloud listener error:", error);
-        if (materials.length === 0) {
-          materials = [...DEFAULT_MATERIALS];
-          if (activeSubject) renderSubjectDashboard();
-        }
-      });
+    function clearCustomCloudConfig() {
+      localStorage.removeItem('educode_custom_firebase_config');
+      document.getElementById('customFirebaseConfigInput').value = '';
+      showToast('Konfigurasi Cloud direset ke default.');
+      closeCloudConfigModal();
+      initCloudStorage();
     }
 
     async function seedDefaultData(materialsRef) {
@@ -982,6 +853,7 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
         showToast("Data sampel default berhasil disinkronkan ke Cloud!");
       } else {
         materials = [...DEFAULT_MATERIALS];
+        saveToLocalStorage();
         if (activeSubject) renderSubjectDashboard();
         showToast("Data sampel default berhasil dimuat ulang!");
       }
@@ -1653,28 +1525,27 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
         ]
       };
 
-      // SAVE TO CLOUD DATABASE OR LOCAL STATE
+      // SAVE TO CLOUD DATABASE AND LOCAL STORAGE
+      const idx = materials.findIndex(m => m.id === matId);
+      if (idx >= 0) materials[idx] = lessonData;
+      else materials.push(lessonData);
+      
+      saveToLocalStorage();
+
       if (db) {
         try {
           const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'materials', matId);
           await setDoc(docRef, lessonData);
-          showToast(editingMaterialId ? "Materi berhasil diperbarui di Cloud!" : "Materi baru tersimpan di Cloud!");
+          showToast(editingMaterialId ? "Materi diperbarui & tersimpan di Cloud!" : "Materi baru tersimpan di Cloud!");
         } catch (err) {
           console.error("Error saving to cloud:", err);
-          const idx = materials.findIndex(m => m.id === matId);
-          if (idx >= 0) materials[idx] = lessonData;
-          else materials.push(lessonData);
-          if (activeSubject) renderSubjectDashboard();
-          showToast("Materi tersimpan lokal!");
+          showToast("Materi tersimpan lokal (Cloud gagal terhubung).");
         }
       } else {
-        const idx = materials.findIndex(m => m.id === matId);
-        if (idx >= 0) materials[idx] = lessonData;
-        else materials.push(lessonData);
-        if (activeSubject) renderSubjectDashboard();
-        showToast("Materi tersimpan secara lokal!");
+        showToast("Materi tersimpan di Storage Lokal browser!");
       }
 
+      if (activeSubject) renderSubjectDashboard();
       closeAddModal();
     }
 
@@ -1715,6 +1586,10 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
     window.resetDefaultData = resetDefaultData;
     window.exportDataJSON = exportDataJSON;
     window.importDataJSON = importDataJSON;
+    window.openCloudConfigModal = openCloudConfigModal;
+    window.closeCloudConfigModal = closeCloudConfigModal;
+    window.saveCustomCloudConfig = saveCustomCloudConfig;
+    window.clearCustomCloudConfig = clearCustomCloudConfig;
   </script>
 </body>
 </html>

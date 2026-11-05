@@ -930,7 +930,13 @@
           }, (err) => {
             console.warn("Firestore listener fallback:", err);
             isCloudOnline = false;
-            updateCloudStatus(false, "Mode Storage Lokal (Firestore perlu diaktifkan di Console)");
+            let errDetail = "Firestore perlu diaktifkan di Console";
+            if (err.code === 'permission-denied') {
+              errDetail = "Akses Ditolak (Setel Rules Firestore ke Test Mode)";
+            } else if (err.code === 'not-found') {
+              errDetail = "Firestore Database belum dibuat di Console";
+            }
+            updateCloudStatus(false, `Mode Storage Lokal (${errDetail})`);
           });
 
         } catch(err) {

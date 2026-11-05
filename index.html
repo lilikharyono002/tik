@@ -48,76 +48,45 @@
 <body class="bg-[#0B0F19] text-slate-100 min-h-full flex flex-col antialiased">
 
   <!-- ========================================== -->
-  <!-- 1. HALAMAN LOGIN (AUTHENTICATION GATE) -->
+  <!-- 1. HALAMAN LOGIN (LOGIN SCREEN GATE) -->
   <!-- ========================================== -->
   <div id="loginScreen" class="fixed inset-0 z-50 bg-[#0B0F19] flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-[#111726] border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
-      <!-- Ambient Glow Effects -->
-      <div class="absolute -top-12 -left-12 w-36 h-36 bg-teal-500/20 rounded-full blur-2xl pointer-events-none"></div>
-      <div class="absolute -bottom-12 -right-12 w-36 h-36 bg-purple-500/20 rounded-full blur-2xl pointer-events-none"></div>
+      <!-- Decorative Glow Behind Form -->
+      <div class="absolute -top-12 -right-12 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-12 -left-12 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-      <!-- Header Logo & Title -->
-      <div class="text-center space-y-3 mb-8 relative">
-        <div class="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-indigo-600 via-cyan-500 to-teal-400 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
+      <div class="text-center space-y-3 mb-8">
+        <div class="inline-flex items-center justify-center w-14 h-14 bg-cyan-950 border border-cyan-800 text-cyan-400 rounded-2xl shadow-lg mb-1">
           <i data-lucide="code-2" class="w-8 h-8"></i>
         </div>
-        <h2 class="text-2xl font-extrabold tracking-tight text-white">EduCode<span class="text-cyan-400">Hub</span></h2>
-        <p class="text-xs text-slate-400">Portal Pengajar TIK, Coding & Informatika (Kelas 1 - 9)</p>
+        <h1 class="text-2xl font-extrabold text-white tracking-tight">EduCode Hub</h1>
+        <p class="text-xs text-slate-400">Portal Materi Pembelajaran TIK, Coding & Informatika</p>
       </div>
 
-      <!-- Demo Info Box -->
-      <div class="mb-6 p-3.5 bg-slate-900/90 border border-slate-800 rounded-2xl text-xs space-y-1">
-        <p class="font-bold text-cyan-400 flex items-center gap-1.5">
-          <i data-lucide="key-round" class="w-4 h-4"></i> Akun Pengajar:
-        </p>
-        <div class="flex items-center justify-between text-slate-300 font-mono text-[11px] pt-1">
-          <span>Username: <strong class="text-white">admin</strong></span>
-          <span>Password: <strong class="text-white">123456</strong></span>
-        </div>
-      </div>
-
-      <!-- Login Form -->
-      <form onsubmit="handleLogin(event)" class="space-y-4">
+      <form onsubmit="handleLogin(event)" class="space-y-4 text-xs">
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1.5">Username</label>
+          <label class="block font-bold text-slate-300 mb-1.5">Username Pengajar</label>
           <div class="relative">
-            <i data-lucide="user" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"></i>
-            <input 
-              type="text" 
-              id="loginUsername"
-              required 
-              placeholder="Masukkan username..." 
-              value="admin"
-              class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-900/90 border border-slate-700/80 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition"
-            >
+            <i data-lucide="user" class="w-4 h-4 absolute left-3.5 top-3 text-slate-500"></i>
+            <input type="text" id="loginUsername" required value="admin" class="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white font-medium">
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1.5">Password</label>
+          <label class="block font-bold text-slate-300 mb-1.5">Password</label>
           <div class="relative">
-            <i data-lucide="lock" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"></i>
-            <input 
-              type="password" 
-              id="loginPassword"
-              required 
-              placeholder="Masukkan password..." 
-              value="123456"
-              class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-900/90 border border-slate-700/80 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition"
-            >
+            <i data-lucide="lock" class="w-4 h-4 absolute left-3.5 top-3 text-slate-500"></i>
+            <input type="password" id="loginPassword" required value="123456" class="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white font-medium">
           </div>
         </div>
 
-        <div id="loginError" class="hidden text-xs text-red-400 bg-red-950/50 border border-red-800 p-2.5 rounded-xl text-center">
-          Username atau password salah. Silakan coba lagi!
+        <div id="loginError" class="hidden p-3 bg-red-950/80 border border-red-800 rounded-xl text-red-300 text-[11px]">
+          Username atau password salah! (Gunakan: admin / 123456)
         </div>
 
-        <button 
-          type="submit" 
-          class="w-full py-3 bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:opacity-95 text-white font-bold text-sm rounded-xl shadow-lg shadow-indigo-600/30 transition active:scale-95 flex items-center justify-center gap-2"
-        >
-          <span>Masuk ke Dashboard</span>
-          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        <button type="submit" class="w-full py-3 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-slate-950 font-bold rounded-xl shadow-lg transition duration-200 text-sm">
+          Masuk ke Portal Pengajar
         </button>
       </form>
     </div>
@@ -125,339 +94,273 @@
 
 
   <!-- ========================================== -->
-  <!-- MAIN APP WRAPPER -->
+  <!-- 2. LAYOUT UTAMA APLIKASI (APP MAIN SCREEN) -->
   <!-- ========================================== -->
-  <div id="appScreen" class="hidden flex-1 flex flex-col">
+  <div id="appScreen" class="hidden min-h-screen flex flex-col">
     
-    <!-- STICKY TOP NAVBAR -->
-    <header class="sticky top-0 z-30 bg-[#0B0F19]/90 backdrop-blur-md border-b border-slate-800/80">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16 gap-4">
-          
-          <!-- Logo & Brand Title -->
-          <div class="flex items-center gap-3 cursor-pointer" onclick="navigateToCategories()">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-cyan-500 to-teal-400 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
-              <i data-lucide="code-2" class="w-6 h-6"></i>
-            </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-white leading-none">
-                  EduCode<span class="text-cyan-400">Hub</span>
-                </h1>
-                <span class="bg-cyan-950 border border-cyan-800 text-cyan-400 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
-                  Pengajar
-                </span>
-              </div>
-              <p class="text-xs text-slate-400 hidden sm:block mt-0.5">
-                Portal Materi TIK, Coding & Informatika (Kelas 1 - 9)
-              </p>
-            </div>
+    <!-- NAVBAR ATAS -->
+    <header class="bg-[#111726]/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+        
+        <div class="flex items-center gap-3 cursor-pointer" onclick="navigateToCategories()">
+          <div class="w-9 h-9 bg-cyan-950 border border-cyan-800 text-cyan-400 rounded-xl flex items-center justify-center">
+            <i data-lucide="code-2" class="w-5 h-5"></i>
           </div>
-
-          <!-- User Profile & Action Controls -->
-          <div class="flex items-center gap-3">
-            <div class="hidden sm:flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl text-xs text-slate-300">
-              <i data-lucide="user-check" class="w-4 h-4 text-cyan-400"></i>
-              <span>Pak Pengajar</span>
-            </div>
-
-            <button 
-              onclick="handleLogout()"
-              title="Keluar dari akun"
-              class="p-2 rounded-xl text-slate-400 hover:text-red-400 hover:bg-slate-800/80 transition flex items-center gap-1.5 text-xs font-medium"
-            >
-              <i data-lucide="log-out" class="w-4 h-4"></i>
-              <span class="hidden sm:inline">Keluar</span>
-            </button>
+          <div>
+            <h2 class="font-extrabold text-white text-base leading-none">EduCode Hub</h2>
+            <span class="text-[10px] text-cyan-400 font-medium">Portal Pengajar TIK • Coding • Informatika</span>
           </div>
-
         </div>
+
+        <div class="flex items-center gap-3">
+          <button onclick="openAddModal()" class="px-3.5 py-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-md transition">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">Tambah Materi Baru</span>
+          </button>
+
+          <div class="h-6 w-px bg-slate-800 hidden sm:block"></div>
+
+          <button onclick="handleLogout()" title="Keluar" class="p-2 bg-slate-900 hover:bg-red-950/60 text-slate-400 hover:text-red-400 border border-slate-800 rounded-xl transition">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+          </button>
+        </div>
+
       </div>
     </header>
 
 
-    <!-- ========================================== -->
-    <!-- 2. HALAMAN DASHBOARD UTAMA (HANYA 3 KARTU KATEGORI) -->
-    <!-- ========================================== -->
-    <main id="categoryPortalView" class="flex-1 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div class="max-w-6xl w-full space-y-10">
-        
-        <!-- Welcome Hero Banner -->
-        <div class="text-center space-y-3 max-w-2xl mx-auto">
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/70 border border-cyan-800 text-cyan-300 text-xs font-semibold">
-            <i data-lucide="sparkles" class="w-4 h-4 text-cyan-400"></i> Pilih Kurikulum Tingkat Kelas
-          </div>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Selamat Datang di Portal Pembelajaran
-          </h2>
-          <p class="text-sm text-slate-400 leading-relaxed">
-            Silakan pilih rumpun materi pembelajaran di bawah ini untuk mengelola modul materi, panduan praktikum, dan kuis evaluasi siswa.
-          </p>
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8">
+      
+      <!-- VIEW 1: PORTAL KATEGORI UTAMA (PERSIS SESUAI GAMBAR REFERENSI) -->
+      <div id="categoryPortalView" class="space-y-8">
+        <div class="text-center max-w-2xl mx-auto space-y-2">
+          <span class="px-3 py-1 bg-cyan-950 border border-cyan-800 text-cyan-400 text-[11px] font-bold rounded-full uppercase tracking-wider">
+            Selamat Datang, Pak Lilik
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Pilih Rumpun Kelas Pembelajaran</h2>
+          <p class="text-xs sm:text-sm text-slate-400">Pilih salah satu rumpun di bawah untuk masuk ke dashboard kurikulum dan daftar modul lengkap.</p>
         </div>
 
-        <!-- 3 CATEGORY CARDS GRID (EXACT REPLICA FROM REFERENCE IMAGE) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- 3 KARTU KATEGORI SESUAI DESAIN GAMBAR -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 pt-4">
           
-          <!-- Card 1: TIK SD (Kelas 1 - 4) -->
+          <!-- KARTU 1: TIK SD (KELAS 1 - 4) -->
           <div 
             onclick="openSubjectDashboard('TIK')" 
-            class="group cursor-pointer p-6 rounded-3xl bg-[#0D1424] border border-teal-500/50 hover:border-teal-400 transition-all duration-300 flex items-center gap-4 hover:shadow-2xl hover:shadow-teal-500/10 hover:-translate-y-1"
+            class="group cursor-pointer bg-[#0B0F19] hover:bg-[#111726] border border-teal-500/40 hover:border-teal-400 rounded-2xl p-6 transition-all duration-300 shadow-lg hover:shadow-teal-500/10 flex items-center gap-4 relative overflow-hidden"
           >
-            <!-- Custom Teal Icon Box -->
-            <div class="w-14 h-14 rounded-2xl bg-[#0A2628] border border-teal-500/60 flex items-center justify-center text-teal-400 group-hover:scale-105 transition shrink-0">
+            <div class="w-14 h-14 rounded-2xl bg-teal-950/80 border border-teal-800 flex items-center justify-center text-teal-400 shrink-0 group-hover:scale-110 transition duration-300">
               <i data-lucide="monitor" class="w-7 h-7"></i>
             </div>
-            <div class="space-y-1.5">
+            <div class="space-y-1.5 flex-1 min-w-0">
               <div class="flex items-center gap-2 flex-wrap">
-                <h3 class="font-bold text-lg text-white group-hover:text-teal-300 transition">TIK SD</h3>
-                <span class="text-[11px] bg-teal-950 text-teal-300 border border-teal-800 px-2.5 py-0.5 rounded-full font-bold">
-                  Kelas 1 - 4
-                </span>
+                <h3 class="font-extrabold text-white text-lg group-hover:text-teal-300 transition">TIK SD</h3>
+                <span class="px-2.5 py-0.5 bg-teal-950 border border-teal-800 text-teal-300 text-[10px] font-bold rounded-full">Kelas 1 - 4</span>
               </div>
-              <p class="text-xs text-slate-300 leading-relaxed">
+              <p class="text-xs text-slate-400 leading-relaxed line-clamp-2">
                 Perangkat Komputer, Fun Typing, Paint, & MS Word Dasar
               </p>
             </div>
           </div>
 
-          <!-- Card 2: Coding SD (Kelas 5 - 6) -->
+          <!-- KARTU 2: CODING SD (KELAS 5 - 6) -->
           <div 
             onclick="openSubjectDashboard('Coding')" 
-            class="group cursor-pointer p-6 rounded-3xl bg-[#0D1424] border border-sky-500/50 hover:border-sky-400 transition-all duration-300 flex items-center gap-4 hover:shadow-2xl hover:shadow-sky-500/10 hover:-translate-y-1"
+            class="group cursor-pointer bg-[#0B0F19] hover:bg-[#111726] border border-sky-500/40 hover:border-sky-400 rounded-2xl p-6 transition-all duration-300 shadow-lg hover:shadow-sky-500/10 flex items-center gap-4 relative overflow-hidden"
           >
-            <!-- Custom Blue Icon Box -->
-            <div class="w-14 h-14 rounded-2xl bg-[#0A233A] border border-sky-500/60 flex items-center justify-center text-sky-400 group-hover:scale-105 transition shrink-0">
+            <div class="w-14 h-14 rounded-2xl bg-sky-950/80 border border-sky-800 flex items-center justify-center text-sky-400 shrink-0 group-hover:scale-110 transition duration-300">
               <i data-lucide="blocks" class="w-7 h-7"></i>
             </div>
-            <div class="space-y-1.5">
+            <div class="space-y-1.5 flex-1 min-w-0">
               <div class="flex items-center gap-2 flex-wrap">
-                <h3 class="font-bold text-lg text-white group-hover:text-sky-300 transition">Coding SD</h3>
-                <span class="text-[11px] bg-sky-950 text-sky-300 border border-sky-800 px-2.5 py-0.5 rounded-full font-bold">
-                  Kelas 5 - 6
-                </span>
+                <h3 class="font-extrabold text-white text-lg group-hover:text-sky-300 transition">Coding SD</h3>
+                <span class="px-2.5 py-0.5 bg-sky-950 border border-sky-800 text-sky-300 text-[10px] font-bold rounded-full">Kelas 5 - 6</span>
               </div>
-              <p class="text-xs text-slate-300 leading-relaxed">
+              <p class="text-xs text-slate-400 leading-relaxed line-clamp-2">
                 Pemrograman Visual Scratch, Logika Loop & Game Design
               </p>
             </div>
           </div>
 
-          <!-- Card 3: Informatika SMP (Kelas 7 - 9) -->
+          <!-- KARTU 3: INFORMATIKA SMP (KELAS 7 - 9) -->
           <div 
             onclick="openSubjectDashboard('Informatika')" 
-            class="group cursor-pointer p-6 rounded-3xl bg-[#0D1424] border border-purple-500/50 hover:border-purple-400 transition-all duration-300 flex items-center gap-4 hover:shadow-2xl hover:shadow-purple-500/10 hover:-translate-y-1"
+            class="group cursor-pointer bg-[#0B0F19] hover:bg-[#111726] border border-purple-500/40 hover:border-purple-400 rounded-2xl p-6 transition-all duration-300 shadow-lg hover:shadow-purple-500/10 flex items-center gap-4 relative overflow-hidden"
           >
-            <!-- Custom Purple Icon Box -->
-            <div class="w-14 h-14 rounded-2xl bg-[#231238] border border-purple-500/60 flex items-center justify-center text-purple-400 group-hover:scale-105 transition shrink-0">
+            <div class="w-14 h-14 rounded-2xl bg-purple-950/80 border border-purple-800 flex items-center justify-center text-purple-400 shrink-0 group-hover:scale-110 transition duration-300">
               <i data-lucide="cpu" class="w-7 h-7"></i>
             </div>
-            <div class="space-y-1.5">
+            <div class="space-y-1.5 flex-1 min-w-0">
               <div class="flex items-center gap-2 flex-wrap">
-                <h3 class="font-bold text-lg text-white group-hover:text-purple-300 transition">Informatika SMP</h3>
-                <span class="text-[11px] bg-purple-950 text-purple-300 border border-purple-800 px-2.5 py-0.5 rounded-full font-bold">
-                  Kelas 7 - 9
-                </span>
+                <h3 class="font-extrabold text-white text-lg group-hover:text-purple-300 transition">Informatika SMP</h3>
+                <span class="px-2.5 py-0.5 bg-purple-950 border border-purple-800 text-purple-300 text-[10px] font-bold rounded-full">Kelas 7 - 9</span>
               </div>
-              <p class="text-xs text-slate-300 leading-relaxed">
+              <p class="text-xs text-slate-400 leading-relaxed line-clamp-2">
                 Berpikir Komputasional, Algoritma, Flowchart & Web/Python
               </p>
             </div>
           </div>
 
         </div>
-
-        <div class="text-center pt-4">
-          <p class="text-xs text-slate-500">Klik salah satu kartu di atas untuk membuka daftar modul pembelajaran spesifik.</p>
-        </div>
-
       </div>
-    </main>
 
 
-    <!-- ========================================== -->
-    <!-- 3. HALAMAN DASHBOARD MATERI SPESIFIK (SUBJECT DASHBOARD) -->
-    <!-- ========================================== -->
-    <main id="subjectDashboardView" class="hidden flex-1 py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full space-y-6">
-      
-      <!-- Top Action Navigation Bar -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#111726] p-5 rounded-2xl border border-slate-800">
+      <!-- VIEW 2: DASHBOARD MATERI RUMPUN (SETELAH SALAH SATU KARTU DIKLIK) -->
+      <div id="subjectDashboardView" class="hidden space-y-6">
         
-        <div class="flex items-center gap-4">
-          <!-- Back Button -->
-          <button 
-            onclick="navigateToCategories()"
-            class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 text-xs font-bold transition active:scale-95"
-          >
+        <!-- TOP NAV BACK BUTTON & SUBJECT TITLE BANNER -->
+        <div class="flex items-center justify-between gap-4 flex-wrap pb-2 border-b border-slate-800">
+          <button onclick="navigateToCategories()" class="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl text-xs font-bold text-slate-300 flex items-center gap-2 transition">
             <i data-lucide="arrow-left" class="w-4 h-4 text-cyan-400"></i>
             <span>Kembali ke Menu Utama</span>
           </button>
 
-          <!-- Selected Category Title & Icon -->
-          <div class="flex items-center gap-3">
-            <div id="subjectHeaderIcon" class="w-10 h-10 rounded-xl bg-teal-950 border border-teal-800 flex items-center justify-center text-teal-400">
-              <i data-lucide="monitor" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <h2 id="subjectHeaderTitle" class="text-lg font-extrabold text-white leading-tight">TIK SD</h2>
-              <p id="subjectHeaderSubtitle" class="text-xs text-slate-400">Modul Pembelajaran Kelas 1 s/d 4</p>
-            </div>
+          <div class="flex items-center gap-2">
+            <button onclick="resetDefaultData()" title="Reset Data Sampel Default" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800 rounded-xl text-xs font-medium flex items-center gap-1.5 transition">
+              <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset Sampel
+            </button>
           </div>
         </div>
 
-        <!-- Add Material Button for this category -->
-        <button 
-          onclick="openAddModal()" 
-          class="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-md transition active:scale-95 shrink-0"
-        >
-          <i data-lucide="plus-circle" class="w-4 h-4"></i>
-          <span>Tambah Materi Baru</span>
-        </button>
-      </div>
+        <div class="bg-[#111726] border border-slate-800 rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div id="subjectHeaderIcon" class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0">
+              <!-- Dynamic Icon -->
+            </div>
+            <div>
+              <h2 id="subjectHeaderTitle" class="text-xl font-extrabold text-white">Nama Rumpun</h2>
+              <p id="subjectHeaderSubtitle" class="text-xs text-slate-400">Deskripsi ringkas rumpun</p>
+            </div>
+          </div>
 
-      <!-- Filters & Search Toolbar -->
-      <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 pb-2 border-b border-slate-800/80">
-        
-        <!-- Dynamic Grade Filter Pills -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0" id="gradePillsContainer">
-          <!-- Dynamically populated by JS -->
+          <!-- SEARCH INPUT -->
+          <div class="w-full sm:w-64 relative">
+            <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-3 text-slate-500"></i>
+            <input 
+              type="text" 
+              placeholder="Cari materi pembelajaran..." 
+              oninput="handleSearch(this.value)" 
+              class="w-full pl-10 pr-4 py-2 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-xs text-white"
+            >
+          </div>
         </div>
 
-        <!-- Search Bar -->
-        <div class="relative w-full md:w-72">
-          <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"></i>
-          <input 
-            type="text" 
-            id="searchInput"
-            oninput="handleSearch(this.value)"
-            placeholder="Cari kata kunci materi..."
-            class="w-full pl-10 pr-4 py-2 text-xs bg-[#111726] border border-slate-700/80 rounded-xl focus:border-cyan-500 focus:outline-none text-white placeholder-slate-500"
-          >
+        <!-- FILTER CLASS PILLS -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-2" id="gradePillsContainer">
+          <!-- Grade pills injected dynamically -->
         </div>
 
-      </div>
-
-      <!-- Material Cards Grid -->
-      <div id="subjectMaterialsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2"></div>
-
-      <!-- Empty State -->
-      <div id="subjectEmptyState" class="hidden text-center py-16 bg-[#111726] rounded-2xl border border-dashed border-slate-800 p-8">
-        <div class="w-16 h-16 bg-slate-800 text-cyan-400 rounded-full flex items-center justify-center mx-auto mb-4">
-          <i data-lucide="file-search" class="w-8 h-8"></i>
+        <!-- MATERIAL CARDS GRID -->
+        <div id="subjectMaterialsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- Cards injected dynamically -->
         </div>
-        <h3 class="font-bold text-lg text-white">Tidak Ada Materi Ditemukan</h3>
-        <p class="text-xs text-slate-400 max-w-sm mx-auto mt-1">Belum ada modul materi pada kelas ini atau coba ubah kata kunci pencarian.</p>
+
+        <!-- EMPTY STATE -->
+        <div id="subjectEmptyState" class="hidden py-16 text-center space-y-3 bg-[#111726] border border-slate-800 rounded-2xl">
+          <i data-lucide="book-open-check" class="w-12 h-12 text-slate-600 mx-auto"></i>
+          <h3 class="font-bold text-white text-base">Belum Ada Materi Pembelajaran</h3>
+          <p class="text-xs text-slate-400 max-w-sm mx-auto">Klik tombol "+ Tambah Materi Baru" di pojok kanan atas untuk membuat modul pelajaran baru.</p>
+        </div>
+
       </div>
 
     </main>
 
-
-    <!-- FOOTER -->
-    <footer class="mt-auto border-t border-slate-800/80 bg-[#111726] py-4 text-center text-xs text-slate-500">
-      <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <p>© 2026 <strong>EduCode Hub</strong> • Modul Ajar TIK, Coding & Informatika (Kelas 1 SD - IX SMP)</p>
-        <button onclick="resetDefaultData()" class="hover:text-cyan-400 transition text-[11px] underline">
-          Kembalikan Data Demo Awal
-        </button>
-      </div>
-    </footer>
   </div>
 
 
   <!-- ========================================== -->
-  <!-- 4. MODAL DETAIL LESSON VIEWER (3 TABS) -->
+  <!-- 3. MODAL DETAIL MATERI & KUIS (4 TAB VIEWER) -->
   <!-- ========================================== -->
-  <div id="detailModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
-    <div class="bg-[#111726] rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-800 overflow-hidden my-auto">
+  <div id="detailModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-[#111726] rounded-3xl max-w-4xl w-full shadow-2xl border border-slate-800 overflow-hidden my-auto max-h-[92vh] flex flex-col">
       
       <!-- Modal Header -->
-      <div class="px-6 py-4 bg-[#0B0F19] border-b border-slate-800 flex items-start justify-between">
-        <div class="space-y-1.5 pr-6">
-          <div class="flex items-center gap-2 flex-wrap" id="modalBadges"></div>
-          <h2 id="modalTitle" class="text-xl font-bold text-white leading-snug"></h2>
+      <div class="px-6 py-4 bg-[#0B0F19] border-b border-slate-800 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-3">
+          <span id="detailGradeBadge" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-cyan-950 text-cyan-300 border border-cyan-800">
+            Kelas 1 SD
+          </span>
+          <h3 id="detailTitle" class="font-bold text-white text-sm sm:text-base line-clamp-1">
+            Judul Modul Pembelajaran
+          </h3>
         </div>
-        <button onclick="closeDetailModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+        <button onclick="closeDetailModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <!-- Navigation Tabs -->
-      <div class="px-6 border-b border-slate-800 flex gap-6 bg-[#0B0F19] text-xs sm:text-sm font-semibold">
-        <button id="tab-reading-btn" onclick="switchModalTab('reading')" class="py-3 border-b-2 border-cyan-400 text-cyan-400 flex items-center gap-2 transition">
-          <i data-lucide="book-open" class="w-4 h-4"></i> 1. Ringkasan & Konsep Teori
+      <!-- Tab Navigation Bar -->
+      <div class="flex border-b border-slate-800 bg-slate-900/60 px-6 shrink-0 overflow-x-auto">
+        <button id="tabBtn1" onclick="switchTab(1)" class="px-4 py-3 text-xs font-bold border-b-2 border-cyan-400 text-cyan-400 flex items-center gap-2 whitespace-nowrap">
+          <i data-lucide="book-open" class="w-4 h-4"></i> 1. Ringkasan & Teori
         </button>
-        <button id="tab-practice-btn" onclick="switchModalTab('practice')" class="py-3 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2 transition">
-          <i data-lucide="terminal" class="w-4 h-4"></i> 2. Panduan Praktikum Komputer
+        <button id="tabBtn2" onclick="switchTab(2)" class="px-4 py-3 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 whitespace-nowrap">
+          <i data-lucide="wrench" class="w-4 h-4"></i> 2. Langkah Praktikum
         </button>
-        <button id="tab-quiz-btn" onclick="switchModalTab('quiz')" class="py-3 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2 transition">
-          <i data-lucide="help-circle" class="w-4 h-4"></i> 3. Kuis Evaluasi
+        <button id="tabBtn3" onclick="switchTab(3)" class="px-4 py-3 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 whitespace-nowrap">
+          <i data-lucide="help-circle" class="w-4 h-4"></i> 3. Evaluasi Kuis
+        </button>
+        <button id="tabBtn4" onclick="switchTab(4)" class="px-4 py-3 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 whitespace-nowrap">
+          <i data-lucide="file-text" class="w-4 h-4"></i> 4. Modul PDF
         </button>
       </div>
 
-      <!-- Modal Body Content -->
-      <div class="p-6 overflow-y-auto flex-1 space-y-6">
-
-        <!-- TAB 1: RINGKASAN & GAMBAR MATERI -->
-        <div id="tab-reading-content" class="space-y-5">
-          <div id="modalImageContainer" class="hidden rounded-2xl overflow-hidden border border-slate-800 bg-slate-900 shadow-md">
-            <img id="modalContentImage" src="" alt="Ilustrasi Materi" class="w-full max-h-72 object-cover">
-            <div class="p-2.5 bg-slate-900/90 text-[11px] text-slate-400 text-center font-medium border-t border-slate-800">
-              Gambar / Diagram Ilustrasi Konsep Pembelajaran
-            </div>
+      <!-- Modal Body Tab Contents -->
+      <div class="p-6 overflow-y-auto flex-1 space-y-6 text-xs text-slate-300">
+        
+        <!-- TAB 1: TEORI & RINGKASAN -->
+        <div id="tabContent1" class="space-y-4">
+          <div class="rounded-2xl overflow-hidden max-h-64 bg-slate-900 border border-slate-800">
+            <img id="detailHeroImage" src="" alt="Modul Image" class="w-full h-full object-cover">
           </div>
+          <div class="p-4 bg-slate-900/60 border border-slate-800 rounded-2xl">
+            <h4 class="font-bold text-white text-sm mb-1">Garis Besar Ringkasan:</h4>
+            <p id="detailSummaryText" class="text-slate-300 leading-relaxed"></p>
+          </div>
+          <div id="detailParsedContent" class="space-y-4 leading-relaxed">
+            <!-- Parsed Content HTML injected here -->
+          </div>
+        </div>
 
-          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
-            <h4 class="text-xs font-bold text-cyan-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-              <i data-lucide="sparkles" class="w-4 h-4 text-cyan-400"></i> Poin Utama Pembelajaran
+        <!-- TAB 2: PRAKTIKUM -->
+        <div id="tabContent2" class="hidden space-y-4">
+          <div class="rounded-2xl overflow-hidden max-h-60 bg-slate-900 border border-slate-800">
+            <img id="detailPracticeImage" src="" alt="Practice Diagram" class="w-full h-full object-cover">
+          </div>
+          <div class="p-4 bg-slate-900/60 border border-slate-800 rounded-2xl space-y-3">
+            <h4 class="font-bold text-white text-sm flex items-center gap-2">
+              <i data-lucide="terminal" class="w-4 h-4 text-cyan-400"></i> Instuksi Kerja Praktikum Komputer:
             </h4>
-            <p id="modalSummary" class="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium"></p>
-          </div>
-
-          <div class="prose prose-invert max-w-none space-y-3 text-xs sm:text-sm text-slate-300 leading-relaxed" id="modalFullContent"></div>
-        </div>
-
-        <!-- TAB 2: PANDUAN PRAKTIKUM & GAMBAR DIAGRAM -->
-        <div id="tab-practice-content" class="hidden space-y-5">
-          <div id="modalPracticeImageContainer" class="hidden rounded-2xl overflow-hidden border border-slate-800 bg-slate-900 shadow-md">
-            <img id="modalPracticeImage" src="" alt="Langkah Praktikum" class="w-full max-h-64 object-cover">
-            <div class="p-2 bg-slate-900 text-[11px] text-slate-400 text-center font-mono border-t border-slate-800">
-              Tangkapan Layar / Diagram Panduan Praktikum Komputer
-            </div>
-          </div>
-
-          <div class="p-5 bg-[#090D16] rounded-2xl border border-slate-800 space-y-3 font-mono text-xs">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
-              <span class="text-cyan-400 font-bold flex items-center gap-2">
-                <i data-lucide="laptop" class="w-4 h-4"></i> Computer Lab Guide & Steps
-              </span>
-              <span class="text-slate-500">Lab Mode</span>
-            </div>
-            <div id="practiceStepsContainer" class="space-y-3 text-slate-300 pt-1"></div>
+            <ul id="detailPracticeList" class="space-y-2 font-mono text-slate-300">
+              <!-- Injected Practice Steps -->
+            </ul>
           </div>
         </div>
 
-        <!-- TAB 3: KUIS EVALUASI INTERAKTIF -->
-        <div id="tab-quiz-content" class="hidden space-y-6">
-          <div class="flex items-center justify-between border-b pb-3 border-slate-800">
-            <div>
-              <h3 class="font-bold text-white flex items-center gap-2 text-sm sm:text-base">
-                <i data-lucide="award" class="w-5 h-5 text-amber-400"></i> Uji Pemahaman Siswa
-              </h3>
-              <p class="text-xs text-slate-400">Jawab pertanyaan berikut untuk mengevaluasi hasil belajar.</p>
-            </div>
-            <div id="quizScoreBadge" class="hidden px-3 py-1 bg-emerald-950 text-emerald-300 border border-emerald-800 text-xs font-bold rounded-full">
-              Skor: <span id="quizScoreText">0/0</span>
-            </div>
+        <!-- TAB 3: KUIS INTERAKTIF -->
+        <div id="tabContent3" class="hidden space-y-6">
+          <div id="quizContainer" class="space-y-6">
+            <!-- Injected Quiz Questions -->
           </div>
 
-          <div id="quizQuestionsContainer" class="space-y-6"></div>
+          <div id="quizResultBox" class="hidden p-5 bg-slate-900 border border-slate-800 rounded-2xl text-center space-y-2">
+            <h4 id="quizScoreTitle" class="text-lg font-extrabold text-white">Hasil Evaluasi Kuis</h4>
+            <p id="quizScoreSubtitle" class="text-xs text-slate-400"></p>
+          </div>
 
-          <div class="pt-4 border-t border-slate-800 flex justify-end gap-3">
-            <button id="resetQuizBtn" onclick="resetQuizState()" class="hidden px-4 py-2 border border-slate-700 text-slate-300 rounded-xl text-xs font-semibold hover:bg-slate-800">
-              Ulangi Kuis
+          <div class="flex justify-end gap-3 pt-2">
+            <button id="submitQuizBtn" onclick="submitQuiz()" class="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-bold rounded-xl text-xs shadow-md hover:from-emerald-400">
+              Kirim Jawaban Kuis
             </button>
-            <button id="submitQuizBtn" onclick="submitQuiz()" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center gap-2">
-              <i data-lucide="check-circle-2" class="w-4 h-4"></i> Periksa Jawaban
-            </button>
+          </div>
+        </div>
+
+        <!-- TAB 4: MODUL PDF READER -->
+        <div id="tabContent4" class="hidden space-y-4">
+          <div id="pdfContainer" class="space-y-3">
+            <!-- PDF Viewer dynamic content -->
           </div>
         </div>
 
@@ -468,14 +371,15 @@
 
 
   <!-- ========================================== -->
-  <!-- 5. MODAL TAMBAH MATERI BARU -->
+  <!-- 4. MODAL TAMBAH & EDIT MATERI BARU -->
   <!-- ========================================== -->
   <div id="addModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-[#111726] rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-800 overflow-hidden my-8">
       
       <div class="px-6 py-4 bg-[#0B0F19] border-b border-slate-800 flex items-center justify-between">
         <h3 class="font-bold text-white flex items-center gap-2 text-sm sm:text-base">
-          <i data-lucide="plus-circle" class="w-5 h-5 text-cyan-400"></i> Form Tambah Materi Ajar Baru
+          <i data-lucide="edit-3" class="w-5 h-5 text-cyan-400"></i>
+          <span id="addModalHeaderTitle">Form Tambah Materi Ajar Baru</span>
         </h3>
         <button onclick="closeAddModal()" class="text-slate-400 hover:text-white">
           <i data-lucide="x" class="w-5 h-5"></i>
@@ -519,14 +423,43 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
           <div>
-            <label class="block font-bold text-slate-300 mb-1">URL Gambar Ilustrasi Materi (Opsional)</label>
-            <input type="url" id="addImageUrl" placeholder="https://images.unsplash.com/..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white">
+            <label class="block font-bold text-slate-300 mb-1">URL Gambar Ilustrasi Materi (Bisa Link Google Drive)</label>
+            <input type="url" id="addImageUrl" placeholder="https://images.unsplash.com/... atau Google Drive share link" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white">
           </div>
 
           <div>
-            <label class="block font-bold text-slate-300 mb-1">URL Gambar Diagram Praktikum (Opsional)</label>
-            <input type="url" id="addPracticeImageUrl" placeholder="https://images.unsplash.com/..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white">
+            <label class="block font-bold text-slate-300 mb-1">URL Gambar Diagram Praktikum</label>
+            <input type="url" id="addPracticeImageUrl" placeholder="https://images.unsplash.com/... atau Google Drive share link" class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white">
           </div>
+        </div>
+
+        <!-- BOX UPLOAD FILE PDF / LINK PDF -->
+        <div class="p-3.5 bg-slate-900/90 border border-slate-700/80 rounded-2xl space-y-2.5">
+          <label class="block font-bold text-cyan-400 flex items-center gap-1.5 text-xs">
+            <i data-lucide="file-up" class="w-4 h-4"></i> File Modul PDF Pembelajaran (Opsional)
+          </label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <span class="text-[11px] text-slate-400 block mb-1">📁 Upload PDF dari Laptop/Komputer:</span>
+              <input 
+                type="file" 
+                id="addPdfFile" 
+                accept="application/pdf" 
+                onchange="handlePdfUpload(event)"
+                class="w-full text-[11px] text-slate-400 file:mr-2.5 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-cyan-950 file:text-cyan-400 hover:file:bg-cyan-900 border border-slate-800 rounded-xl bg-slate-950 p-1 cursor-pointer"
+              >
+            </div>
+            <div>
+              <span class="text-[11px] text-slate-400 block mb-1">🔗 Atau Tuliskan Link / URL File PDF:</span>
+              <input 
+                type="url" 
+                id="addPdfUrl" 
+                placeholder="https://example.com/modul.pdf" 
+                class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl focus:border-cyan-500 focus:outline-none text-white text-xs"
+              >
+            </div>
+          </div>
+          <input type="hidden" id="addPdfData">
         </div>
 
         <div>
@@ -588,7 +521,7 @@
           <button type="button" onclick="closeAddModal()" class="px-4 py-2 font-semibold text-slate-400 hover:bg-slate-800 rounded-xl">
             Batal
           </button>
-          <button type="submit" class="px-5 py-2 font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-md transition">
+          <button type="submit" id="addModalSubmitBtn" class="px-5 py-2 font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-md transition">
             Simpan Materi Ajar
           </button>
         </div>
@@ -599,7 +532,7 @@
 
 
   <!-- TOAST NOTIFICATION -->
-  <div id="toast" class="fixed bottom-6 right-6 z-50 hidden transform transition-all duration-300 translate-y-10 opacity-0">
+  <div id="toast" class="fixed bottom-6 right-6 z-50 hidden transform transition-all duration-300 translate-y-10 opacity-0 pointer-events-none">
     <div class="bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700 text-xs">
       <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
       <span id="toastMessage">Pesan Notifikasi</span>
@@ -611,7 +544,18 @@
   <!-- JAVASCRIPT LOGIC SYSTEM -->
   <!-- ========================================== -->
   <script>
-    // DEFAULT CURRICULUM SEED DATA WITH INLINE IMAGES
+    // HELPER: GOOGLE DRIVE LINK AUTO-CONVERTER
+    function convertGoogleDriveUrl(url) {
+      if (!url) return '';
+      url = url.trim();
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) {
+        return `https://lh3.googleusercontent.com/d/${match[1]}`;
+      }
+      return url;
+    }
+
+    // DEFAULT CURRICULUM SEED DATA WITH INLINE IMAGES & DEMO PDF
     const DEFAULT_MATERIALS = [
       // KELAS 1 SD - TIK
       {
@@ -622,6 +566,7 @@
         duration: '35 Menit',
         imageUrl: 'https://images.unsplash.com/photo-1587831990711-23ca6441447b?w=800&auto=format&fit=crop&q=80',
         practiceImageUrl: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&auto=format&fit=crop&q=80',
+        pdfUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
         summary: 'Mengenal bagian-bagian fisik utama komputer seperti Monitor, CPU, Keyboard, dan Mouse secara visual.',
         content: `
 ### 1. Apa itu Komputer?
@@ -923,10 +868,11 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
     let activeSubject = null; // 'TIK', 'Coding', 'Informatika'
     let activeGradeFilter = 'ALL';
     let activeMaterial = null;
+    let editingMaterialId = null;
     let quizUserAnswers = {};
     let quizSubmitted = false;
 
-    // APPLICATION INITIALIZATION ON LOAD
+    // INITIALIZATION ON LOAD
     window.addEventListener('DOMContentLoaded', () => {
       loadStorage();
       checkAuth();
@@ -953,14 +899,12 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
     }
 
     function resetDefaultData() {
-      if (confirm("Apakah Anda yakin ingin mengembalikan data ke sampel default? Data tambahan Anda akan dihapus.")) {
-        materials = [...DEFAULT_MATERIALS];
-        saveStorage();
-        if (activeSubject) {
-          renderSubjectDashboard();
-        }
-        showToast("Data sampel berhasil dikembalikan!");
+      materials = [...DEFAULT_MATERIALS];
+      saveStorage();
+      if (activeSubject) {
+        renderSubjectDashboard();
       }
+      showToast("Data sampel berhasil dikembalikan!");
     }
 
     // AUTHENTICATION SYSTEM
@@ -989,7 +933,7 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
         localStorage.setItem('educode_user', JSON.stringify({ username: 'admin', role: 'Pengajar' }));
         errEl.classList.add('hidden');
         checkAuth();
-        showToast('Berhasil masuk! Selamat datang Pak Pengajar.');
+        showToast('Berhasil masuk! Selamat datang Pak Lilik.');
       } else {
         errEl.classList.remove('hidden');
       }
@@ -1117,11 +1061,13 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
         if (m.subject === "Coding") badgeColor = "bg-sky-950 text-sky-300 border-sky-800";
         if (m.subject === "Informatika") badgeColor = "bg-purple-950 text-purple-300 border-purple-800";
 
+        const displayImg = convertGoogleDriveUrl(m.imageUrl);
+
         return `
           <div class="bg-[#111726] border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition-all duration-300 flex flex-col group shadow-lg">
             <div class="relative h-44 overflow-hidden bg-slate-900">
               <img 
-                src="${m.imageUrl}" 
+                src="${displayImg}" 
                 alt="${m.title}" 
                 onerror="this.src='https://placehold.co/600x300/111726/38bdf8?text=${encodeURIComponent(m.title)}'"
                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
@@ -1147,13 +1093,23 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
                 </p>
               </div>
 
-              <button 
-                onclick="openDetailModal('${m.id}')"
-                class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-cyan-400 font-bold text-xs transition flex items-center justify-center gap-2 group-hover:border-cyan-500/50"
-              >
-                <span>Buka Modul & Kuis</span>
-                <i data-lucide="arrow-right" class="w-4 h-4"></i>
-              </button>
+              <div class="flex items-center gap-2 pt-2">
+                <button 
+                  onclick="openDetailModal('${m.id}')"
+                  class="flex-1 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-cyan-400 font-bold text-xs transition flex items-center justify-center gap-2 group-hover:border-cyan-500/50"
+                >
+                  <span>Buka Modul & Kuis</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+                
+                <button 
+                  onclick="openEditModal('${m.id}')"
+                  title="Edit Materi Ini"
+                  class="p-2.5 rounded-xl bg-slate-900 hover:bg-amber-950/60 border border-slate-700/80 hover:border-amber-500/50 text-slate-400 hover:text-amber-400 font-bold text-xs transition flex items-center justify-center shrink-0"
+                >
+                  <i data-lucide="pencil" class="w-4 h-4"></i>
+                </button>
+              </div>
             </div>
           </div>
         `;
@@ -1163,306 +1119,254 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
     }
 
     // PARSER TEXT & INLINE IMAGES SYSTEM
-    function parseFormattedText(text) {
+    function parseCustomContent(text) {
       if (!text) return '';
+      let lines = text.split('\n');
+      let html = '';
 
-      let html = text;
-
-      // 1. Process inline image tags: [gambar: URL | Keterangan] or ![keterangan](URL)
-      html = html.replace(/\[gambar:\s*([^|\]]+)(?:\|\s*([^\]]+))?\]/gi, (match, url, caption) => {
-        const capText = caption ? caption.trim() : 'Gambar Ilustrasi Pembelajaran';
-        const cleanUrl = url.trim();
-        return `
-          <figure class="my-4 border border-slate-800 bg-slate-900/90 rounded-2xl overflow-hidden shadow-md">
-            <img src="${cleanUrl}" alt="${capText}" onerror="this.src='https://placehold.co/600x300/1e293b/94a3b8?text=Gambar+Materi'" class="w-full max-h-72 object-cover">
-            <figcaption class="p-2.5 text-center text-xs text-slate-400 bg-slate-900 border-t border-slate-800 font-medium flex items-center justify-center gap-1.5">
-              <i data-lucide="image" class="w-3.5 h-3.5 text-cyan-400"></i> ${capText}
-            </figcaption>
-          </figure>
-        `;
-      });
-
-      html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/gi, (match, caption, url) => {
-        const capText = caption ? caption.trim() : 'Gambar Ilustrasi Pembelajaran';
-        const cleanUrl = url.trim();
-        return `
-          <figure class="my-4 border border-slate-800 bg-slate-900/90 rounded-2xl overflow-hidden shadow-md">
-            <img src="${cleanUrl}" alt="${capText}" onerror="this.src='https://placehold.co/600x300/1e293b/94a3b8?text=Gambar+Materi'" class="w-full max-h-72 object-cover">
-            <figcaption class="p-2.5 text-center text-xs text-slate-400 bg-slate-900 border-t border-slate-800 font-medium flex items-center justify-center gap-1.5">
-              <i data-lucide="image" class="w-3.5 h-3.5 text-cyan-400"></i> ${capText}
-            </figcaption>
-          </figure>
-        `;
-      });
-
-      // 2. Process Tip Box tags: [tips: Keterangan]
-      html = html.replace(/\[tips:\s*([^\]]+)\]/gi, (match, tipText) => {
-        return `
-          <div class="my-3 p-3.5 bg-amber-950/40 border border-amber-800/80 rounded-xl text-amber-200 text-xs flex items-start gap-2.5 shadow-sm">
-            <i data-lucide="lightbulb" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
-            <span class="leading-relaxed">${tipText.trim()}</span>
-          </div>
-        `;
-      });
-
-      // 3. Process Sub-headings: ### Subjudul
-      html = html.replace(/^###\s+(.*$)/gim, '<h4 class="text-sm font-bold text-cyan-400 mt-4 mb-2 flex items-center gap-1.5"><i data-lucide="chevron-right" class="w-4 h-4"></i> $1</h4>');
-
-      // 4. Process Bold text: **teks**
-      html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>');
-
-      // 5. Line breaks & paragraph processing
-      let lines = html.split('\n').map(l => l.trim());
-      let processed = [];
       lines.forEach(line => {
-        if (line.startsWith('<figure') || line.startsWith('</figure') || line.startsWith('<figcaption') || line.startsWith('<div') || line.startsWith('<h4') || line.startsWith('<img')) {
-          processed.push(line);
-        } else if (line.startsWith('- ')) {
-          processed.push(`<li class="ml-4 list-disc text-slate-300 font-medium my-1">${line.substring(2)}</li>`);
-        } else if (line.length > 0) {
-          processed.push(`<p class="mb-2 leading-relaxed font-medium">${line}</p>`);
+        let trimmed = line.trim();
+        if (!trimmed) return;
+
+        // Inline Image Parser [gambar: URL | Caption]
+        if (trimmed.startsWith('[gambar:') && trimmed.endsWith(']')) {
+          let inner = trimmed.substring(8, trimmed.length - 1);
+          let parts = inner.split('|');
+          let url = convertGoogleDriveUrl(parts[0].trim());
+          let caption = parts[1] ? parts[1].trim() : 'Gambar Pembelajaran';
+          
+          html += `
+            <div class="my-4 rounded-2xl overflow-hidden border border-slate-800 bg-slate-950/90 p-2 space-y-2">
+              <img src="${url}" alt="${caption}" onerror="this.src='https://placehold.co/600x350/0B0F19/38bdf8?text=Gambar+Materi'" class="w-full h-auto rounded-xl max-h-80 object-cover">
+              <p class="text-center text-[11px] text-cyan-400 font-medium italic">${caption}</p>
+            </div>
+          `;
+          return;
         }
+
+        // Subtitle Heading ###
+        if (trimmed.startsWith('###')) {
+          html += `<h3 class="font-extrabold text-white text-sm sm:text-base mt-4 mb-2 text-cyan-300 flex items-center gap-2">📌 ${trimmed.replace(/^###\s*/, '')}</h3>`;
+          return;
+        }
+
+        // Tip Box [tips: Note]
+        if (trimmed.startsWith('[tips:') && trimmed.endsWith(']')) {
+          let tipText = trimmed.substring(6, trimmed.length - 1).trim();
+          html += `
+            <div class="my-3 p-3.5 bg-amber-950/40 border border-amber-800/80 rounded-xl text-amber-200 text-xs flex items-start gap-2.5">
+              <i data-lucide="lightbulb" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
+              <div class="leading-relaxed font-medium">${tipText}</div>
+            </div>
+          `;
+          return;
+        }
+
+        // Bold formatting **text**
+        let formattedLine = trimmed.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>');
+        html += `<p class="mb-2 leading-relaxed text-slate-300">${formattedLine}</p>`;
       });
 
-      return processed.join('');
+      return html;
     }
 
-    // HELPER TOOLBAR & LIVE PREVIEW FUNCTIONS
-    function insertHelperTag(textareaId, type) {
-      const textarea = document.getElementById(textareaId);
-      if (!textarea) return;
-
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      const text = textarea.value;
-
-      let insertText = '';
-
-      if (type === 'image') {
-        const url = prompt("Masukkan URL Gambar (HTTP/HTTPS):", "https://images.unsplash.com/photo-1587831990711-23ca6441447b?w=800&auto=format&fit=crop&q=80");
-        if (!url) return;
-        const caption = prompt("Masukkan Keterangan / Judul Gambar (opsional):", "Gambar Ilustrasi Bagian Komputer");
-        insertText = `\n[gambar: ${url} | ${caption || 'Gambar Ilustrasi Pembelajaran'}]\n`;
-      } else if (type === 'heading') {
-        insertText = `\n### Judul Topik Pembahasan Baru\n`;
-      } else if (type === 'tip') {
-        insertText = `\n[tips: Catatan penting atau petunjuk praktis bagi siswa di sini]\n`;
-      } else if (type === 'bold') {
-        const selected = text.substring(start, end) || 'teks tebal';
-        insertText = `**${selected}**`;
-      }
-
-      textarea.value = text.substring(0, start) + insertText + text.substring(end);
-      textarea.focus();
-      textarea.selectionStart = textarea.selectionEnd = start + insertText.length;
-
-      updateLivePreview();
-    }
-
-    function updateLivePreview() {
-      const contentVal = document.getElementById('addContent').value;
-      const previewEl = document.getElementById('contentLivePreview');
-      if (previewEl) {
-        if (!contentVal.trim()) {
-          previewEl.innerHTML = `<em class="text-slate-500 text-[11px]">Ketik materi atau klik tombol "+ Gambar di Teks" di atas untuk melihat tampilan live di sini...</em>`;
-        } else {
-          previewEl.innerHTML = parseFormattedText(contentVal);
-          lucide.createIcons();
-        }
-      }
-    }
-
-    // MODAL LESSON VIEWER LOGIC
+    // DETAIL MODAL & TAB SYSTEM
     function openDetailModal(id) {
       activeMaterial = materials.find(m => m.id === id);
       if (!activeMaterial) return;
 
+      document.getElementById('detailTitle').textContent = activeMaterial.title;
+      document.getElementById('detailGradeBadge').textContent = `Kelas ${activeMaterial.grade} ${activeMaterial.subject === 'Informatika' ? 'SMP' : 'SD'}`;
+      document.getElementById('detailHeroImage').src = convertGoogleDriveUrl(activeMaterial.imageUrl);
+      document.getElementById('detailPracticeImage').src = convertGoogleDriveUrl(activeMaterial.practiceImageUrl || activeMaterial.imageUrl);
+      document.getElementById('detailSummaryText').textContent = activeMaterial.summary;
+      
+      // Tab 1 Teori
+      document.getElementById('detailParsedContent').innerHTML = parseCustomContent(activeMaterial.content);
+
+      // Tab 2 Praktikum
+      const practiceList = document.getElementById('detailPracticeList');
+      if (activeMaterial.practice && activeMaterial.practice.length > 0) {
+        practiceList.innerHTML = activeMaterial.practice.map(step => `
+          <li class="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-start gap-2 text-xs">
+            <span class="text-cyan-400 font-bold shrink-0">•</span>
+            <span>${step}</span>
+          </li>
+        `).join('');
+      } else {
+        practiceList.innerHTML = '<li class="text-slate-500">Tidak ada petunjuk praktikum khusus.</li>';
+      }
+
+      // Tab 3 Kuis State Reset & Render
       quizUserAnswers = {};
       quizSubmitted = false;
+      renderQuizTab();
 
-      document.getElementById('modalTitle').textContent = activeMaterial.title;
-      document.getElementById('modalSummary').textContent = activeMaterial.summary;
-      document.getElementById('modalFullContent').innerHTML = parseFormattedText(activeMaterial.content);
+      // Tab 4 PDF Render
+      renderPdfTab();
 
-      const imgContainer = document.getElementById('modalImageContainer');
-      const imgEl = document.getElementById('modalContentImage');
-      if (activeMaterial.imageUrl) {
-        imgEl.src = activeMaterial.imageUrl;
-        imgContainer.classList.remove('hidden');
-      } else {
-        imgContainer.classList.add('hidden');
-      }
-
-      const practiceImgContainer = document.getElementById('modalPracticeImageContainer');
-      const practiceImgEl = document.getElementById('modalPracticeImage');
-      if (activeMaterial.practiceImageUrl) {
-        practiceImgEl.src = activeMaterial.practiceImageUrl;
-        practiceImgContainer.classList.remove('hidden');
-      } else {
-        practiceImgContainer.classList.add('hidden');
-      }
-
-      const practiceContainer = document.getElementById('practiceStepsContainer');
-      const steps = activeMaterial.practice || ["Praktikum dilaksanakan secara langsung di laboratorium komputer."];
-      practiceContainer.innerHTML = steps.map((step, idx) => `
-        <div class="flex items-start gap-3 bg-slate-900/90 p-3 rounded-xl border border-slate-800">
-          <span class="w-5 h-5 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-400 font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">${idx + 1}</span>
-          <div class="text-xs text-slate-200 leading-relaxed font-mono">${parseFormattedText(step)}</div>
-        </div>
-      `).join('');
-
-      const gNum = parseInt(activeMaterial.grade);
-      let badgeLabel = "TIK SD";
-      if (gNum >= 5 && gNum <= 6) badgeLabel = "Coding SD";
-      if (gNum >= 7) badgeLabel = "Informatika SMP";
-
-      document.getElementById('modalBadges').innerHTML = `
-        <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-indigo-950 text-indigo-300 border border-indigo-800">
-          Kelas ${activeMaterial.grade}
-        </span>
-        <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-800 text-slate-300 border border-slate-700">
-          ${badgeLabel}
-        </span>
-      `;
-
-      renderQuizQuestions();
-      switchModalTab('reading');
-
+      switchTab(1);
       document.getElementById('detailModal').classList.remove('hidden');
       lucide.createIcons();
-    }
-
-    function switchModalTab(tab) {
-      const tabs = ['reading', 'practice', 'quiz'];
-      tabs.forEach(t => {
-        const btn = document.getElementById(`tab-${t}-btn`);
-        const content = document.getElementById(`tab-${t}-content`);
-
-        if (t === tab) {
-          btn.className = "py-3 border-b-2 border-cyan-400 text-cyan-400 flex items-center gap-2 transition";
-          content.classList.remove('hidden');
-        } else {
-          btn.className = "py-3 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2 transition";
-          content.classList.add('hidden');
-        }
-      });
     }
 
     function closeDetailModal() {
       document.getElementById('detailModal').classList.add('hidden');
     }
 
-    // QUIZ FUNCTIONS
-    function renderQuizQuestions() {
-      const container = document.getElementById('quizQuestionsContainer');
-      const scoreBadge = document.getElementById('quizScoreBadge');
-      const resetBtn = document.getElementById('resetQuizBtn');
-      const submitBtn = document.getElementById('submitQuizBtn');
+    function switchTab(tabIndex) {
+      for (let i = 1; i <= 4; i++) {
+        const btn = document.getElementById(`tabBtn${i}`);
+        const content = document.getElementById(`tabContent${i}`);
+        if (i === tabIndex) {
+          btn.className = "px-4 py-3 text-xs font-bold border-b-2 border-cyan-400 text-cyan-400 flex items-center gap-2 whitespace-nowrap";
+          content.classList.remove('hidden');
+        } else {
+          btn.className = "px-4 py-3 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 whitespace-nowrap";
+          content.classList.add('hidden');
+        }
+      }
+      lucide.createIcons();
+    }
 
-      scoreBadge.classList.add('hidden');
-      resetBtn.classList.add('hidden');
+    // QUIZ LOGIC
+    function renderQuizTab() {
+      const container = document.getElementById('quizContainer');
+      const submitBtn = document.getElementById('submitQuizBtn');
+      const resultBox = document.getElementById('quizResultBox');
+
+      resultBox.classList.add('hidden');
       submitBtn.classList.remove('hidden');
 
       if (!activeMaterial.quiz || activeMaterial.quiz.length === 0) {
-        container.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada kuis evaluasi untuk materi ini.</p>`;
+        container.innerHTML = '<p class="text-slate-500 italic text-center py-6">Kuis evaluasi belum ditambahkan pada materi ini.</p>';
         submitBtn.classList.add('hidden');
         return;
       }
 
-      container.innerHTML = activeMaterial.quiz.map((q, qIdx) => `
-        <div class="p-4 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-3">
-          <p class="font-bold text-slate-200 text-xs sm:text-sm">
-            ${qIdx + 1}. ${q.question}
-          </p>
-
+      container.innerHTML = activeMaterial.quiz.map((q, qIndex) => `
+        <div class="p-4 bg-slate-900 border border-slate-800 rounded-2xl space-y-3">
+          <h4 class="font-bold text-white text-xs sm:text-sm leading-relaxed">
+            ${qIndex + 1}. ${q.question}
+          </h4>
           <div class="space-y-2">
-            ${q.options.map((opt, optIdx) => `
-              <label 
-                id="q_${qIdx}_opt_${optIdx}"
-                onclick="selectQuizOption(${qIdx}, ${optIdx})"
-                class="flex items-center gap-3 p-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:border-slate-700 cursor-pointer text-xs text-slate-300 transition"
-              >
-                <input type="radio" name="quiz_q_${qIdx}" value="${optIdx}" class="hidden">
-                <span class="w-5 h-5 rounded-full border border-slate-700 flex items-center justify-center font-bold text-[10px] shrink-0 text-slate-400 font-mono">
-                  ${String.fromCharCode(65 + optIdx)}
-                </span>
-                <span class="flex-1 font-medium">${opt}</span>
-              </label>
-            `).join('')}
-          </div>
+            ${q.options.map((opt, oIndex) => {
+              const isSelected = quizUserAnswers[qIndex] === oIndex;
+              let btnStyle = "bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700";
 
-          <div id="quiz_exp_${qIdx}" class="hidden p-3 rounded-xl text-xs space-y-1"></div>
+              if (quizSubmitted) {
+                if (oIndex === q.answer) {
+                  btnStyle = "bg-emerald-950 border-emerald-600 text-emerald-200 font-bold";
+                } else if (isSelected && oIndex !== q.answer) {
+                  btnStyle = "bg-red-950 border-red-600 text-red-200";
+                }
+              } else if (isSelected) {
+                btnStyle = "bg-cyan-950 border-cyan-500 text-cyan-300 font-bold";
+              }
+
+              return `
+                <button 
+                  onclick="selectQuizOption(${qIndex}, ${oIndex})" 
+                  ${quizSubmitted ? 'disabled' : ''}
+                  class="w-full text-left p-3 rounded-xl border text-xs transition flex items-center justify-between ${btnStyle}"
+                >
+                  <span>${String.fromCharCode(65 + oIndex)}. ${opt}</span>
+                  ${isSelected ? '<i data-lucide="check" class="w-4 h-4 text-cyan-400"></i>' : ''}
+                </button>
+              `;
+            }).join('')}
+          </div>
+          ${quizSubmitted ? `
+            <div class="mt-2 p-3 bg-slate-950 border border-slate-800 rounded-xl text-[11px] text-slate-400 space-y-1">
+              <span class="font-bold text-cyan-400">Penjelasan / Pembahasan:</span>
+              <p>${q.explanation || 'Jawaban yang tepat adalah opsi ' + String.fromCharCode(65 + q.answer)}</p>
+            </div>
+          ` : ''}
         </div>
       `).join('');
+
+      lucide.createIcons();
     }
 
-    function selectQuizOption(qIdx, optIdx) {
+    function selectQuizOption(qIndex, oIndex) {
       if (quizSubmitted) return;
-      quizUserAnswers[qIdx] = optIdx;
-
-      const q = activeMaterial.quiz[qIdx];
-      q.options.forEach((_, idx) => {
-        const label = document.getElementById(`q_${qIdx}_opt_${idx}`);
-        if (idx === optIdx) {
-          label.className = "flex items-center gap-3 p-3 rounded-xl border border-cyan-500 bg-cyan-950/40 cursor-pointer text-xs text-white transition";
-        } else {
-          label.className = "flex items-center gap-3 p-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:border-slate-700 cursor-pointer text-xs text-slate-300 transition";
-        }
-      });
+      quizUserAnswers[qIndex] = oIndex;
+      renderQuizTab();
     }
 
     function submitQuiz() {
-      if (!activeMaterial || !activeMaterial.quiz) return;
+      if (!activeMaterial.quiz || activeMaterial.quiz.length === 0) return;
 
       const total = activeMaterial.quiz.length;
-      let correctCount = 0;
+      let correct = 0;
 
-      activeMaterial.quiz.forEach((q, qIdx) => {
-        const userAns = quizUserAnswers[qIdx];
-        const expEl = document.getElementById(`quiz_exp_${qIdx}`);
-
-        q.options.forEach((_, optIdx) => {
-          const label = document.getElementById(`q_${qIdx}_opt_${optIdx}`);
-          if (optIdx === q.answer) {
-            label.className = "flex items-center gap-3 p-3 rounded-xl border border-emerald-500 bg-emerald-950/50 text-xs text-emerald-200 transition font-bold";
-          } else if (userAns === optIdx && userAns !== q.answer) {
-            label.className = "flex items-center gap-3 p-3 rounded-xl border border-red-500 bg-red-950/50 text-xs text-red-200 transition";
-          }
-        });
-
-        expEl.classList.remove('hidden');
-        if (userAns === q.answer) {
-          correctCount++;
-          expEl.className = "p-3 rounded-xl text-xs bg-emerald-950/40 border border-emerald-800/80 text-emerald-300";
-          expEl.innerHTML = `<strong>Jawaban Benar!</strong> ${q.explanation || ''}`;
-        } else {
-          expEl.className = "p-3 rounded-xl text-xs bg-red-950/40 border border-red-800/80 text-red-300";
-          expEl.innerHTML = `<strong>Jawaban Kurang Tepat.</strong> ${q.explanation || ''}`;
+      activeMaterial.quiz.forEach((q, idx) => {
+        if (quizUserAnswers[idx] === q.answer) {
+          correct++;
         }
       });
 
       quizSubmitted = true;
+      renderQuizTab();
 
-      document.getElementById('quizScoreText').textContent = `${correctCount} / ${total}`;
-      document.getElementById('quizScoreBadge').classList.remove('hidden');
+      const score = Math.round((correct / total) * 100);
+      const resultBox = document.getElementById('quizResultBox');
+      const scoreTitle = document.getElementById('quizScoreTitle');
+      const scoreSub = document.getElementById('quizScoreSubtitle');
+
+      scoreTitle.textContent = `Nilai Kuis Siswa: ${score} / 100`;
+      scoreSub.textContent = `Menjawab benar ${correct} dari ${total} soal evaluasi.`;
+      resultBox.classList.remove('hidden');
+
       document.getElementById('submitQuizBtn').classList.add('hidden');
-      document.getElementById('resetQuizBtn').classList.remove('hidden');
 
-      if (correctCount === total && typeof confetti === 'function') {
-        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+      if (score >= 70 && typeof confetti === 'function') {
+        confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
       }
     }
 
-    function resetQuizState() {
-      quizUserAnswers = {};
-      quizSubmitted = false;
-      renderQuizQuestions();
+    // PDF READER TAB LOGIC
+    function renderPdfTab() {
+      const container = document.getElementById('pdfContainer');
+      const pdfUrl = activeMaterial.pdfUrl;
+
+      if (!pdfUrl) {
+        container.innerHTML = `
+          <div class="p-8 text-center bg-slate-900 border border-slate-800 rounded-2xl space-y-3">
+            <i data-lucide="file-minus" class="w-10 h-10 text-slate-600 mx-auto"></i>
+            <h4 class="font-bold text-white text-sm">Dokumen PDF Belum Diunggah</h4>
+            <p class="text-xs text-slate-400">Pengajar belum menyisipkan modul PDF untuk materi ini. Gunakan tombol Edit untuk mengunggah PDF.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="flex items-center justify-between bg-slate-900 border border-slate-800 p-3 rounded-2xl">
+          <span class="font-bold text-white text-xs flex items-center gap-2">
+            <i data-lucide="file-text" class="w-4 h-4 text-cyan-400"></i> Modul File PDF Pembelajaran
+          </span>
+          <a href="${pdfUrl}" target="_blank" download="Modul-${activeMaterial.title}.pdf" class="px-3 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1.5 transition">
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Buka / Download PDF
+          </a>
+        </div>
+        <div class="w-full h-[450px] bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
+          <iframe src="${pdfUrl}" class="w-full h-full border-0"></iframe>
+        </div>
+      `;
     }
 
-    // FORM TAMBAH MATERI
+    // FORM TAMBAH & EDIT MATERI
     function openAddModal() {
+      editingMaterialId = null;
       document.getElementById('addMaterialForm').reset();
+      document.getElementById('addPdfData').value = '';
       
+      const modalTitle = document.getElementById('addModalHeaderTitle');
+      if (modalTitle) modalTitle.textContent = 'Form Tambah Materi Ajar Baru';
+      const submitBtn = document.getElementById('addModalSubmitBtn');
+      if (submitBtn) submitBtn.textContent = 'Simpan Materi Ajar';
+
       const gradeSelect = document.getElementById('addGrade');
       if (activeSubject === 'Coding') {
         gradeSelect.value = '5';
@@ -1475,23 +1379,115 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
       autoSelectSubjectByGrade();
       updateLivePreview();
       document.getElementById('addModal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function openEditModal(id) {
+      const mat = materials.find(m => m.id === id);
+      if (!mat) return;
+
+      editingMaterialId = id;
+      document.getElementById('addMaterialForm').reset();
+
+      document.getElementById('addTitle').value = mat.title || '';
+      document.getElementById('addGrade').value = mat.grade || '1';
+      document.getElementById('addSubject').value = mat.subject || 'TIK';
+      document.getElementById('addImageUrl').value = mat.imageUrl || '';
+      document.getElementById('addPracticeImageUrl').value = mat.practiceImageUrl || '';
+      
+      if (mat.pdfUrl && mat.pdfUrl.startsWith('data:')) {
+        document.getElementById('addPdfData').value = mat.pdfUrl;
+        document.getElementById('addPdfUrl').value = '';
+      } else {
+        document.getElementById('addPdfData').value = '';
+        document.getElementById('addPdfUrl').value = mat.pdfUrl || '';
+      }
+
+      document.getElementById('addSummary').value = mat.summary || '';
+      document.getElementById('addContent').value = mat.content || '';
+      document.getElementById('addPractice').value = mat.practice ? mat.practice.join('\n') : '';
+
+      const modalTitle = document.getElementById('addModalHeaderTitle');
+      if (modalTitle) modalTitle.textContent = 'Form Edit Perubahan Materi';
+      const submitBtn = document.getElementById('addModalSubmitBtn');
+      if (submitBtn) submitBtn.textContent = 'Simpan Perubahan Materi';
+
+      autoSelectSubjectByGrade();
+      updateLivePreview();
+      document.getElementById('addModal').classList.remove('hidden');
+      lucide.createIcons();
     }
 
     function closeAddModal() {
+      editingMaterialId = null;
       document.getElementById('addModal').classList.add('hidden');
     }
 
     function autoSelectSubjectByGrade() {
-      const gVal = parseInt(document.getElementById('addGrade').value);
+      const gradeVal = parseInt(document.getElementById('addGrade').value);
       const subjectInput = document.getElementById('addSubject');
-
-      if (gVal <= 4) {
-        subjectInput.value = "TIK";
-      } else if (gVal <= 6) {
-        subjectInput.value = "Coding";
-      } else {
-        subjectInput.value = "Informatika";
+      if (gradeVal >= 1 && gradeVal <= 4) {
+        subjectInput.value = 'TIK';
+      } else if (gradeVal >= 5 && gradeVal <= 6) {
+        subjectInput.value = 'Coding';
+      } else if (gradeVal >= 7 && gradeVal <= 9) {
+        subjectInput.value = 'Informatika';
       }
+    }
+
+    function insertHelperTag(textareaId, tagType) {
+      const textarea = document.getElementById(textareaId);
+      if (!textarea) return;
+
+      let start = textarea.selectionStart;
+      let end = textarea.selectionEnd;
+      let val = textarea.value;
+
+      let insertedText = '';
+      if (tagType === 'image') {
+        const urlPrompt = prompt("Masukkan Link URL Gambar (Bisa link Google Drive atau Unsplash):");
+        if (!urlPrompt) return;
+        const captionPrompt = prompt("Masukkan Keterangan / Caption Gambar:", "Gambar Pembelajaran");
+        insertedText = `\n[gambar: ${urlPrompt} | ${captionPrompt || 'Gambar Pembelajaran'}]\n`;
+      } else if (tagType === 'heading') {
+        insertedText = `\n### Judul Topik Bagian Baru\n`;
+      } else if (tagType === 'tip') {
+        insertedText = `\n[tips: Tuliskan catatan penting/tips singkat siswa di sini]\n`;
+      } else if (tagType === 'bold') {
+        insertedText = `**teks tebal**`;
+      }
+
+      textarea.value = val.substring(0, start) + insertedText + val.substring(end);
+      textarea.focus();
+      updateLivePreview();
+    }
+
+    function updateLivePreview() {
+      const text = document.getElementById('addContent').value;
+      const previewEl = document.getElementById('contentLivePreview');
+      if (!previewEl) return;
+      if (!text.trim()) {
+        previewEl.innerHTML = '<em class="text-slate-500 text-[11px]">Ketik materi atau klik tombol "+ Gambar di Teks" di atas untuk melihat tampilan live di sini...</em>';
+        return;
+      }
+      previewEl.innerHTML = parseCustomContent(text);
+      lucide.createIcons();
+    }
+
+    function handlePdfUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.type !== 'application/pdf') {
+        showToast('Mohon pilih file format PDF (.pdf)');
+        e.target.value = '';
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        document.getElementById('addPdfData').value = evt.target.result;
+        showToast('File PDF berhasil dimuat!');
+      };
+      reader.readAsDataURL(file);
     }
 
     function handleAddMaterial(e) {
@@ -1502,42 +1498,64 @@ Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar
       const subject = document.getElementById('addSubject').value;
       const imageUrl = document.getElementById('addImageUrl').value.trim();
       const practiceImageUrl = document.getElementById('addPracticeImageUrl').value.trim();
+      const pdfUrl = document.getElementById('addPdfData').value || document.getElementById('addPdfUrl').value.trim();
       const summary = document.getElementById('addSummary').value.trim();
       const content = document.getElementById('addContent').value.trim();
       const practiceText = document.getElementById('addPractice').value.trim();
 
       const practiceArray = practiceText ? practiceText.split('\n').filter(s => s.trim() !== '') : ["Praktikum laboratorium komputer."];
 
-      const newLesson = {
-        id: 'mat-' + Date.now(),
-        title,
-        grade,
-        subject,
-        duration: '40 Menit',
-        imageUrl: imageUrl || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=80',
-        practiceImageUrl: practiceImageUrl || 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&auto=format&fit=crop&q=80',
-        summary,
-        content: content,
-        practice: practiceArray,
-        quiz: [
-          {
-            question: `Latihan soal evaluasi untuk materi: ${title}?`,
-            options: ["Pilihan Jawaban A (Benar)", "Pilihan B", "Pilihan C", "Pilihan D"],
-            answer: 0,
-            explanation: "Pembahasan untuk latihan soal."
-          }
-        ]
-      };
+      if (editingMaterialId) {
+        // Edit Mode
+        const index = materials.findIndex(m => m.id === editingMaterialId);
+        if (index !== -1) {
+          materials[index] = {
+            ...materials[index],
+            title,
+            grade,
+            subject,
+            imageUrl: imageUrl || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=80',
+            practiceImageUrl: practiceImageUrl || 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&auto=format&fit=crop&q=80',
+            pdfUrl: pdfUrl || '',
+            summary,
+            content,
+            practice: practiceArray
+          };
+          showToast("Materi ajar berhasil diperbarui!");
+        }
+      } else {
+        // Add Mode
+        const newLesson = {
+          id: 'mat-' + Date.now(),
+          title,
+          grade,
+          subject,
+          duration: '40 Menit',
+          imageUrl: imageUrl || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=80',
+          practiceImageUrl: practiceImageUrl || 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&auto=format&fit=crop&q=80',
+          pdfUrl: pdfUrl || '',
+          summary,
+          content: content,
+          practice: practiceArray,
+          quiz: [
+            {
+              question: `Latihan soal evaluasi untuk materi: ${title}?`,
+              options: ["Pilihan Jawaban A (Benar)", "Pilihan B", "Pilihan C", "Pilihan D"],
+              answer: 0,
+              explanation: "Pembahasan untuk latihan soal."
+            }
+          ]
+        };
+        materials.unshift(newLesson);
+        showToast("Materi ajar baru berhasil disimpan!");
+      }
 
-      materials.unshift(newLesson);
       saveStorage();
       closeAddModal();
 
       if (activeSubject) {
         renderSubjectDashboard();
       }
-
-      showToast("Materi ajar baru berhasil disimpan!");
     }
 
     function showToast(msg) {

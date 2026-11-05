@@ -534,9 +534,49 @@
           <input type="text" id="addSummary" required placeholder="Gambarkan garis besar topik dalam 1-2 kalimat..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white">
         </div>
 
+        <!-- FORM INPUT PEMBAHASAN DENGAN INLINE IMAGE TOOLBAR & LIVE PREVIEW -->
         <div>
-          <label class="block font-bold text-slate-300 mb-1">Isi Pembahasan Materi Lengkap *</label>
-          <textarea id="addContent" rows="4" required placeholder="Tuliskan isi materi pelajaran selengkapnya..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white"></textarea>
+          <div class="flex items-center justify-between mb-1.5 flex-wrap gap-2">
+            <label class="block font-bold text-slate-300">Isi Pembahasan Materi Lengkap *</label>
+            
+            <!-- Quick Helper Toolbar -->
+            <div class="flex items-center gap-1.5 text-[11px]">
+              <button type="button" onclick="insertHelperTag('addContent', 'image')" class="px-2.5 py-1 bg-cyan-950 hover:bg-cyan-900 text-cyan-300 rounded-lg font-bold border border-cyan-700 flex items-center gap-1 transition">
+                <i data-lucide="image-plus" class="w-3.5 h-3.5"></i> + Gambar di Teks
+              </button>
+              <button type="button" onclick="insertHelperTag('addContent', 'heading')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg font-medium border border-slate-700">
+                📌 Sub Judul
+              </button>
+              <button type="button" onclick="insertHelperTag('addContent', 'tip')" class="px-2 py-1 bg-amber-950/60 hover:bg-amber-900/80 text-amber-300 rounded-lg font-medium border border-amber-800">
+                💡 Tip/Catatan
+              </button>
+              <button type="button" onclick="insertHelperTag('addContent', 'bold')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg font-medium border border-slate-700">
+                <b>B</b> Tebal
+              </button>
+            </div>
+          </div>
+
+          <textarea 
+            id="addContent" 
+            rows="5" 
+            required 
+            oninput="updateLivePreview()" 
+            placeholder="Tuliskan isi materi pelajaran selengkapnya... Gunakan tombol '+ Gambar di Teks' di atas untuk menyisipkan gambar di tengah-tengah paragraf!" 
+            class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white font-mono text-xs leading-relaxed"
+          ></textarea>
+
+          <!-- Real-Time Live Preview Box -->
+          <div class="mt-2.5 border border-slate-800 rounded-2xl bg-slate-950/80 p-3.5 space-y-2">
+            <div class="flex items-center justify-between border-b border-slate-800/80 pb-2">
+              <span class="text-[11px] font-bold text-cyan-400 flex items-center gap-1.5">
+                <i data-lucide="eye" class="w-3.5 h-3.5"></i> 👁️ Live Preview Pratinjau Teks & Gambar
+              </span>
+              <span class="text-[10px] text-slate-500 font-mono">Real-time Renderer</span>
+            </div>
+            <div id="contentLivePreview" class="prose prose-invert max-w-none text-xs text-slate-300 min-h-[50px] leading-relaxed">
+              <em class="text-slate-500 text-[11px]">Ketik materi atau klik tombol "+ Gambar di Teks" di atas untuk melihat tampilan live di sini...</em>
+            </div>
+          </div>
         </div>
 
         <div>
@@ -571,7 +611,7 @@
   <!-- JAVASCRIPT LOGIC SYSTEM -->
   <!-- ========================================== -->
   <script>
-    // DEFAULT CURRICULUM SEED DATA
+    // DEFAULT CURRICULUM SEED DATA WITH INLINE IMAGES
     const DEFAULT_MATERIALS = [
       // KELAS 1 SD - TIK
       {
@@ -584,14 +624,20 @@
         practiceImageUrl: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&auto=format&fit=crop&q=80',
         summary: 'Mengenal bagian-bagian fisik utama komputer seperti Monitor, CPU, Keyboard, dan Mouse secara visual.',
         content: `
-          <p><strong>1. Apa itu Komputer?</strong> Komputer adalah alat elektronik pintar yang membantu manusia untuk belajar, membuat gambar, dan mengetik tulisan.</p>
-          <p class="mt-2"><strong>2. 4 Bagian Utama Komputer:</strong></p>
-          <ul>
-            <li><strong>Monitor:</strong> Layar kaca tempat kita melihat gambar dan tulisan.</li>
-            <li><strong>CPU (Otak Komputer):</strong> Tempat mesin komputer bekerja dan memproses data.</li>
-            <li><strong>Keyboard (Papan Ketik):</strong> Papan berisi tombol huruf A-Z dan angka.</li>
-            <li><strong>Mouse (Tikus Komputer):</strong> Alat genggam untuk menggerakkan kursor panah di layar.</li>
-          </ul>
+### 1. Apa itu Komputer?
+Komputer adalah alat elektronik pintar yang membantu manusia untuk belajar, membuat gambar, dan mengetik tulisan.
+
+[gambar: https://images.unsplash.com/photo-1587831990711-23ca6441447b?w=800&auto=format&fit=crop&q=80 | Gambar 1.1: Komputer Meja (Desktop PC)]
+
+### 2. 4 Bagian Utama Komputer:
+- **Monitor**: Layar kaca tempat kita melihat gambar dan tulisan.
+- **CPU (Otak Komputer)**: Tempat mesin komputer bekerja dan memproses data.
+- **Keyboard (Papan Ketik)**: Papan berisi tombol huruf A-Z dan angka.
+- **Mouse (Tikus Komputer)**: Alat genggam untuk menggerakkan kursor panah di layar.
+
+[gambar: https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&auto=format&fit=crop&q=80 | Gambar 1.2: Perangkat Mouse dan Keyboard]
+
+[tips: Selalu gunakan alas mouse (mouse pad) agar pergerakan kursor di layar komputer tetap lancar!]
         `,
         practice: [
           "Langkah 1: Pegang Mouse dengan lembut menggunakan tangan kanan.",
@@ -624,13 +670,15 @@
         practiceImageUrl: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80',
         summary: 'Mengembangkan kreativitas seni digital menggunakan alat Shapes (Bentuk) dan Fill with Color (Ember Cat).',
         content: `
-          <p><strong>1. Mengenal MS Paint:</strong> Aplikasi sederhana di Windows untuk belajar melukis dan menggambar bentuk visual.</p>
-          <p class="mt-2"><strong>2. Tool Menggambar Penting:</strong></p>
-          <ul>
-            <li><strong>Shapes:</strong> Membuat bentuk dasar seperti lingkaran, persegi, dan bintang.</li>
-            <li><strong>Fill with Color (Ember Cat):</strong> Mewarnai bidang gambar secara instan.</li>
-            <li><strong>Eraser (Penghapus):</strong> Menghapus coretan yang tidak sengaja.</li>
-          </ul>
+### 1. Mengenal MS Paint
+MS Paint adalah aplikasi sederhana di komputer Windows untuk melukis dan menggambar bentuk visual secara digital.
+
+[gambar: https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&auto=format&fit=crop&q=80 | Gambar 2.1: Karya Seni Digital Mewarnai di Komputer]
+
+### 2. Tool Menggambar Penting:
+- **Shapes**: Membuat bentuk dasar seperti lingkaran, persegi, dan bintang.
+- **Fill with Color (Ember Cat)**: Mewarnai bidang gambar secara instan.
+- **Eraser (Penghapus)**: Menghapus garis atau bagian gambar yang keliru.
         `,
         practice: [
           "Langkah 1: Buka aplikasi MS Paint dari menu Start.",
@@ -657,10 +705,15 @@
         practiceImageUrl: 'https://images.unsplash.com/photo-1587614382346-4ec70e388b28?w=800&auto=format&fit=crop&q=80',
         summary: 'Belajar membuat dokumen teks sederhana, menebalkan huruf (Bold), dan mengatur ukuran tulisan.',
         content: `
-          <p><strong>1. Pengolah Teks (Word Processor):</strong></p>
-          <p>- <strong>Bold (B):</strong> Menebalkan teks tulisan.</p>
-          <p>- <strong>Italic (I):</strong> Memiringkan teks tulisan.</p>
-          <p>- <strong>Underline (U):</strong> Memberi garis bawah pada tulisan.</p>
+### 1. Pengolah Teks (Word Processor)
+Aplikasi pengolah kata digunakan untuk mengetik cerita, surat, dan tugas sekolah.
+
+### 2. Format Teks Utama:
+- **Bold (B)**: Menebalkan teks tulisan.
+- **Italic (I)**: Memiringkan teks tulisan.
+- **Underline (U)**: Memberi garis bawah pada tulisan.
+
+[gambar: https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=80 | Gambar 3.1: Mengetik Dokumen di Komputer]
         `,
         practice: [
           "Langkah 1: Buka aplikasi Microsoft Word atau Notepad.",
@@ -687,8 +740,11 @@
         practiceImageUrl: 'https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=800&auto=format&fit=crop&q=80',
         summary: 'Membuat slide presentasi dan memahami aturan keamanan pribadi saat menjelajah internet.',
         content: `
-          <p><strong>1. Slide Presentasi:</strong> Penyampaian informasi menggunakan gabungan Teks, Gambar, dan Warna yang menarik.</p>
-          <p class="mt-2"><strong>2. Keamanan Internet (Internet Safety):</strong> Jangan pernah membagikan password atau identitas pribadi di internet.</p>
+### 1. Slide Presentasi Visual
+Penyampaian informasi menggunakan gabungan Teks, Gambar, dan Warna yang menarik bagi pendengar.
+
+### 2. Keamanan Internet (Internet Safety)
+[tips: Jaga kerahasiaan password dan informasi identitas pribadi Anda! Jangan pernah membagikannya di media sosial.]
         `,
         practice: [
           "Langkah 1: Buka MS PowerPoint lalu pilih template presentasi.",
@@ -714,8 +770,14 @@
         practiceImageUrl: 'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=800&auto=format&fit=crop&q=80',
         summary: 'Pengenalan konsep logika pemrograman blok, karakter Sprite, dan perintah pergerakan (Motion) di Scratch.',
         content: `
-          <p><strong>1. Apa itu Block Coding Scratch?</strong> Cara membuat aplikasi atau game dengan menyusun blok puzzle perintah komputer tanpa harus menulis sintaks rumit.</p>
-          <p class="mt-2"><strong>2. Komponen Utama Scratch:</strong> Sprite (karakter) dan Event Block (pemicu awal perintah).</p>
+### 1. Apa itu Block Coding Scratch?
+Cara membuat aplikasi atau game interaktif dengan menyusun blok puzzle perintah komputer tanpa menulis sintaks kode yang rumit.
+
+[gambar: https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=80 | Gambar 5.1: Contoh Penyusunan Blok Perintah Pemrograman Visual]
+
+### 2. Komponen Utama Scratch:
+- **Sprite**: Karakter atau objek yang bergerak dalam game.
+- **Event Block**: Blok pemicu awal perintah (seperti *When Green Flag Clicked*).
         `,
         practice: [
           "Langkah 1: Buka editor Scratch di browser.",
@@ -742,8 +804,11 @@
         practiceImageUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800&auto=format&fit=crop&q=80',
         summary: 'Menggunakan blok perulangan (Forever), variabel Skor, dan percabangan kondisi (If-Then) dalam game.',
         content: `
-          <p><strong>1. Perulangan (Loop):</strong> Menjalankan serangkaian perintah komputer berulang kali secara otomatis.</p>
-          <p class="mt-2"><strong>2. Variabel:</strong> Wadah penyimpan data angka skor game.</p>
+### 1. Perulangan (Loop)
+Loop menjalankan serangkaian perintah komputer secara berulang kali otomatis.
+
+### 2. Variabel Skor Game
+[tips: Variabel berfungsi sebagai tempat menyimpan angka nilai/skor pemain yang bertambah setiap kali karakter mengambil poin.]
         `,
         practice: [
           "Langkah 1: Buat variabel baru dengan nama 'Skor'.",
@@ -769,8 +834,13 @@
         practiceImageUrl: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&auto=format&fit=crop&q=80',
         summary: 'Penerapan 4 pilar Berpikir Komputasional (Dekomposisi, Pola, Abstraksi, Algoritma) dan diagram Flowchart.',
         content: `
-          <p><strong>1. 4 Pilar Computational Thinking:</strong> Dekomposisi, Pengenalan Pola, Abstraksi, dan Algoritma.</p>
-          <p class="mt-2"><strong>2. Simbol Flowchart:</strong> Oval (Start/End), Jajar Genjang (Input/Output), Persegi Panjang (Proses).</p>
+### 1. 4 Pilar Computational Thinking
+- **Dekomposisi**: Memecah masalah besar menjadi bagian-bagian kecil.
+- **Pengenalan Pola**: Mencari kesamaan atau pola dari masalah.
+- **Abstraksi**: Fokus pada informasi penting dan mengabaikan detail tidak relevan.
+- **Algoritma**: Menyusun langkah-langkah penyelesaian secara logis dan terurut.
+
+[gambar: https://images.unsplash.com/photo-1509228468518-180dd4864904?w=800&auto=format&fit=crop&q=80 | Gambar 7.1: Diagram Alur Kerja & Pemikiran Algoritma]
         `,
         practice: [
           "Langkah 1: Gambarkan simbol Flowchart cara menyeduh teh manis di buku modul.",
@@ -796,7 +866,10 @@
         practiceImageUrl: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&auto=format&fit=crop&q=80',
         summary: 'Memahami jaringan lokal LAN, internet global WAN, serta IP Address identitas perangkat.',
         content: `
-          <p><strong>1. LAN vs WAN:</strong> LAN untuk jaringan area lokal sekolah/rumah, WAN untuk jaringan global internet.</p>
+### 1. Jaringan Lokal (LAN) vs Global (WAN)
+LAN menghubungkan komputer dalam satu lab sekolah, sedangkan WAN menghubungkan komputer antar negara di seluruh dunia.
+
+[gambar: https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&auto=format&fit=crop&q=80 | Gambar 8.1: Kabel dan Perangkat Jaringan Server Network]
         `,
         practice: [
           "Langkah 1: Buka Command Prompt (cmd).",
@@ -822,12 +895,17 @@
         practiceImageUrl: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800&auto=format&fit=crop&q=80',
         summary: 'Membuat halaman web sederhana menggunakan tag HTML/CSS dan dasar sintaks pemrograman Python.',
         content: `
-          <p><strong>1. Tag Dasar HTML:</strong> &lt;h1&gt; untuk judul dan &lt;p&gt; untuk paragraf.</p>
-          <p class="mt-2"><strong>2. Perintah Python:</strong> print("Halo Dunia")</p>
+### 1. Struktur Pemrograman Web (HTML)
+HTML digunakan untuk membuat struktur halaman web.
+
+### 2. Dasar Pemrograman Python
+Perintah \`print("Halo Dunia")\` digunakan untuk menampilkan pesan teks di layar terminal Python.
+
+[gambar: https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&auto=format&fit=crop&q=80 | Gambar 9.1: Kode Program Python & Web Development]
         `,
         practice: [
           "Langkah 1: Buat file baru index.html.",
-          "Langkah 2: Tuliskan kode &lt;h1&gt;Selamat Datang&lt;/h1&gt; lalu buka di Chrome."
+          "Langkah 2: Tuliskan kode <h1>Selamat Datang</h1> lalu buka di Chrome."
         ],
         quiz: [
           {
@@ -842,23 +920,29 @@
 
     // APPLICATION STATE VARIABLES
     let materials = [];
-    let activeSubject = null; // 'TIK' | 'Coding' | 'Informatika'
-    let activeGradeFilter = 'all';
-    let searchQuery = '';
-    
-    // Active Modal Viewer State
+    let activeSubject = null; // 'TIK', 'Coding', 'Informatika'
+    let activeGradeFilter = 'ALL';
     let activeMaterial = null;
     let quizUserAnswers = {};
     let quizSubmitted = false;
 
-    // INITIALIZATION
-    window.onload = function() {
-      checkAuthSession();
+    // APPLICATION INITIALIZATION ON LOAD
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStorage();
+      checkAuth();
+      lucide.createIcons();
+    });
 
-      const savedData = localStorage.getItem('educode_materials_v4');
-      if (savedData) {
+    // STORAGE MANAGEMENT
+    function saveStorage() {
+      localStorage.setItem('educode_materials', JSON.stringify(materials));
+    }
+
+    function loadStorage() {
+      const stored = localStorage.getItem('educode_materials');
+      if (stored) {
         try {
-          materials = JSON.parse(savedData);
+          materials = JSON.parse(stored);
         } catch(e) {
           materials = [...DEFAULT_MATERIALS];
         }
@@ -866,33 +950,29 @@
         materials = [...DEFAULT_MATERIALS];
         saveStorage();
       }
-
-      lucide.createIcons();
-    };
-
-    function saveStorage() {
-      localStorage.setItem('educode_materials_v4', JSON.stringify(materials));
     }
 
     function resetDefaultData() {
-      materials = [...DEFAULT_MATERIALS];
-      saveStorage();
-      if (activeSubject) {
-        renderSubjectDashboard();
+      if (confirm("Apakah Anda yakin ingin mengembalikan data ke sampel default? Data tambahan Anda akan dihapus.")) {
+        materials = [...DEFAULT_MATERIALS];
+        saveStorage();
+        if (activeSubject) {
+          renderSubjectDashboard();
+        }
+        showToast("Data sampel berhasil dikembalikan!");
       }
-      showToast("Data materi default kurikulum dipulihkan!");
     }
 
     // AUTHENTICATION SYSTEM
-    function checkAuthSession() {
-      const isLogged = localStorage.getItem('educode_is_logged') === 'true';
+    function checkAuth() {
+      const user = localStorage.getItem('educode_user');
       const loginScreen = document.getElementById('loginScreen');
       const appScreen = document.getElementById('appScreen');
 
-      if (isLogged) {
+      if (user) {
         loginScreen.classList.add('hidden');
         appScreen.classList.remove('hidden');
-        navigateToCategories(); // Default view after login is the 3 category cards
+        navigateToCategories();
       } else {
         loginScreen.classList.remove('hidden');
         appScreen.classList.add('hidden');
@@ -901,227 +981,298 @@
 
     function handleLogin(e) {
       e.preventDefault();
-      const userVal = document.getElementById('loginUsername').value.trim();
-      const passVal = document.getElementById('loginPassword').value.trim();
-      const errBox = document.getElementById('loginError');
+      const u = document.getElementById('loginUsername').value.trim();
+      const p = document.getElementById('loginPassword').value.trim();
+      const errEl = document.getElementById('loginError');
 
-      if (userVal === 'admin' && passVal === '123456') {
-        errBox.classList.add('hidden');
-        localStorage.setItem('educode_is_logged', 'true');
-        checkAuthSession();
-        showToast("Berhasil masuk sebagai Pengajar!");
+      if (u === 'admin' && p === '123456') {
+        localStorage.setItem('educode_user', JSON.stringify({ username: 'admin', role: 'Pengajar' }));
+        errEl.classList.add('hidden');
+        checkAuth();
+        showToast('Berhasil masuk! Selamat datang Pak Pengajar.');
       } else {
-        errBox.classList.remove('hidden');
+        errEl.classList.remove('hidden');
       }
     }
 
     function handleLogout() {
-      localStorage.removeItem('educode_is_logged');
-      checkAuthSession();
-      showToast("Anda telah keluar dari akun.");
+      localStorage.removeItem('educode_user');
+      checkAuth();
+      showToast('Berhasil keluar dari portal.');
     }
 
-    // MULTI-PAGE VIEW NAVIGATION LOGIC
+    // NAVIGATION SYSTEM
     function navigateToCategories() {
       activeSubject = null;
       document.getElementById('categoryPortalView').classList.remove('hidden');
       document.getElementById('subjectDashboardView').classList.add('hidden');
-      lucide.createIcons();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function openSubjectDashboard(subject) {
       activeSubject = subject;
-      activeGradeFilter = 'all';
-      searchQuery = '';
-      document.getElementById('searchInput').value = '';
-
+      activeGradeFilter = 'ALL';
+      
       document.getElementById('categoryPortalView').classList.add('hidden');
       document.getElementById('subjectDashboardView').classList.remove('hidden');
-
-      // Update Subject Header Text & Colors
+      
       const iconBox = document.getElementById('subjectHeaderIcon');
       const titleEl = document.getElementById('subjectHeaderTitle');
-      const subEl = document.getElementById('subjectHeaderSubtitle');
+      const subtitleEl = document.getElementById('subjectHeaderSubtitle');
 
       if (subject === 'TIK') {
-        iconBox.className = "w-10 h-10 rounded-xl bg-[#0A2628] border border-teal-500/60 flex items-center justify-center text-teal-400";
+        iconBox.className = "w-10 h-10 rounded-xl bg-teal-950 border border-teal-800 flex items-center justify-center text-teal-400";
         iconBox.innerHTML = `<i data-lucide="monitor" class="w-5 h-5"></i>`;
-        titleEl.textContent = "TIK SD (Teknologi Informasi & Komunikasi)";
-        subEl.textContent = "Kurikulum & Modul Pembelajaran Kelas 1 - 4 SD";
+        titleEl.textContent = "TIK SD";
+        subtitleEl.textContent = "Modul Pembelajaran Perangkat Komputer, Fun Typing, Paint & Word (Kelas 1 - 4)";
       } else if (subject === 'Coding') {
-        iconBox.className = "w-10 h-10 rounded-xl bg-[#0A233A] border border-sky-500/60 flex items-center justify-center text-sky-400";
+        iconBox.className = "w-10 h-10 rounded-xl bg-sky-950 border border-sky-800 flex items-center justify-center text-sky-400";
         iconBox.innerHTML = `<i data-lucide="blocks" class="w-5 h-5"></i>`;
-        titleEl.textContent = "Coding SD (Pemrograman Visual & Logika)";
-        subEl.textContent = "Kurikulum & Modul Pembelajaran Kelas 5 - 6 SD";
+        titleEl.textContent = "Coding SD";
+        subtitleEl.textContent = "Modul Pembelajaran Pemrograman Visual Scratch & Logika Game (Kelas 5 - 6)";
       } else if (subject === 'Informatika') {
-        iconBox.className = "w-10 h-10 rounded-xl bg-[#231238] border border-purple-500/60 flex items-center justify-center text-purple-400";
+        iconBox.className = "w-10 h-10 rounded-xl bg-purple-950 border border-purple-800 flex items-center justify-center text-purple-400";
         iconBox.innerHTML = `<i data-lucide="cpu" class="w-5 h-5"></i>`;
-        titleEl.textContent = "Informatika SMP (Berpikir Komputasional)";
-        subEl.textContent = "Kurikulum & Modul Pembelajaran Kelas 7 - 9 SMP";
+        titleEl.textContent = "Informatika SMP";
+        subtitleEl.textContent = "Modul Pembelajaran Algoritma, Flowchart, Jaringan & Web/Python (Kelas 7 - 9)";
       }
 
       renderGradePills();
       renderSubjectDashboard();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // DYNAMIC GRADE PILLS GENERATOR
     function renderGradePills() {
       const container = document.getElementById('gradePillsContainer');
       let grades = [];
 
-      if (activeSubject === 'TIK') {
-        grades = [
-          { id: 'all', label: 'Semua TIK (1-4)' },
-          { id: '1', label: 'Kelas 1 SD' },
-          { id: '2', label: 'Kelas 2 SD' },
-          { id: '3', label: 'Kelas 3 SD' },
-          { id: '4', label: 'Kelas 4 SD' }
-        ];
-      } else if (activeSubject === 'Coding') {
-        grades = [
-          { id: 'all', label: 'Semua Coding (5-6)' },
-          { id: '5', label: 'Kelas 5 SD' },
-          { id: '6', label: 'Kelas 6 SD' }
-        ];
-      } else if (activeSubject === 'Informatika') {
-        grades = [
-          { id: 'all', label: 'Semua Informatika (7-9)' },
-          { id: '7', label: 'Kelas 7 SMP' },
-          { id: '8', label: 'Kelas 8 SMP' },
-          { id: '9', label: 'Kelas 9 SMP' }
-        ];
-      }
+      if (activeSubject === 'TIK') grades = ['1', '2', '3', '4'];
+      else if (activeSubject === 'Coding') grades = ['5', '6'];
+      else if (activeSubject === 'Informatika') grades = ['7', '8', '9'];
 
-      container.innerHTML = grades.map(g => {
-        const isActive = activeGradeFilter === g.id;
-        let activeClass = isActive 
-          ? "bg-cyan-500 text-slate-950 font-bold border-cyan-400 shadow-md shadow-cyan-500/20" 
-          : "bg-[#111726] text-slate-300 border-slate-700/80 hover:border-slate-500 font-medium";
+      let html = `
+        <button 
+          onclick="filterByGrade('ALL')" 
+          class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap ${activeGradeFilter === 'ALL' ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20' : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700'}"
+        >
+          Semua ${activeSubject}
+        </button>
+      `;
 
-        return `
+      grades.forEach(g => {
+        const isActive = activeGradeFilter === g;
+        html += `
           <button 
-            onclick="setGradeFilter('${g.id}')"
-            class="px-3.5 py-1.5 rounded-xl border text-xs whitespace-nowrap transition active:scale-95 ${activeClass}"
+            onclick="filterByGrade('${g}')" 
+            class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap ${isActive ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20' : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700'}"
           >
-            ${g.label}
+            Kelas ${g} ${activeSubject === 'Informatika' ? 'SMP' : 'SD'}
           </button>
         `;
-      }).join('');
+      });
+
+      container.innerHTML = html;
     }
 
-    function setGradeFilter(gId) {
-      activeGradeFilter = gId;
+    function filterByGrade(grade) {
+      activeGradeFilter = grade;
       renderGradePills();
       renderSubjectDashboard();
     }
 
     function handleSearch(query) {
-      searchQuery = query.trim().toLowerCase();
-      renderSubjectDashboard();
+      renderSubjectDashboard(query);
     }
 
-    // RENDER MATERIALS GRID
-    function renderSubjectDashboard() {
-      let filtered = materials.filter(m => {
-        let matchSubject = m.subject.toLowerCase() === activeSubject.toLowerCase();
-        let matchGrade = (activeGradeFilter === 'all') || (m.grade === activeGradeFilter);
-        
-        let matchSearch = true;
-        if (searchQuery) {
-          matchSearch = m.title.toLowerCase().includes(searchQuery) || 
-                        m.summary.toLowerCase().includes(searchQuery) ||
-                        `kelas ${m.grade}`.includes(searchQuery);
-        }
-
-        return matchSubject && matchGrade && matchSearch;
-      });
-
-      // Sort by grade ascending
-      filtered.sort((a, b) => parseInt(a.grade) - parseInt(b.grade));
-
+    function renderSubjectDashboard(searchQuery = '') {
       const grid = document.getElementById('subjectMaterialsGrid');
       const emptyState = document.getElementById('subjectEmptyState');
+
+      let filtered = materials.filter(m => m.subject === activeSubject);
+
+      if (activeGradeFilter !== 'ALL') {
+        filtered = filtered.filter(m => m.grade === activeGradeFilter);
+      }
+
+      if (searchQuery.trim() !== '') {
+        const q = searchQuery.toLowerCase();
+        filtered = filtered.filter(m => 
+          m.title.toLowerCase().includes(q) || 
+          m.summary.toLowerCase().includes(q) ||
+          m.content.toLowerCase().includes(q)
+        );
+      }
 
       if (filtered.length === 0) {
         grid.innerHTML = '';
         emptyState.classList.remove('hidden');
-      } else {
-        emptyState.classList.add('hidden');
-        grid.innerHTML = filtered.map(item => createMaterialCardHTML(item)).join('');
+        lucide.createIcons();
+        return;
       }
+
+      emptyState.classList.add('hidden');
+
+      grid.innerHTML = filtered.map(m => {
+        let badgeColor = "bg-teal-950 text-teal-300 border-teal-800";
+        if (m.subject === "Coding") badgeColor = "bg-sky-950 text-sky-300 border-sky-800";
+        if (m.subject === "Informatika") badgeColor = "bg-purple-950 text-purple-300 border-purple-800";
+
+        return `
+          <div class="bg-[#111726] border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition-all duration-300 flex flex-col group shadow-lg">
+            <div class="relative h-44 overflow-hidden bg-slate-900">
+              <img 
+                src="${m.imageUrl}" 
+                alt="${m.title}" 
+                onerror="this.src='https://placehold.co/600x300/111726/38bdf8?text=${encodeURIComponent(m.title)}'"
+                class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+              >
+              <div class="absolute inset-0 bg-gradient-to-t from-[#111726] via-transparent to-transparent"></div>
+              <div class="absolute top-3 left-3 flex gap-2">
+                <span class="px-2.5 py-1 text-[11px] font-bold rounded-lg border backdrop-blur-md ${badgeColor}">
+                  Kelas ${m.grade}
+                </span>
+              </div>
+              <div class="absolute bottom-3 right-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded-lg border border-slate-800 text-[10px] text-slate-300 flex items-center gap-1 font-mono">
+                <i data-lucide="clock" class="w-3 h-3 text-cyan-400"></i> ${m.duration || '40 Menit'}
+              </div>
+            </div>
+
+            <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+              <div class="space-y-2">
+                <h3 class="font-bold text-white text-base leading-snug group-hover:text-cyan-400 transition">
+                  ${m.title}
+                </h3>
+                <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                  ${m.summary}
+                </p>
+              </div>
+
+              <button 
+                onclick="openDetailModal('${m.id}')"
+                class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-cyan-400 font-bold text-xs transition flex items-center justify-center gap-2 group-hover:border-cyan-500/50"
+              >
+                <span>Buka Modul & Kuis</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
 
       lucide.createIcons();
     }
 
-    function createMaterialCardHTML(item) {
-      const gNum = parseInt(item.grade);
-      
-      let badgeStyle = "bg-teal-950 text-teal-300 border-teal-800";
-      let mapelLabel = "TIK SD";
-      let icon = "monitor";
+    // PARSER TEXT & INLINE IMAGES SYSTEM
+    function parseFormattedText(text) {
+      if (!text) return '';
 
-      if (gNum >= 5 && gNum <= 6) {
-        badgeStyle = "bg-sky-950 text-sky-300 border-sky-800";
-        mapelLabel = "Coding SD";
-        icon = "blocks";
-      } else if (gNum >= 7) {
-        badgeStyle = "bg-purple-950 text-purple-300 border-purple-800";
-        mapelLabel = "Informatika SMP";
-        icon = "cpu";
-      }
+      let html = text;
 
-      const fallbackImg = "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=80";
-      const displayImg = item.imageUrl || fallbackImg;
+      // 1. Process inline image tags: [gambar: URL | Keterangan] or ![keterangan](URL)
+      html = html.replace(/\[gambar:\s*([^|\]]+)(?:\|\s*([^\]]+))?\]/gi, (match, url, caption) => {
+        const capText = caption ? caption.trim() : 'Gambar Ilustrasi Pembelajaran';
+        const cleanUrl = url.trim();
+        return `
+          <figure class="my-4 border border-slate-800 bg-slate-900/90 rounded-2xl overflow-hidden shadow-md">
+            <img src="${cleanUrl}" alt="${capText}" onerror="this.src='https://placehold.co/600x300/1e293b/94a3b8?text=Gambar+Materi'" class="w-full max-h-72 object-cover">
+            <figcaption class="p-2.5 text-center text-xs text-slate-400 bg-slate-900 border-t border-slate-800 font-medium flex items-center justify-center gap-1.5">
+              <i data-lucide="image" class="w-3.5 h-3.5 text-cyan-400"></i> ${capText}
+            </figcaption>
+          </figure>
+        `;
+      });
 
-      return `
-        <div class="group bg-[#111726] rounded-2xl border border-slate-800 hover:border-slate-700 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
-          <div>
-            <!-- Card Header Image Thumbnail -->
-            <div class="relative h-44 w-full overflow-hidden bg-slate-900">
-              <img src="${displayImg}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-90 group-hover:opacity-100">
-              <div class="absolute inset-0 bg-gradient-to-t from-[#111726] via-transparent to-transparent"></div>
-              
-              <!-- Badges on Image -->
-              <div class="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
-                <span class="px-2.5 py-1 text-[11px] font-bold rounded-lg border ${badgeStyle} flex items-center gap-1.5 backdrop-blur-md">
-                  <i data-lucide="${icon}" class="w-3.5 h-3.5"></i> ${mapelLabel}
-                </span>
-                <span class="text-xs font-bold text-slate-200 bg-slate-900/80 backdrop-blur-md px-2.5 py-1 rounded-lg border border-slate-700">
-                  Kelas ${item.grade}
-                </span>
-              </div>
-            </div>
+      html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/gi, (match, caption, url) => {
+        const capText = caption ? caption.trim() : 'Gambar Ilustrasi Pembelajaran';
+        const cleanUrl = url.trim();
+        return `
+          <figure class="my-4 border border-slate-800 bg-slate-900/90 rounded-2xl overflow-hidden shadow-md">
+            <img src="${cleanUrl}" alt="${capText}" onerror="this.src='https://placehold.co/600x300/1e293b/94a3b8?text=Gambar+Materi'" class="w-full max-h-72 object-cover">
+            <figcaption class="p-2.5 text-center text-xs text-slate-400 bg-slate-900 border-t border-slate-800 font-medium flex items-center justify-center gap-1.5">
+              <i data-lucide="image" class="w-3.5 h-3.5 text-cyan-400"></i> ${capText}
+            </figcaption>
+          </figure>
+        `;
+      });
 
-            <!-- Content Details -->
-            <div class="p-5 space-y-3">
-              <h3 class="font-bold text-white text-base group-hover:text-cyan-400 transition line-clamp-2 leading-snug">
-                ${item.title}
-              </h3>
-
-              <p class="text-xs text-slate-400 line-clamp-2 leading-relaxed">
-                ${item.summary}
-              </p>
-            </div>
+      // 2. Process Tip Box tags: [tips: Keterangan]
+      html = html.replace(/\[tips:\s*([^\]]+)\]/gi, (match, tipText) => {
+        return `
+          <div class="my-3 p-3.5 bg-amber-950/40 border border-amber-800/80 rounded-xl text-amber-200 text-xs flex items-start gap-2.5 shadow-sm">
+            <i data-lucide="lightbulb" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
+            <span class="leading-relaxed">${tipText.trim()}</span>
           </div>
+        `;
+      });
 
-          <!-- Card Footer -->
-          <div class="p-5 pt-0 flex items-center justify-between text-xs text-slate-500 border-t border-slate-800/60 mt-2 pt-3">
-            <span class="flex items-center gap-1 font-medium text-slate-400">
-              <i data-lucide="clock" class="w-3.5 h-3.5 text-cyan-400"></i> ${item.duration || '40 Menit'}
-            </span>
+      // 3. Process Sub-headings: ### Subjudul
+      html = html.replace(/^###\s+(.*$)/gim, '<h4 class="text-sm font-bold text-cyan-400 mt-4 mb-2 flex items-center gap-1.5"><i data-lucide="chevron-right" class="w-4 h-4"></i> $1</h4>');
 
-            <button 
-              onclick="openDetailModal('${item.id}')" 
-              class="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-400 hover:text-cyan-300 group-hover:translate-x-1 transition"
-            >
-              Buka Materi & Praktikum <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </button>
-          </div>
-        </div>
-      `;
+      // 4. Process Bold text: **teks**
+      html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>');
+
+      // 5. Line breaks & paragraph processing
+      let lines = html.split('\n').map(l => l.trim());
+      let processed = [];
+      lines.forEach(line => {
+        if (line.startsWith('<figure') || line.startsWith('</figure') || line.startsWith('<figcaption') || line.startsWith('<div') || line.startsWith('<h4') || line.startsWith('<img')) {
+          processed.push(line);
+        } else if (line.startsWith('- ')) {
+          processed.push(`<li class="ml-4 list-disc text-slate-300 font-medium my-1">${line.substring(2)}</li>`);
+        } else if (line.length > 0) {
+          processed.push(`<p class="mb-2 leading-relaxed font-medium">${line}</p>`);
+        }
+      });
+
+      return processed.join('');
     }
 
-    // MODAL LESSON VIEWER LOGIC (3 TABS)
+    // HELPER TOOLBAR & LIVE PREVIEW FUNCTIONS
+    function insertHelperTag(textareaId, type) {
+      const textarea = document.getElementById(textareaId);
+      if (!textarea) return;
+
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = textarea.value;
+
+      let insertText = '';
+
+      if (type === 'image') {
+        const url = prompt("Masukkan URL Gambar (HTTP/HTTPS):", "https://images.unsplash.com/photo-1587831990711-23ca6441447b?w=800&auto=format&fit=crop&q=80");
+        if (!url) return;
+        const caption = prompt("Masukkan Keterangan / Judul Gambar (opsional):", "Gambar Ilustrasi Bagian Komputer");
+        insertText = `\n[gambar: ${url} | ${caption || 'Gambar Ilustrasi Pembelajaran'}]\n`;
+      } else if (type === 'heading') {
+        insertText = `\n### Judul Topik Pembahasan Baru\n`;
+      } else if (type === 'tip') {
+        insertText = `\n[tips: Catatan penting atau petunjuk praktis bagi siswa di sini]\n`;
+      } else if (type === 'bold') {
+        const selected = text.substring(start, end) || 'teks tebal';
+        insertText = `**${selected}**`;
+      }
+
+      textarea.value = text.substring(0, start) + insertText + text.substring(end);
+      textarea.focus();
+      textarea.selectionStart = textarea.selectionEnd = start + insertText.length;
+
+      updateLivePreview();
+    }
+
+    function updateLivePreview() {
+      const contentVal = document.getElementById('addContent').value;
+      const previewEl = document.getElementById('contentLivePreview');
+      if (previewEl) {
+        if (!contentVal.trim()) {
+          previewEl.innerHTML = `<em class="text-slate-500 text-[11px]">Ketik materi atau klik tombol "+ Gambar di Teks" di atas untuk melihat tampilan live di sini...</em>`;
+        } else {
+          previewEl.innerHTML = parseFormattedText(contentVal);
+          lucide.createIcons();
+        }
+      }
+    }
+
+    // MODAL LESSON VIEWER LOGIC
     function openDetailModal(id) {
       activeMaterial = materials.find(m => m.id === id);
       if (!activeMaterial) return;
@@ -1129,12 +1280,10 @@
       quizUserAnswers = {};
       quizSubmitted = false;
 
-      // Populate Texts
       document.getElementById('modalTitle').textContent = activeMaterial.title;
       document.getElementById('modalSummary').textContent = activeMaterial.summary;
-      document.getElementById('modalFullContent').innerHTML = activeMaterial.content;
+      document.getElementById('modalFullContent').innerHTML = parseFormattedText(activeMaterial.content);
 
-      // Render Tab 1 Image
       const imgContainer = document.getElementById('modalImageContainer');
       const imgEl = document.getElementById('modalContentImage');
       if (activeMaterial.imageUrl) {
@@ -1144,7 +1293,6 @@
         imgContainer.classList.add('hidden');
       }
 
-      // Render Tab 2 Practice Diagram
       const practiceImgContainer = document.getElementById('modalPracticeImageContainer');
       const practiceImgEl = document.getElementById('modalPracticeImage');
       if (activeMaterial.practiceImageUrl) {
@@ -1154,17 +1302,15 @@
         practiceImgContainer.classList.add('hidden');
       }
 
-      // Render Steps List
       const practiceContainer = document.getElementById('practiceStepsContainer');
       const steps = activeMaterial.practice || ["Praktikum dilaksanakan secara langsung di laboratorium komputer."];
       practiceContainer.innerHTML = steps.map((step, idx) => `
         <div class="flex items-start gap-3 bg-slate-900/90 p-3 rounded-xl border border-slate-800">
           <span class="w-5 h-5 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-400 font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">${idx + 1}</span>
-          <p class="text-xs text-slate-200 leading-relaxed font-mono">${step}</p>
+          <div class="text-xs text-slate-200 leading-relaxed font-mono">${parseFormattedText(step)}</div>
         </div>
       `).join('');
 
-      // Header Badges
       const gNum = parseInt(activeMaterial.grade);
       let badgeLabel = "TIK SD";
       if (gNum >= 5 && gNum <= 6) badgeLabel = "Coding SD";
@@ -1186,134 +1332,125 @@
       lucide.createIcons();
     }
 
-    function closeDetailModal() {
-      document.getElementById('detailModal').classList.add('hidden');
-    }
-
     function switchModalTab(tab) {
-      ['reading', 'practice', 'quiz'].forEach(t => {
+      const tabs = ['reading', 'practice', 'quiz'];
+      tabs.forEach(t => {
         const btn = document.getElementById(`tab-${t}-btn`);
         const content = document.getElementById(`tab-${t}-content`);
-        
+
         if (t === tab) {
-          btn.className = "py-3 border-b-2 border-cyan-400 text-cyan-400 font-bold flex items-center gap-2 transition";
+          btn.className = "py-3 border-b-2 border-cyan-400 text-cyan-400 flex items-center gap-2 transition";
           content.classList.remove('hidden');
         } else {
-          btn.className = "py-3 border-b-2 border-transparent text-slate-400 hover:text-white font-semibold flex items-center gap-2 transition";
+          btn.className = "py-3 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2 transition";
           content.classList.add('hidden');
         }
       });
     }
 
-    // QUIZ LOGIC
+    function closeDetailModal() {
+      document.getElementById('detailModal').classList.add('hidden');
+    }
+
+    // QUIZ FUNCTIONS
     function renderQuizQuestions() {
       const container = document.getElementById('quizQuestionsContainer');
-      const questions = activeMaterial.quiz || [];
       const scoreBadge = document.getElementById('quizScoreBadge');
       const resetBtn = document.getElementById('resetQuizBtn');
       const submitBtn = document.getElementById('submitQuizBtn');
 
-      if (quizSubmitted) {
-        scoreBadge.classList.remove('hidden');
-        resetBtn.classList.remove('hidden');
-        submitBtn.classList.add('hidden');
-      } else {
-        scoreBadge.classList.add('hidden');
-        resetBtn.classList.add('hidden');
-        submitBtn.classList.remove('hidden');
-      }
+      scoreBadge.classList.add('hidden');
+      resetBtn.classList.add('hidden');
+      submitBtn.classList.remove('hidden');
 
-      if (questions.length === 0) {
-        container.innerHTML = `<p class="text-center text-xs text-slate-400 py-6">Kuis evaluasi belum ditambahkan untuk materi ini.</p>`;
+      if (!activeMaterial.quiz || activeMaterial.quiz.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada kuis evaluasi untuk materi ini.</p>`;
         submitBtn.classList.add('hidden');
         return;
       }
 
-      container.innerHTML = questions.map((q, qIdx) => {
-        const userAnswer = quizUserAnswers[qIdx];
-        
-        const optionsHTML = q.options.map((opt, oIdx) => {
-          let optionStyle = "border-slate-800 bg-slate-900/60 text-slate-300 hover:border-slate-700";
-          let badge = "";
+      container.innerHTML = activeMaterial.quiz.map((q, qIdx) => `
+        <div class="p-4 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-3">
+          <p class="font-bold text-slate-200 text-xs sm:text-sm">
+            ${qIdx + 1}. ${q.question}
+          </p>
 
-          if (quizSubmitted) {
-            if (oIdx === q.answer) {
-              optionStyle = "border-emerald-500 bg-emerald-950/60 text-emerald-200 font-bold";
-              badge = `<span class="text-xs text-emerald-400 font-bold ml-auto">✓ Benar</span>`;
-            } else if (userAnswer === oIdx && userAnswer !== q.answer) {
-              optionStyle = "border-red-500 bg-red-950/60 text-red-200";
-              badge = `<span class="text-xs text-red-400 font-bold ml-auto">✗ Jawaban Anda</span>`;
-            }
-          } else if (userAnswer === oIdx) {
-            optionStyle = "border-cyan-500 bg-cyan-950/40 text-cyan-300 font-bold ring-1 ring-cyan-500/30";
-          }
-
-          return `
-            <button 
-              type="button"
-              ${quizSubmitted ? 'disabled' : ''}
-              onclick="selectQuizOption(${qIdx}, ${oIdx})"
-              class="w-full text-left px-4 py-3 rounded-xl border text-xs sm:text-sm transition flex items-center justify-between ${optionStyle}"
-            >
-              <span>${String.fromCharCode(65 + oIdx)}. ${opt}</span>
-              ${badge}
-            </button>
-          `;
-        }).join('');
-
-        let explanationHTML = "";
-        if (quizSubmitted) {
-          explanationHTML = `
-            <div class="mt-3 p-3 bg-amber-950/50 border border-amber-800/80 rounded-xl text-xs text-amber-200">
-              <strong>Pembahasan:</strong> ${q.explanation}
-            </div>
-          `;
-        }
-
-        return `
-          <div class="p-4 rounded-2xl border border-slate-800 space-y-3 bg-[#0D1424]">
-            <h4 class="font-bold text-xs sm:text-sm text-white flex items-start gap-2">
-              <span class="w-5 h-5 rounded-full bg-cyan-950 text-cyan-400 text-xs flex items-center justify-center shrink-0 mt-0.5 border border-cyan-800">${qIdx + 1}</span>
-              ${q.question}
-            </h4>
-            <div class="space-y-2">
-              ${optionsHTML}
-            </div>
-            ${explanationHTML}
+          <div class="space-y-2">
+            ${q.options.map((opt, optIdx) => `
+              <label 
+                id="q_${qIdx}_opt_${optIdx}"
+                onclick="selectQuizOption(${qIdx}, ${optIdx})"
+                class="flex items-center gap-3 p-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:border-slate-700 cursor-pointer text-xs text-slate-300 transition"
+              >
+                <input type="radio" name="quiz_q_${qIdx}" value="${optIdx}" class="hidden">
+                <span class="w-5 h-5 rounded-full border border-slate-700 flex items-center justify-center font-bold text-[10px] shrink-0 text-slate-400 font-mono">
+                  ${String.fromCharCode(65 + optIdx)}
+                </span>
+                <span class="flex-1 font-medium">${opt}</span>
+              </label>
+            `).join('')}
           </div>
-        `;
-      }).join('');
+
+          <div id="quiz_exp_${qIdx}" class="hidden p-3 rounded-xl text-xs space-y-1"></div>
+        </div>
+      `).join('');
     }
 
-    function selectQuizOption(qIdx, oIdx) {
+    function selectQuizOption(qIdx, optIdx) {
       if (quizSubmitted) return;
-      quizUserAnswers[qIdx] = oIdx;
-      renderQuizQuestions();
+      quizUserAnswers[qIdx] = optIdx;
+
+      const q = activeMaterial.quiz[qIdx];
+      q.options.forEach((_, idx) => {
+        const label = document.getElementById(`q_${qIdx}_opt_${idx}`);
+        if (idx === optIdx) {
+          label.className = "flex items-center gap-3 p-3 rounded-xl border border-cyan-500 bg-cyan-950/40 cursor-pointer text-xs text-white transition";
+        } else {
+          label.className = "flex items-center gap-3 p-3 rounded-xl border border-slate-800 bg-slate-950/60 hover:border-slate-700 cursor-pointer text-xs text-slate-300 transition";
+        }
+      });
     }
 
     function submitQuiz() {
-      const questions = activeMaterial.quiz || [];
-      if (Object.keys(quizUserAnswers).length < questions.length) {
-        showToast("Harap jawab semua pertanyaan kuis!");
-        return;
-      }
+      if (!activeMaterial || !activeMaterial.quiz) return;
 
-      quizSubmitted = true;
+      const total = activeMaterial.quiz.length;
       let correctCount = 0;
-      questions.forEach((q, idx) => {
-        if (quizUserAnswers[idx] === q.answer) correctCount++;
+
+      activeMaterial.quiz.forEach((q, qIdx) => {
+        const userAns = quizUserAnswers[qIdx];
+        const expEl = document.getElementById(`quiz_exp_${qIdx}`);
+
+        q.options.forEach((_, optIdx) => {
+          const label = document.getElementById(`q_${qIdx}_opt_${optIdx}`);
+          if (optIdx === q.answer) {
+            label.className = "flex items-center gap-3 p-3 rounded-xl border border-emerald-500 bg-emerald-950/50 text-xs text-emerald-200 transition font-bold";
+          } else if (userAns === optIdx && userAns !== q.answer) {
+            label.className = "flex items-center gap-3 p-3 rounded-xl border border-red-500 bg-red-950/50 text-xs text-red-200 transition";
+          }
+        });
+
+        expEl.classList.remove('hidden');
+        if (userAns === q.answer) {
+          correctCount++;
+          expEl.className = "p-3 rounded-xl text-xs bg-emerald-950/40 border border-emerald-800/80 text-emerald-300";
+          expEl.innerHTML = `<strong>Jawaban Benar!</strong> ${q.explanation || ''}`;
+        } else {
+          expEl.className = "p-3 rounded-xl text-xs bg-red-950/40 border border-red-800/80 text-red-300";
+          expEl.innerHTML = `<strong>Jawaban Kurang Tepat.</strong> ${q.explanation || ''}`;
+        }
       });
 
-      const scorePercent = Math.round((correctCount / questions.length) * 100);
-      document.getElementById('quizScoreText').textContent = `${correctCount}/${questions.length} (${scorePercent}%)`;
+      quizSubmitted = true;
 
-      renderQuizQuestions();
+      document.getElementById('quizScoreText').textContent = `${correctCount} / ${total}`;
+      document.getElementById('quizScoreBadge').classList.remove('hidden');
+      document.getElementById('submitQuizBtn').classList.add('hidden');
+      document.getElementById('resetQuizBtn').classList.remove('hidden');
 
-      if (scorePercent >= 70 && typeof confetti === 'function') {
-        confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+      if (correctCount === total && typeof confetti === 'function') {
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       }
-
-      showToast(`Kuis Selesai! Skor Evaluasi: ${scorePercent}%`);
     }
 
     function resetQuizState() {
@@ -1326,7 +1463,6 @@
     function openAddModal() {
       document.getElementById('addMaterialForm').reset();
       
-      // Auto pre-select grade dropdown based on active subject view
       const gradeSelect = document.getElementById('addGrade');
       if (activeSubject === 'Coding') {
         gradeSelect.value = '5';
@@ -1337,6 +1473,7 @@
       }
 
       autoSelectSubjectByGrade();
+      updateLivePreview();
       document.getElementById('addModal').classList.remove('hidden');
     }
 
@@ -1380,7 +1517,7 @@
         imageUrl: imageUrl || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=80',
         practiceImageUrl: practiceImageUrl || 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&auto=format&fit=crop&q=80',
         summary,
-        content: `<p>${content.replace(/\n/g, '<br>')}</p>`,
+        content: content,
         practice: practiceArray,
         quiz: [
           {
@@ -1396,7 +1533,6 @@
       saveStorage();
       closeAddModal();
 
-      // If user is inside the subject dashboard, refresh it
       if (activeSubject) {
         renderSubjectDashboard();
       }

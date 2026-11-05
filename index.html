@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EduCode - Portal Materi Ajar TIK, Coding & Informatika</title>
+  <title>EduCode Hub - Portal Materi TIK, Coding & Informatika</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -15,13 +15,7 @@
           colors: {
             midnight: '#0B0F19',
             cardBg: '#111726',
-            brand: {
-              50: '#eef2ff',
-              100: '#e0e7ff',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca',
-            }
+            cardInner: '#0D1424'
           },
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
@@ -53,7 +47,9 @@
 
 <body class="bg-[#0B0F19] text-slate-100 min-h-full flex flex-col antialiased">
 
+  <!-- ========================================== -->
   <!-- 1. HALAMAN LOGIN (AUTHENTICATION GATE) -->
+  <!-- ========================================== -->
   <div id="loginScreen" class="fixed inset-0 z-50 bg-[#0B0F19] flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-[#111726] border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
       <!-- Ambient Glow Effects -->
@@ -70,9 +66,9 @@
       </div>
 
       <!-- Demo Info Box -->
-      <div class="mb-6 p-3.5 bg-slate-900/80 border border-slate-800 rounded-2xl text-xs space-y-1">
+      <div class="mb-6 p-3.5 bg-slate-900/90 border border-slate-800 rounded-2xl text-xs space-y-1">
         <p class="font-bold text-cyan-400 flex items-center gap-1.5">
-          <i data-lucide="key-round" class="w-4 h-4"></i> Akun Demo Pengajar:
+          <i data-lucide="key-round" class="w-4 h-4"></i> Akun Pengajar:
         </p>
         <div class="flex items-center justify-between text-slate-300 font-mono text-[11px] pt-1">
           <span>Username: <strong class="text-white">admin</strong></span>
@@ -83,7 +79,7 @@
       <!-- Login Form -->
       <form onsubmit="handleLogin(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1.5">Username Pengajar</label>
+          <label class="block text-xs font-bold text-slate-300 mb-1.5">Username</label>
           <div class="relative">
             <i data-lucide="user" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"></i>
             <input 
@@ -128,16 +124,18 @@
   </div>
 
 
-  <!-- 2. MAIN APPLICATION SCREEN -->
+  <!-- ========================================== -->
+  <!-- MAIN APP WRAPPER -->
+  <!-- ========================================== -->
   <div id="appScreen" class="hidden flex-1 flex flex-col">
     
-    <!-- TOP HEADER -->
-    <header class="sticky top-0 z-30 bg-[#0B0F19]/90 backdrop-blur-md border-b border-slate-800">
+    <!-- STICKY TOP NAVBAR -->
+    <header class="sticky top-0 z-30 bg-[#0B0F19]/90 backdrop-blur-md border-b border-slate-800/80">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16 gap-4">
           
-          <!-- Brand Logo -->
-          <div class="flex items-center gap-3 shrink-0">
+          <!-- Logo & Brand Title -->
+          <div class="flex items-center gap-3 cursor-pointer" onclick="navigateToCategories()">
             <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-cyan-500 to-teal-400 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
               <i data-lucide="code-2" class="w-6 h-6"></i>
             </div>
@@ -147,45 +145,29 @@
                   EduCode<span class="text-cyan-400">Hub</span>
                 </h1>
                 <span class="bg-cyan-950 border border-cyan-800 text-cyan-400 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
-                  Pengajar Mode
+                  Pengajar
                 </span>
               </div>
               <p class="text-xs text-slate-400 hidden sm:block mt-0.5">
-                Portal Materi TIK (1-4 SD) • Coding (5-6 SD) • Informatika (7-9 SMP)
+                Portal Materi TIK, Coding & Informatika (Kelas 1 - 9)
               </p>
-            </div>
-          </div>
-
-          <!-- Search Bar -->
-          <div class="flex-1 max-w-md mx-2">
-            <div class="relative">
-              <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"></i>
-              <input 
-                type="text" 
-                id="searchInput"
-                oninput="handleSearch(this.value)"
-                placeholder="Cari materi (seperti Mouse, Scratch, Algoritma, HTML)..."
-                class="w-full pl-10 pr-4 py-2 text-sm bg-[#111726] border border-slate-700/80 rounded-xl focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition placeholder:text-slate-500 text-white"
-              >
             </div>
           </div>
 
           <!-- User Profile & Action Controls -->
           <div class="flex items-center gap-3">
-            <button 
-              onclick="openAddModal()" 
-              class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-2 rounded-xl text-xs font-semibold shadow-md transition active:scale-95 shrink-0"
-            >
-              <i data-lucide="plus-circle" class="w-4 h-4"></i>
-              <span class="hidden sm:inline">Tambah Materi</span>
-            </button>
+            <div class="hidden sm:flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl text-xs text-slate-300">
+              <i data-lucide="user-check" class="w-4 h-4 text-cyan-400"></i>
+              <span>Pak Pengajar</span>
+            </div>
 
             <button 
               onclick="handleLogout()"
-              title="Keluar dari akun pengajar"
-              class="p-2 rounded-xl text-slate-400 hover:text-red-400 hover:bg-slate-800 transition"
+              title="Keluar dari akun"
+              class="p-2 rounded-xl text-slate-400 hover:text-red-400 hover:bg-slate-800/80 transition flex items-center gap-1.5 text-xs font-medium"
             >
-              <i data-lucide="log-out" class="w-5 h-5"></i>
+              <i data-lucide="log-out" class="w-4 h-4"></i>
+              <span class="hidden sm:inline">Keluar</span>
             </button>
           </div>
 
@@ -194,23 +176,40 @@
     </header>
 
 
-    <!-- CATEGORY CARDS SECTION (MATCHING REFERENCE IMAGE REPLICA) -->
-    <section class="py-8 bg-[#0B0F19] border-b border-slate-800/80">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+    <!-- ========================================== -->
+    <!-- 2. HALAMAN DASHBOARD UTAMA (HANYA 3 KARTU KATEGORI) -->
+    <!-- ========================================== -->
+    <main id="categoryPortalView" class="flex-1 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl w-full space-y-10">
+        
+        <!-- Welcome Hero Banner -->
+        <div class="text-center space-y-3 max-w-2xl mx-auto">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-950/70 border border-cyan-800 text-cyan-300 text-xs font-semibold">
+            <i data-lucide="sparkles" class="w-4 h-4 text-cyan-400"></i> Pilih Kurikulum Tingkat Kelas
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Selamat Datang di Portal Pembelajaran
+          </h2>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Silakan pilih rumpun materi pembelajaran di bawah ini untuk mengelola modul materi, panduan praktikum, dan kuis evaluasi siswa.
+          </p>
+        </div>
+
+        <!-- 3 CATEGORY CARDS GRID (EXACT REPLICA FROM REFERENCE IMAGE) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           
-          <!-- Card 1: TIK SD (Kelas 1-4) -->
+          <!-- Card 1: TIK SD (Kelas 1 - 4) -->
           <div 
-            onclick="filterCategory('TIK')" 
-            class="cursor-pointer group relative p-5 rounded-2xl bg-[#0D1424] border border-teal-500/50 hover:border-teal-400 transition-all duration-300 flex items-center gap-4 hover:shadow-xl hover:shadow-teal-500/10 hover:-translate-y-0.5"
+            onclick="openSubjectDashboard('TIK')" 
+            class="group cursor-pointer p-6 rounded-3xl bg-[#0D1424] border border-teal-500/50 hover:border-teal-400 transition-all duration-300 flex items-center gap-4 hover:shadow-2xl hover:shadow-teal-500/10 hover:-translate-y-1"
           >
             <!-- Custom Teal Icon Box -->
             <div class="w-14 h-14 rounded-2xl bg-[#0A2628] border border-teal-500/60 flex items-center justify-center text-teal-400 group-hover:scale-105 transition shrink-0">
               <i data-lucide="monitor" class="w-7 h-7"></i>
             </div>
-            <div class="space-y-1">
-              <div class="flex items-center gap-2">
-                <h3 class="font-bold text-base text-white group-hover:text-teal-300 transition">TIK SD</h3>
+            <div class="space-y-1.5">
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="font-bold text-lg text-white group-hover:text-teal-300 transition">TIK SD</h3>
                 <span class="text-[11px] bg-teal-950 text-teal-300 border border-teal-800 px-2.5 py-0.5 rounded-full font-bold">
                   Kelas 1 - 4
                 </span>
@@ -221,18 +220,18 @@
             </div>
           </div>
 
-          <!-- Card 2: Coding SD (Kelas 5-6) -->
+          <!-- Card 2: Coding SD (Kelas 5 - 6) -->
           <div 
-            onclick="filterCategory('Coding')" 
-            class="cursor-pointer group relative p-5 rounded-2xl bg-[#0D1424] border border-sky-500/50 hover:border-sky-400 transition-all duration-300 flex items-center gap-4 hover:shadow-xl hover:shadow-sky-500/10 hover:-translate-y-0.5"
+            onclick="openSubjectDashboard('Coding')" 
+            class="group cursor-pointer p-6 rounded-3xl bg-[#0D1424] border border-sky-500/50 hover:border-sky-400 transition-all duration-300 flex items-center gap-4 hover:shadow-2xl hover:shadow-sky-500/10 hover:-translate-y-1"
           >
             <!-- Custom Blue Icon Box -->
             <div class="w-14 h-14 rounded-2xl bg-[#0A233A] border border-sky-500/60 flex items-center justify-center text-sky-400 group-hover:scale-105 transition shrink-0">
               <i data-lucide="blocks" class="w-7 h-7"></i>
             </div>
-            <div class="space-y-1">
-              <div class="flex items-center gap-2">
-                <h3 class="font-bold text-base text-white group-hover:text-sky-300 transition">Coding SD</h3>
+            <div class="space-y-1.5">
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="font-bold text-lg text-white group-hover:text-sky-300 transition">Coding SD</h3>
                 <span class="text-[11px] bg-sky-950 text-sky-300 border border-sky-800 px-2.5 py-0.5 rounded-full font-bold">
                   Kelas 5 - 6
                 </span>
@@ -243,18 +242,18 @@
             </div>
           </div>
 
-          <!-- Card 3: Informatika SMP (Kelas 7-9) -->
+          <!-- Card 3: Informatika SMP (Kelas 7 - 9) -->
           <div 
-            onclick="filterCategory('Informatika')" 
-            class="cursor-pointer group relative p-5 rounded-2xl bg-[#0D1424] border border-purple-500/50 hover:border-purple-400 transition-all duration-300 flex items-center gap-4 hover:shadow-xl hover:shadow-purple-500/10 hover:-translate-y-0.5"
+            onclick="openSubjectDashboard('Informatika')" 
+            class="group cursor-pointer p-6 rounded-3xl bg-[#0D1424] border border-purple-500/50 hover:border-purple-400 transition-all duration-300 flex items-center gap-4 hover:shadow-2xl hover:shadow-purple-500/10 hover:-translate-y-1"
           >
             <!-- Custom Purple Icon Box -->
             <div class="w-14 h-14 rounded-2xl bg-[#231238] border border-purple-500/60 flex items-center justify-center text-purple-400 group-hover:scale-105 transition shrink-0">
               <i data-lucide="cpu" class="w-7 h-7"></i>
             </div>
-            <div class="space-y-1">
-              <div class="flex items-center gap-2">
-                <h3 class="font-bold text-base text-white group-hover:text-purple-300 transition">Informatika SMP</h3>
+            <div class="space-y-1.5">
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="font-bold text-lg text-white group-hover:text-purple-300 transition">Informatika SMP</h3>
                 <span class="text-[11px] bg-purple-950 text-purple-300 border border-purple-800 px-2.5 py-0.5 rounded-full font-bold">
                   Kelas 7 - 9
                 </span>
@@ -266,135 +265,96 @@
           </div>
 
         </div>
+
+        <div class="text-center pt-4">
+          <p class="text-xs text-slate-500">Klik salah satu kartu di atas untuk membuka daftar modul pembelajaran spesifik.</p>
+        </div>
+
       </div>
-    </section>
+    </main>
 
 
-    <!-- MAIN CONTENT AREA -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full flex flex-col md:flex-row gap-8">
+    <!-- ========================================== -->
+    <!-- 3. HALAMAN DASHBOARD MATERI SPESIFIK (SUBJECT DASHBOARD) -->
+    <!-- ========================================== -->
+    <main id="subjectDashboardView" class="hidden flex-1 py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full space-y-6">
       
-      <!-- SIDEBAR GRADE SELECTION -->
-      <aside class="w-full md:w-64 shrink-0 space-y-6">
-        <div class="bg-[#111726] rounded-2xl p-5 border border-slate-800 shadow-sm space-y-4">
-          <div class="flex items-center justify-between">
-            <h2 class="font-bold text-xs uppercase text-slate-400 tracking-wider">Filter Tingkat Kelas</h2>
-            <button onclick="filterGrade('all')" class="text-xs text-cyan-400 hover:underline font-semibold">Semua</button>
-          </div>
-
-          <nav class="space-y-1 text-xs">
-            <!-- All Grades -->
-            <button 
-              data-grade="all" 
-              onclick="filterGrade('all')" 
-              class="grade-btn w-full flex items-center justify-between px-3 py-2 font-semibold rounded-xl transition text-slate-300 hover:bg-slate-800/80"
-            >
-              <span class="flex items-center gap-2">
-                <i data-lucide="layers" class="w-4 h-4 text-indigo-400"></i> Semua Kelas (1-9)
-              </span>
-              <span class="text-[11px] bg-slate-800 px-2 py-0.5 rounded-full text-slate-400" id="count-all">0</span>
-            </button>
-
-            <!-- TIK SD (1-4) -->
-            <div class="pt-3 pb-1">
-              <p class="text-[11px] font-bold uppercase text-teal-400 px-3 tracking-wider flex justify-between">
-                <span>TIK SD</span> <span class="text-slate-500 font-normal">1-4 SD</span>
-              </p>
-            </div>
-            <div class="space-y-1 pl-1">
-              <button data-grade="1" onclick="filterGrade('1')" class="grade-btn w-full px-3 py-2 font-medium rounded-xl border border-slate-800 text-left hover:border-teal-500 transition flex justify-between items-center text-slate-300">
-                <span>Kelas 1 SD</span> <span class="text-[10px] bg-teal-950 text-teal-300 px-1.5 py-0.5 rounded font-bold" id="count-1">0</span>
-              </button>
-              <button data-grade="2" onclick="filterGrade('2')" class="grade-btn w-full px-3 py-2 font-medium rounded-xl border border-slate-800 text-left hover:border-teal-500 transition flex justify-between items-center text-slate-300">
-                <span>Kelas 2 SD</span> <span class="text-[10px] bg-teal-950 text-teal-300 px-1.5 py-0.5 rounded font-bold" id="count-2">0</span>
-              </button>
-              <button data-grade="3" onclick="filterGrade('3')" class="grade-btn w-full px-3 py-2 font-medium rounded-xl border border-slate-800 text-left hover:border-teal-500 transition flex justify-between items-center text-slate-300">
-                <span>Kelas 3 SD</span> <span class="text-[10px] bg-teal-950 text-teal-300 px-1.5 py-0.5 rounded font-bold" id="count-3">0</span>
-              </button>
-              <button data-grade="4" onclick="filterGrade('4')" class="grade-btn w-full px-3 py-2 font-medium rounded-xl border border-slate-800 text-left hover:border-teal-500 transition flex justify-between items-center text-slate-300">
-                <span>Kelas 4 SD</span> <span class="text-[10px] bg-teal-950 text-teal-300 px-1.5 py-0.5 rounded font-bold" id="count-4">0</span>
-              </button>
-            </div>
-
-            <!-- Coding SD (5-6) -->
-            <div class="pt-4 pb-1">
-              <p class="text-[11px] font-bold uppercase text-sky-400 px-3 tracking-wider flex justify-between">
-                <span>Coding SD</span> <span class="text-slate-500 font-normal">5-6 SD</span>
-              </p>
-            </div>
-            <div class="space-y-1 pl-1">
-              <button data-grade="5" onclick="filterGrade('5')" class="grade-btn w-full px-3 py-2 font-medium rounded-xl border border-slate-800 text-left hover:border-sky-500 transition flex justify-between items-center text-slate-300">
-                <span>Kelas 5 SD</span> <span class="text-[10px] bg-sky-950 text-sky-300 px-1.5 py-0.5 rounded font-bold" id="count-5">0</span>
-              </button>
-              <button data-grade="6" onclick="filterGrade('6')" class="grade-btn w-full px-3 py-2 font-medium rounded-xl border border-slate-800 text-left hover:border-sky-500 transition flex justify-between items-center text-slate-300">
-                <span>Kelas 6 SD</span> <span class="text-[10px] bg-sky-950 text-sky-300 px-1.5 py-0.5 rounded font-bold" id="count-6">0</span>
-              </button>
-            </div>
-
-            <!-- Informatika SMP (7-9) -->
-            <div class="pt-4 pb-1">
-              <p class="text-[11px] font-bold uppercase text-purple-400 px-3 tracking-wider flex justify-between">
-                <span>Informatika SMP</span> <span class="text-slate-500 font-normal">7-9 SMP</span>
-              </p>
-            </div>
-            <div class="space-y-1 pl-1">
-              <button data-grade="7" onclick="filterGrade('7')" class="grade-btn w-full px-3 py-2 font-medium rounded-xl border border-slate-800 text-left hover:border-purple-500 transition flex justify-between items-center text-slate-300">
-                <span>Kelas 7 SMP (VII)</span> <span class="text-[10px] bg-purple-950 text-purple-300 px-1.5 py-0.5 rounded font-bold" id="count-7">0</span>
-              </button>
-              <button data-grade="8" onclick="filterGrade('8')" class="grade-btn w-full px-3 py-2 font-medium rounded-xl border border-slate-800 text-left hover:border-purple-500 transition flex justify-between items-center text-slate-300">
-                <span>Kelas 8 SMP (VIII)</span> <span class="text-[10px] bg-purple-950 text-purple-300 px-1.5 py-0.5 rounded font-bold" id="count-8">0</span>
-              </button>
-              <button data-grade="9" onclick="filterGrade('9')" class="grade-btn w-full px-3 py-2 font-medium rounded-xl border border-slate-800 text-left hover:border-purple-500 transition flex justify-between items-center text-slate-300">
-                <span>Kelas 9 SMP (IX)</span> <span class="text-[10px] bg-purple-950 text-purple-300 px-1.5 py-0.5 rounded font-bold" id="count-9">0</span>
-              </button>
-            </div>
-          </nav>
-        </div>
-      </aside>
-
-      <!-- MATERIALS LIST AREA -->
-      <main class="flex-1 space-y-6">
+      <!-- Top Action Navigation Bar -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#111726] p-5 rounded-2xl border border-slate-800">
         
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
-          <div>
-            <h2 id="activeFilterTitle" class="text-xl font-extrabold text-white flex items-center gap-2">
-              Daftar Modul Pembelajaran
-            </h2>
-            <p id="activeFilterSubtitle" class="text-xs text-slate-400 mt-1">
-              Menampilkan daftar modul ajar TIK, Coding, dan Informatika dari Kelas 1 SD - 9 SMP
-            </p>
-          </div>
-
-          <div class="flex items-center gap-2 text-xs text-slate-400 shrink-0">
-            <span>Urutan:</span>
-            <select id="sortSelect" onchange="handleSort(this.value)" class="bg-[#111726] border border-slate-700 rounded-xl text-xs py-1.5 px-3 text-slate-200 focus:outline-none focus:border-cyan-500">
-              <option value="grade">Tingkat Kelas (1 - 9)</option>
-              <option value="title">Judul (A-Z)</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- MATERIAL CARDS GRID -->
-        <div id="materialsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-        <!-- EMPTY STATE -->
-        <div id="emptyState" class="hidden text-center py-16 bg-[#111726] rounded-2xl border border-dashed border-slate-800 p-8">
-          <div class="w-16 h-16 bg-slate-800 text-cyan-400 rounded-full flex items-center justify-center mx-auto mb-4">
-            <i data-lucide="file-search" class="w-8 h-8"></i>
-          </div>
-          <h3 class="font-bold text-lg text-white">Tidak ada materi ditemukan</h3>
-          <p class="text-xs text-slate-400 max-w-sm mx-auto mt-1">Coba kata kunci pencarian lain atau pilih kelas yang berbeda.</p>
-          <button onclick="resetFilters()" class="mt-4 px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl text-xs font-semibold transition">
-            Tampilkan Semua Kelas
+        <div class="flex items-center gap-4">
+          <!-- Back Button -->
+          <button 
+            onclick="navigateToCategories()"
+            class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 text-xs font-bold transition active:scale-95"
+          >
+            <i data-lucide="arrow-left" class="w-4 h-4 text-cyan-400"></i>
+            <span>Kembali ke Menu Utama</span>
           </button>
+
+          <!-- Selected Category Title & Icon -->
+          <div class="flex items-center gap-3">
+            <div id="subjectHeaderIcon" class="w-10 h-10 rounded-xl bg-teal-950 border border-teal-800 flex items-center justify-center text-teal-400">
+              <i data-lucide="monitor" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h2 id="subjectHeaderTitle" class="text-lg font-extrabold text-white leading-tight">TIK SD</h2>
+              <p id="subjectHeaderSubtitle" class="text-xs text-slate-400">Modul Pembelajaran Kelas 1 s/d 4</p>
+            </div>
+          </div>
         </div>
 
-      </main>
-    </div>
+        <!-- Add Material Button for this category -->
+        <button 
+          onclick="openAddModal()" 
+          class="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-md transition active:scale-95 shrink-0"
+        >
+          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+          <span>Tambah Materi Baru</span>
+        </button>
+      </div>
+
+      <!-- Filters & Search Toolbar -->
+      <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 pb-2 border-b border-slate-800/80">
+        
+        <!-- Dynamic Grade Filter Pills -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0" id="gradePillsContainer">
+          <!-- Dynamically populated by JS -->
+        </div>
+
+        <!-- Search Bar -->
+        <div class="relative w-full md:w-72">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"></i>
+          <input 
+            type="text" 
+            id="searchInput"
+            oninput="handleSearch(this.value)"
+            placeholder="Cari kata kunci materi..."
+            class="w-full pl-10 pr-4 py-2 text-xs bg-[#111726] border border-slate-700/80 rounded-xl focus:border-cyan-500 focus:outline-none text-white placeholder-slate-500"
+          >
+        </div>
+
+      </div>
+
+      <!-- Material Cards Grid -->
+      <div id="subjectMaterialsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2"></div>
+
+      <!-- Empty State -->
+      <div id="subjectEmptyState" class="hidden text-center py-16 bg-[#111726] rounded-2xl border border-dashed border-slate-800 p-8">
+        <div class="w-16 h-16 bg-slate-800 text-cyan-400 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i data-lucide="file-search" class="w-8 h-8"></i>
+        </div>
+        <h3 class="font-bold text-lg text-white">Tidak Ada Materi Ditemukan</h3>
+        <p class="text-xs text-slate-400 max-w-sm mx-auto mt-1">Belum ada modul materi pada kelas ini atau coba ubah kata kunci pencarian.</p>
+      </div>
+
+    </main>
+
 
     <!-- FOOTER -->
-    <footer class="mt-auto border-t border-slate-800/80 bg-[#111726] py-5 text-center text-xs text-slate-500">
+    <footer class="mt-auto border-t border-slate-800/80 bg-[#111726] py-4 text-center text-xs text-slate-500">
       <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <p>© 2026 <strong>EduCode Hub</strong> • Portal Pengajar TIK & Informatika (Kelas 1 SD - IX SMP)</p>
+        <p>© 2026 <strong>EduCode Hub</strong> • Modul Ajar TIK, Coding & Informatika (Kelas 1 SD - IX SMP)</p>
         <button onclick="resetDefaultData()" class="hover:text-cyan-400 transition text-[11px] underline">
           Kembalikan Data Demo Awal
         </button>
@@ -403,7 +363,9 @@
   </div>
 
 
-  <!-- 3. LESSON VIEWER MODAL (WITH CONTENT IMAGES & PRACTICUM DIAGRAMS) -->
+  <!-- ========================================== -->
+  <!-- 4. MODAL DETAIL LESSON VIEWER (3 TABS) -->
+  <!-- ========================================== -->
   <div id="detailModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
     <div class="bg-[#111726] rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-800 overflow-hidden my-auto">
       
@@ -421,10 +383,10 @@
       <!-- Navigation Tabs -->
       <div class="px-6 border-b border-slate-800 flex gap-6 bg-[#0B0F19] text-xs sm:text-sm font-semibold">
         <button id="tab-reading-btn" onclick="switchModalTab('reading')" class="py-3 border-b-2 border-cyan-400 text-cyan-400 flex items-center gap-2 transition">
-          <i data-lucide="book-open" class="w-4 h-4"></i> 1. Ringkasan & Konsep
+          <i data-lucide="book-open" class="w-4 h-4"></i> 1. Ringkasan & Konsep Teori
         </button>
         <button id="tab-practice-btn" onclick="switchModalTab('practice')" class="py-3 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2 transition">
-          <i data-lucide="terminal" class="w-4 h-4"></i> 2. Panduan Praktikum
+          <i data-lucide="terminal" class="w-4 h-4"></i> 2. Panduan Praktikum Komputer
         </button>
         <button id="tab-quiz-btn" onclick="switchModalTab('quiz')" class="py-3 border-b-2 border-transparent text-slate-400 hover:text-white flex items-center gap-2 transition">
           <i data-lucide="help-circle" class="w-4 h-4"></i> 3. Kuis Evaluasi
@@ -436,11 +398,10 @@
 
         <!-- TAB 1: RINGKASAN & GAMBAR MATERI -->
         <div id="tab-reading-content" class="space-y-5">
-          <!-- Main Content Image Illustration -->
           <div id="modalImageContainer" class="hidden rounded-2xl overflow-hidden border border-slate-800 bg-slate-900 shadow-md">
             <img id="modalContentImage" src="" alt="Ilustrasi Materi" class="w-full max-h-72 object-cover">
-            <div class="p-2.5 bg-slate-900/90 text-[11px] text-slate-400 text-center font-medium border-t border-slate-800" id="modalImageCaption">
-              Diagram / Gambar Ilustrasi Pembelajaran
+            <div class="p-2.5 bg-slate-900/90 text-[11px] text-slate-400 text-center font-medium border-t border-slate-800">
+              Gambar / Diagram Ilustrasi Konsep Pembelajaran
             </div>
           </div>
 
@@ -454,9 +415,8 @@
           <div class="prose prose-invert max-w-none space-y-3 text-xs sm:text-sm text-slate-300 leading-relaxed" id="modalFullContent"></div>
         </div>
 
-        <!-- TAB 2: PANDUAN PRAKTIKUM & GAMBAR SCREENSHOT -->
+        <!-- TAB 2: PANDUAN PRAKTIKUM & GAMBAR DIAGRAM -->
         <div id="tab-practice-content" class="hidden space-y-5">
-          <!-- Practicum Diagram / Screenshot Image -->
           <div id="modalPracticeImageContainer" class="hidden rounded-2xl overflow-hidden border border-slate-800 bg-slate-900 shadow-md">
             <img id="modalPracticeImage" src="" alt="Langkah Praktikum" class="w-full max-h-64 object-cover">
             <div class="p-2 bg-slate-900 text-[11px] text-slate-400 text-center font-mono border-t border-slate-800">
@@ -469,7 +429,7 @@
               <span class="text-cyan-400 font-bold flex items-center gap-2">
                 <i data-lucide="laptop" class="w-4 h-4"></i> Computer Lab Guide & Steps
               </span>
-              <span class="text-slate-500">EduCode Lab Mode</span>
+              <span class="text-slate-500">Lab Mode</span>
             </div>
             <div id="practiceStepsContainer" class="space-y-3 text-slate-300 pt-1"></div>
           </div>
@@ -482,7 +442,7 @@
               <h3 class="font-bold text-white flex items-center gap-2 text-sm sm:text-base">
                 <i data-lucide="award" class="w-5 h-5 text-amber-400"></i> Uji Pemahaman Siswa
               </h3>
-              <p class="text-xs text-slate-400">Jawab pertanyaan berikut untuk menguji pemahaman.</p>
+              <p class="text-xs text-slate-400">Jawab pertanyaan berikut untuk mengevaluasi hasil belajar.</p>
             </div>
             <div id="quizScoreBadge" class="hidden px-3 py-1 bg-emerald-950 text-emerald-300 border border-emerald-800 text-xs font-bold rounded-full">
               Skor: <span id="quizScoreText">0/0</span>
@@ -507,7 +467,9 @@
   </div>
 
 
-  <!-- 4. MODAL TAMBAH / EDIT MATERI (TEACHER ADMIN FORM) -->
+  <!-- ========================================== -->
+  <!-- 5. MODAL TAMBAH MATERI BARU -->
+  <!-- ========================================== -->
   <div id="addModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-[#111726] rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-800 overflow-hidden my-8">
       
@@ -555,7 +517,6 @@
           </div>
         </div>
 
-        <!-- IMAGE INPUT FIELDS FOR MATERIAL & PRACTICE -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
           <div>
             <label class="block font-bold text-slate-300 mb-1">URL Gambar Ilustrasi Materi (Opsional)</label>
@@ -569,7 +530,7 @@
         </div>
 
         <div>
-          <label class="block font-bold text-slate-300 mb-1">Ringkasan Materi Singkat *</label>
+          <label class="block font-bold text-slate-300 mb-1">Ringkasan Ringkas *</label>
           <input type="text" id="addSummary" required placeholder="Gambarkan garis besar topik dalam 1-2 kalimat..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white">
         </div>
 
@@ -579,7 +540,7 @@
         </div>
 
         <div>
-          <label class="block font-bold text-slate-300 mb-1">Langkah Praktikum Komputer (Pisahkan dengan baris baru)</label>
+          <label class="block font-bold text-slate-300 mb-1">Langkah Praktikum (Pisahkan baris)</label>
           <textarea id="addPractice" rows="3" placeholder="Langkah 1: Nyalakan Komputer&#10;Langkah 2: Buka aplikasi..." class="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl focus:border-cyan-500 focus:outline-none text-white"></textarea>
         </div>
 
@@ -606,9 +567,11 @@
   </div>
 
 
-  <!-- JAVASCRIPT LOGIC -->
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT LOGIC SYSTEM -->
+  <!-- ========================================== -->
   <script>
-    // DEFAULT CURRICULUM SAMPLE DATA WITH RICH INLINE IMAGES
+    // DEFAULT CURRICULUM SEED DATA
     const DEFAULT_MATERIALS = [
       // KELAS 1 SD - TIK
       {
@@ -698,9 +661,6 @@
           <p>- <strong>Bold (B):</strong> Menebalkan teks tulisan.</p>
           <p>- <strong>Italic (I):</strong> Memiringkan teks tulisan.</p>
           <p>- <strong>Underline (U):</strong> Memberi garis bawah pada tulisan.</p>
-          <p class="mt-2"><strong>2. Tombol Keyboard Penting:</strong></p>
-          <p>- <em>Spacebar:</em> Memberi spasi jarak antar kata.</p>
-          <p>- <em>Enter:</em> Pindah ke baris baru di bawahnya.</p>
         `,
         practice: [
           "Langkah 1: Buka aplikasi Microsoft Word atau Notepad.",
@@ -728,16 +688,11 @@
         summary: 'Membuat slide presentasi dan memahami aturan keamanan pribadi saat menjelajah internet.',
         content: `
           <p><strong>1. Slide Presentasi:</strong> Penyampaian informasi menggunakan gabungan Teks, Gambar, dan Warna yang menarik.</p>
-          <p class="mt-2"><strong>2. Aturan Keamanan Internet (Internet Safety):</strong></p>
-          <ul>
-            <li>Jangan memberikan password atau alamat rumah kepada orang lain di internet.</li>
-            <li>Gunakan internet didampingi oleh orang tua atau guru.</li>
-          </ul>
+          <p class="mt-2"><strong>2. Keamanan Internet (Internet Safety):</strong> Jangan pernah membagikan password atau identitas pribadi di internet.</p>
         `,
         practice: [
           "Langkah 1: Buka MS PowerPoint lalu pilih template presentasi.",
-          "Langkah 2: Tuliskan Judul: 'Hobi Saya' pada halaman slide pertama.",
-          "Langkah 3: Sisipkan 1 gambar pendukung yang sesuai."
+          "Langkah 2: Tuliskan Judul: 'Hobi Saya' pada halaman slide pertama."
         ],
         quiz: [
           {
@@ -760,18 +715,12 @@
         summary: 'Pengenalan konsep logika pemrograman blok, karakter Sprite, dan perintah pergerakan (Motion) di Scratch.',
         content: `
           <p><strong>1. Apa itu Block Coding Scratch?</strong> Cara membuat aplikasi atau game dengan menyusun blok puzzle perintah komputer tanpa harus menulis sintaks rumit.</p>
-          <p class="mt-2"><strong>2. Komponen Utama Scratch:</strong></p>
-          <ul>
-            <li><strong>Sprite:</strong> Karakter objek visual (seperti Kucing Scratch) yang dapat bergerak.</li>
-            <li><strong>Event Block (Kuning):</strong> Blok pemicu awal (contoh: <em>when green flag clicked</em>).</li>
-            <li><strong>Motion Block (Biru):</strong> Blok instruksi gerak (contoh: <em>move 10 steps</em>).</li>
-          </ul>
+          <p class="mt-2"><strong>2. Komponen Utama Scratch:</strong> Sprite (karakter) dan Event Block (pemicu awal perintah).</p>
         `,
         practice: [
           "Langkah 1: Buka editor Scratch di browser.",
           "Langkah 2: Tarik blok 'when green flag clicked' dari menu Events.",
-          "Langkah 3: Sambungkan dengan blok 'move 10 steps' dari menu Motion.",
-          "Langkah 4: Klik tombol bendera hijau untuk menjalankan kode!"
+          "Langkah 3: Sambungkan dengan blok 'move 10 steps' dari menu Motion."
         ],
         quiz: [
           {
@@ -794,21 +743,18 @@
         summary: 'Menggunakan blok perulangan (Forever), variabel Skor, dan percabangan kondisi (If-Then) dalam game.',
         content: `
           <p><strong>1. Perulangan (Loop):</strong> Menjalankan serangkaian perintah komputer berulang kali secara otomatis.</p>
-          <p class="mt-2"><strong>2. Variabel:</strong> Wadah penyimpan data angka yang nilainya bisa bertambah atau berkurang (contoh: Variabel <em>Skor</em>).</p>
-          <p class="mt-2"><strong>3. Percabangan Kondisi (If - Then):</strong></p>
-          <p><em>Jika Sprite menyentuh Koin -> Maka Tambah Skor +1</em></p>
+          <p class="mt-2"><strong>2. Variabel:</strong> Wadah penyimpan data angka skor game.</p>
         `,
         practice: [
           "Langkah 1: Buat variabel baru dengan nama 'Skor'.",
-          "Langkah 2: Gunakan blok 'forever' -> 'if touching Apple then change Skor by 1'.",
-          "Langkah 3: Uji jalannya game tangkap apel sederhana buatanmu!"
+          "Langkah 2: Gunakan blok 'forever' -> 'if touching Apple then change Skor by 1'."
         ],
         quiz: [
           {
             question: "Fungsi utama dari Variabel dalam pembuatan game Scratch adalah...",
             options: ["Mengubah gambar latar", "Menyimpan data nilai / skor yang dapat berubah", "Menghapus objek karakter", "Memperbesar suara"],
             answer: 1,
-            explanation: "Variabel berguna menyimpan nilai dinamis seperti Skor atau Waktu."
+            explanation: "Variabel berguna menyimpan nilai dinamis seperti Skor."
           }
         ]
       },
@@ -823,22 +769,12 @@
         practiceImageUrl: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&auto=format&fit=crop&q=80',
         summary: 'Penerapan 4 pilar Berpikir Komputasional (Dekomposisi, Pola, Abstraksi, Algoritma) dan diagram Flowchart.',
         content: `
-          <p><strong>1. 4 Pilar Computational Thinking:</strong></p>
-          <ul>
-            <li><strong>Dekomposisi:</strong> Memecah masalah besar menjadi bagian-bagian kecil.</li>
-            <li><strong>Pengenalan Pola:</strong> Mencari kesamaan pola masalah.</li>
-            <li><strong>Abstraksi:</strong> Fokus pada informasi penting dan mengabaikan hal tidak relevan.</li>
-            <li><strong>Algoritma:</strong> Menyusun langkah urutan sistematis penyelesaian masalah.</li>
-          </ul>
-          <p class="mt-2"><strong>2. Simbol Flowchart Utama:</strong></p>
-          <p>- <em>Oval (Terminator):</em> Keterangan Start / End.</p>
-          <p>- <em>Jajar Genjang:</em> Input / Output data.</p>
-          <p>- <em>Persegi Panjang:</em> Proses perhitungan.</p>
-          <p>- <em>Belah Ketupat (Decision):</em> Keputusan kondisi (Ya / Tidak).</p>
+          <p><strong>1. 4 Pilar Computational Thinking:</strong> Dekomposisi, Pengenalan Pola, Abstraksi, dan Algoritma.</p>
+          <p class="mt-2"><strong>2. Simbol Flowchart:</strong> Oval (Start/End), Jajar Genjang (Input/Output), Persegi Panjang (Proses).</p>
         `,
         practice: [
           "Langkah 1: Gambarkan simbol Flowchart cara menyeduh teh manis di buku modul.",
-          "Langkah 2: Gunakan simbol Oval untuk START, Jajar Genjang untuk Input Teh & Gula, dan Belah Ketupat untuk mengecek rasa manis."
+          "Langkah 2: Gunakan simbol Oval untuk START dan Belah Ketupat untuk mengecek rasa manis."
         ],
         quiz: [
           {
@@ -858,19 +794,13 @@
         duration: '50 Menit',
         imageUrl: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&auto=format&fit=crop&q=80',
         practiceImageUrl: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&auto=format&fit=crop&q=80',
-        summary: 'Memahami jaringan lokal LAN, internet global, IP Address, serta konsep struktur data Tree & Graph.',
+        summary: 'Memahami jaringan lokal LAN, internet global WAN, serta IP Address identitas perangkat.',
         content: `
-          <p><strong>1. Jaringan Komputer:</strong></p>
-          <ul>
-            <li><strong>LAN (Local Area Network):</strong> Jaringan komputer berskala lokal terbatas (ruang lab sekolah).</li>
-            <li><strong>WAN (Wide Area Network):</strong> Jaringan berskala internasional / global (Internet).</li>
-          </ul>
-          <p class="mt-2"><strong>2. IP Address:</strong> Nomor alamat identitas digital unik setiap komputer dalam jaringan.</p>
+          <p><strong>1. LAN vs WAN:</strong> LAN untuk jaringan area lokal sekolah/rumah, WAN untuk jaringan global internet.</p>
         `,
         practice: [
-          "Langkah 1: Buka program Command Prompt (cmd) di komputer lab.",
-          "Langkah 2: Ketikkan perintah <code>ipconfig</code> lalu tekan Enter.",
-          "Langkah 3: Amati angka IPv4 Address yang muncul di layar."
+          "Langkah 1: Buka Command Prompt (cmd).",
+          "Langkah 2: Ketikkan perintah 'ipconfig' lalu amati nomor IP Address."
         ],
         quiz: [
           {
@@ -892,16 +822,12 @@
         practiceImageUrl: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=800&auto=format&fit=crop&q=80',
         summary: 'Membuat halaman web sederhana menggunakan tag HTML/CSS dan dasar sintaks pemrograman Python.',
         content: `
-          <p><strong>1. Tag Dasar HTML:</strong></p>
-          <p>- <code>&lt;h1&gt;</code>: Judul utama terbesar.</p>
-          <p>- <code>&lt;p&gt;</code>: Paragraf teks tulisan.</p>
-          <p class="mt-2"><strong>2. Dasar Bahasa Python:</strong></p>
-          <p>Python adalah bahasa pemrograman populer yang ramah pemula. Contoh perintah cetak teks: <code>print("Halo Informatika!")</code></p>
+          <p><strong>1. Tag Dasar HTML:</strong> &lt;h1&gt; untuk judul dan &lt;p&gt; untuk paragraf.</p>
+          <p class="mt-2"><strong>2. Perintah Python:</strong> print("Halo Dunia")</p>
         `,
         practice: [
-          "Langkah 1: Buat file baru dengan nama <code>index.html</code>.",
-          "Langkah 2: Tuliskan kode <code>&lt;h1&gt;Selamat Datang di Web Saya&lt;/h1&gt;</code>.",
-          "Langkah 3: Buka file tersebut menggunakan browser Google Chrome!"
+          "Langkah 1: Buat file baru index.html.",
+          "Langkah 2: Tuliskan kode &lt;h1&gt;Selamat Datang&lt;/h1&gt; lalu buka di Chrome."
         ],
         quiz: [
           {
@@ -914,23 +840,22 @@
       }
     ];
 
-    // STATE VARIABLES
+    // APPLICATION STATE VARIABLES
     let materials = [];
-    let currentGradeFilter = 'all';
-    let currentCategoryFilter = 'all';
+    let activeSubject = null; // 'TIK' | 'Coding' | 'Informatika'
+    let activeGradeFilter = 'all';
     let searchQuery = '';
-    let currentSort = 'grade';
-
-    // Active Modal State
+    
+    // Active Modal Viewer State
     let activeMaterial = null;
     let quizUserAnswers = {};
     let quizSubmitted = false;
 
-    // APPLICATION INITIALIZATION
+    // INITIALIZATION
     window.onload = function() {
       checkAuthSession();
 
-      const savedData = localStorage.getItem('educode_materials_v3');
+      const savedData = localStorage.getItem('educode_materials_v4');
       if (savedData) {
         try {
           materials = JSON.parse(savedData);
@@ -942,22 +867,23 @@
         saveStorage();
       }
 
-      renderApp();
       lucide.createIcons();
     };
 
     function saveStorage() {
-      localStorage.setItem('educode_materials_v3', JSON.stringify(materials));
+      localStorage.setItem('educode_materials_v4', JSON.stringify(materials));
     }
 
     function resetDefaultData() {
       materials = [...DEFAULT_MATERIALS];
       saveStorage();
-      renderApp();
-      showToast("Data materi awal kurikulum dipulihkan!");
+      if (activeSubject) {
+        renderSubjectDashboard();
+      }
+      showToast("Data materi default kurikulum dipulihkan!");
     }
 
-    // AUTHENTICATION LOGIC
+    // AUTHENTICATION SYSTEM
     function checkAuthSession() {
       const isLogged = localStorage.getItem('educode_is_logged') === 'true';
       const loginScreen = document.getElementById('loginScreen');
@@ -966,6 +892,7 @@
       if (isLogged) {
         loginScreen.classList.add('hidden');
         appScreen.classList.remove('hidden');
+        navigateToCategories(); // Default view after login is the 3 category cards
       } else {
         loginScreen.classList.remove('hidden');
         appScreen.classList.add('hidden');
@@ -991,131 +918,154 @@
     function handleLogout() {
       localStorage.removeItem('educode_is_logged');
       checkAuthSession();
-      showToast("Anda telah keluar dari akun pengajar.");
+      showToast("Anda telah keluar dari akun.");
     }
 
-    // FILTER LOGIC
-    function filterGrade(grade) {
-      currentGradeFilter = grade;
-      currentCategoryFilter = 'all';
-
-      document.querySelectorAll('.grade-btn').forEach(btn => {
-        if (btn.dataset.grade === grade) {
-          btn.classList.add('bg-slate-800', 'border-cyan-500', 'text-cyan-400', 'font-bold');
-        } else {
-          btn.classList.remove('bg-slate-800', 'border-cyan-500', 'text-cyan-400', 'font-bold');
-        }
-      });
-
-      renderApp();
+    // MULTI-PAGE VIEW NAVIGATION LOGIC
+    function navigateToCategories() {
+      activeSubject = null;
+      document.getElementById('categoryPortalView').classList.remove('hidden');
+      document.getElementById('subjectDashboardView').classList.add('hidden');
+      lucide.createIcons();
     }
 
-    function filterCategory(cat) {
-      currentCategoryFilter = cat;
-      currentGradeFilter = 'all';
-      renderApp();
-    }
-
-    function handleSearch(val) {
-      searchQuery = val.trim().toLowerCase();
-      renderApp();
-    }
-
-    function handleSort(val) {
-      currentSort = val;
-      renderApp();
-    }
-
-    function resetFilters() {
-      currentGradeFilter = 'all';
-      currentCategoryFilter = 'all';
+    function openSubjectDashboard(subject) {
+      activeSubject = subject;
+      activeGradeFilter = 'all';
       searchQuery = '';
       document.getElementById('searchInput').value = '';
-      renderApp();
+
+      document.getElementById('categoryPortalView').classList.add('hidden');
+      document.getElementById('subjectDashboardView').classList.remove('hidden');
+
+      // Update Subject Header Text & Colors
+      const iconBox = document.getElementById('subjectHeaderIcon');
+      const titleEl = document.getElementById('subjectHeaderTitle');
+      const subEl = document.getElementById('subjectHeaderSubtitle');
+
+      if (subject === 'TIK') {
+        iconBox.className = "w-10 h-10 rounded-xl bg-[#0A2628] border border-teal-500/60 flex items-center justify-center text-teal-400";
+        iconBox.innerHTML = `<i data-lucide="monitor" class="w-5 h-5"></i>`;
+        titleEl.textContent = "TIK SD (Teknologi Informasi & Komunikasi)";
+        subEl.textContent = "Kurikulum & Modul Pembelajaran Kelas 1 - 4 SD";
+      } else if (subject === 'Coding') {
+        iconBox.className = "w-10 h-10 rounded-xl bg-[#0A233A] border border-sky-500/60 flex items-center justify-center text-sky-400";
+        iconBox.innerHTML = `<i data-lucide="blocks" class="w-5 h-5"></i>`;
+        titleEl.textContent = "Coding SD (Pemrograman Visual & Logika)";
+        subEl.textContent = "Kurikulum & Modul Pembelajaran Kelas 5 - 6 SD";
+      } else if (subject === 'Informatika') {
+        iconBox.className = "w-10 h-10 rounded-xl bg-[#231238] border border-purple-500/60 flex items-center justify-center text-purple-400";
+        iconBox.innerHTML = `<i data-lucide="cpu" class="w-5 h-5"></i>`;
+        titleEl.textContent = "Informatika SMP (Berpikir Komputasional)";
+        subEl.textContent = "Kurikulum & Modul Pembelajaran Kelas 7 - 9 SMP";
+      }
+
+      renderGradePills();
+      renderSubjectDashboard();
+    }
+
+    // DYNAMIC GRADE PILLS GENERATOR
+    function renderGradePills() {
+      const container = document.getElementById('gradePillsContainer');
+      let grades = [];
+
+      if (activeSubject === 'TIK') {
+        grades = [
+          { id: 'all', label: 'Semua TIK (1-4)' },
+          { id: '1', label: 'Kelas 1 SD' },
+          { id: '2', label: 'Kelas 2 SD' },
+          { id: '3', label: 'Kelas 3 SD' },
+          { id: '4', label: 'Kelas 4 SD' }
+        ];
+      } else if (activeSubject === 'Coding') {
+        grades = [
+          { id: 'all', label: 'Semua Coding (5-6)' },
+          { id: '5', label: 'Kelas 5 SD' },
+          { id: '6', label: 'Kelas 6 SD' }
+        ];
+      } else if (activeSubject === 'Informatika') {
+        grades = [
+          { id: 'all', label: 'Semua Informatika (7-9)' },
+          { id: '7', label: 'Kelas 7 SMP' },
+          { id: '8', label: 'Kelas 8 SMP' },
+          { id: '9', label: 'Kelas 9 SMP' }
+        ];
+      }
+
+      container.innerHTML = grades.map(g => {
+        const isActive = activeGradeFilter === g.id;
+        let activeClass = isActive 
+          ? "bg-cyan-500 text-slate-950 font-bold border-cyan-400 shadow-md shadow-cyan-500/20" 
+          : "bg-[#111726] text-slate-300 border-slate-700/80 hover:border-slate-500 font-medium";
+
+        return `
+          <button 
+            onclick="setGradeFilter('${g.id}')"
+            class="px-3.5 py-1.5 rounded-xl border text-xs whitespace-nowrap transition active:scale-95 ${activeClass}"
+          >
+            ${g.label}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function setGradeFilter(gId) {
+      activeGradeFilter = gId;
+      renderGradePills();
+      renderSubjectDashboard();
+    }
+
+    function handleSearch(query) {
+      searchQuery = query.trim().toLowerCase();
+      renderSubjectDashboard();
     }
 
     // RENDER MATERIALS GRID
-    function renderApp() {
+    function renderSubjectDashboard() {
       let filtered = materials.filter(m => {
-        let matchGrade = (currentGradeFilter === 'all') || (m.grade === currentGradeFilter);
-        let matchCat = (currentCategoryFilter === 'all') || (m.subject.toLowerCase() === currentCategoryFilter.toLowerCase());
+        let matchSubject = m.subject.toLowerCase() === activeSubject.toLowerCase();
+        let matchGrade = (activeGradeFilter === 'all') || (m.grade === activeGradeFilter);
         
         let matchSearch = true;
         if (searchQuery) {
           matchSearch = m.title.toLowerCase().includes(searchQuery) || 
-                        m.subject.toLowerCase().includes(searchQuery) ||
                         m.summary.toLowerCase().includes(searchQuery) ||
                         `kelas ${m.grade}`.includes(searchQuery);
         }
 
-        return matchGrade && matchCat && matchSearch;
+        return matchSubject && matchGrade && matchSearch;
       });
 
-      // Sort logic
-      filtered.sort((a, b) => {
-        if (currentSort === 'grade') return parseInt(a.grade) - parseInt(b.grade);
-        if (currentSort === 'title') return a.title.localeCompare(b.title);
-        return 0;
-      });
+      // Sort by grade ascending
+      filtered.sort((a, b) => parseInt(a.grade) - parseInt(b.grade));
 
-      updateBadgeCounts();
-
-      // Header title update
-      const titleEl = document.getElementById('activeFilterTitle');
-      const subtitleEl = document.getElementById('activeFilterSubtitle');
-
-      if (currentGradeFilter !== 'all') {
-        const gNum = parseInt(currentGradeFilter);
-        let mapel = "TIK";
-        if (gNum >= 5 && gNum <= 6) mapel = "Coding";
-        if (gNum >= 7) mapel = "Informatika";
-        
-        titleEl.textContent = `Modul Materi Kelas ${currentGradeFilter} (${mapel})`;
-        subtitleEl.textContent = `Menampilkan daftar modul ajar khusus Kelas ${currentGradeFilter}`;
-      } else if (currentCategoryFilter !== 'all') {
-        titleEl.textContent = `Rumpun Materi: ${currentCategoryFilter}`;
-        subtitleEl.textContent = `Menampilkan semua modul materi rumpun ${currentCategoryFilter}`;
-      } else {
-        titleEl.textContent = "Daftar Modul Pembelajaran";
-        subtitleEl.textContent = "Menampilkan daftar modul ajar TIK, Coding, dan Informatika dari Kelas 1 SD - 9 SMP";
-      }
-
-      const grid = document.getElementById('materialsGrid');
-      const emptyState = document.getElementById('emptyState');
+      const grid = document.getElementById('subjectMaterialsGrid');
+      const emptyState = document.getElementById('subjectEmptyState');
 
       if (filtered.length === 0) {
         grid.innerHTML = '';
         emptyState.classList.remove('hidden');
       } else {
         emptyState.classList.add('hidden');
-        grid.innerHTML = filtered.map(item => createCardHTML(item)).join('');
+        grid.innerHTML = filtered.map(item => createMaterialCardHTML(item)).join('');
       }
 
       lucide.createIcons();
     }
 
-    function updateBadgeCounts() {
-      document.getElementById('count-all').textContent = materials.length;
-      for (let g = 1; g <= 9; g++) {
-        const count = materials.filter(m => m.grade == g).length;
-        const countEl = document.getElementById(`count-${g}`);
-        if (countEl) countEl.textContent = count;
-      }
-    }
-
-    function createCardHTML(item) {
+    function createMaterialCardHTML(item) {
       const gNum = parseInt(item.grade);
       
-      let badgeStyle = "bg-teal-950 text-teal-300 border-teal-700/80";
+      let badgeStyle = "bg-teal-950 text-teal-300 border-teal-800";
       let mapelLabel = "TIK SD";
       let icon = "monitor";
 
       if (gNum >= 5 && gNum <= 6) {
-        badgeStyle = "bg-sky-950 text-sky-300 border-sky-700/80";
+        badgeStyle = "bg-sky-950 text-sky-300 border-sky-800";
         mapelLabel = "Coding SD";
         icon = "blocks";
       } else if (gNum >= 7) {
-        badgeStyle = "bg-purple-950 text-purple-300 border-purple-700/80";
+        badgeStyle = "bg-purple-950 text-purple-300 border-purple-800";
         mapelLabel = "Informatika SMP";
         icon = "cpu";
       }
@@ -1124,11 +1074,11 @@
       const displayImg = item.imageUrl || fallbackImg;
 
       return `
-        <div class="group bg-[#111726] rounded-2xl border border-slate-800/90 hover:border-slate-700 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+        <div class="group bg-[#111726] rounded-2xl border border-slate-800 hover:border-slate-700 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
           <div>
             <!-- Card Header Image Thumbnail -->
-            <div class="relative h-40 w-full overflow-hidden bg-slate-900">
-              <img src="${displayImg}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-85 group-hover:opacity-100">
+            <div class="relative h-44 w-full overflow-hidden bg-slate-900">
+              <img src="${displayImg}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-90 group-hover:opacity-100">
               <div class="absolute inset-0 bg-gradient-to-t from-[#111726] via-transparent to-transparent"></div>
               
               <!-- Badges on Image -->
@@ -1164,14 +1114,14 @@
               onclick="openDetailModal('${item.id}')" 
               class="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-400 hover:text-cyan-300 group-hover:translate-x-1 transition"
             >
-              Buka Materi <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              Buka Materi & Praktikum <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </button>
           </div>
         </div>
       `;
     }
 
-    // DETAIL MODAL LOGIC (TABBED VIEWER WITH INLINE IMAGES)
+    // MODAL LESSON VIEWER LOGIC (3 TABS)
     function openDetailModal(id) {
       activeMaterial = materials.find(m => m.id === id);
       if (!activeMaterial) return;
@@ -1179,12 +1129,12 @@
       quizUserAnswers = {};
       quizSubmitted = false;
 
-      // Populate Header & Text
+      // Populate Texts
       document.getElementById('modalTitle').textContent = activeMaterial.title;
       document.getElementById('modalSummary').textContent = activeMaterial.summary;
       document.getElementById('modalFullContent').innerHTML = activeMaterial.content;
 
-      // Render Reading Tab Content Image
+      // Render Tab 1 Image
       const imgContainer = document.getElementById('modalImageContainer');
       const imgEl = document.getElementById('modalContentImage');
       if (activeMaterial.imageUrl) {
@@ -1194,7 +1144,7 @@
         imgContainer.classList.add('hidden');
       }
 
-      // Render Practice Tab Diagram Image
+      // Render Tab 2 Practice Diagram
       const practiceImgContainer = document.getElementById('modalPracticeImageContainer');
       const practiceImgEl = document.getElementById('modalPracticeImage');
       if (activeMaterial.practiceImageUrl) {
@@ -1204,7 +1154,7 @@
         practiceImgContainer.classList.add('hidden');
       }
 
-      // Render Practice Steps List
+      // Render Steps List
       const practiceContainer = document.getElementById('practiceStepsContainer');
       const steps = activeMaterial.practice || ["Praktikum dilaksanakan secara langsung di laboratorium komputer."];
       practiceContainer.innerHTML = steps.map((step, idx) => `
@@ -1214,7 +1164,7 @@
         </div>
       `).join('');
 
-      // Render Badges
+      // Header Badges
       const gNum = parseInt(activeMaterial.grade);
       let badgeLabel = "TIK SD";
       if (gNum >= 5 && gNum <= 6) badgeLabel = "Coding SD";
@@ -1255,7 +1205,7 @@
       });
     }
 
-    // QUIZ SYSTEM LOGIC
+    // QUIZ LOGIC
     function renderQuizQuestions() {
       const container = document.getElementById('quizQuestionsContainer');
       const questions = activeMaterial.quiz || [];
@@ -1344,7 +1294,7 @@
     function submitQuiz() {
       const questions = activeMaterial.quiz || [];
       if (Object.keys(quizUserAnswers).length < questions.length) {
-        showToast("Harap selesaikan seluruh pertanyaan kuis!");
+        showToast("Harap jawab semua pertanyaan kuis!");
         return;
       }
 
@@ -1363,7 +1313,7 @@
         confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
       }
 
-      showToast(`Kuis Selesai! Skor: ${scorePercent}%`);
+      showToast(`Kuis Selesai! Skor Evaluasi: ${scorePercent}%`);
     }
 
     function resetQuizState() {
@@ -1372,9 +1322,20 @@
       renderQuizQuestions();
     }
 
-    // ADD / EDIT MATERIAL FORM LOGIC
+    // FORM TAMBAH MATERI
     function openAddModal() {
       document.getElementById('addMaterialForm').reset();
+      
+      // Auto pre-select grade dropdown based on active subject view
+      const gradeSelect = document.getElementById('addGrade');
+      if (activeSubject === 'Coding') {
+        gradeSelect.value = '5';
+      } else if (activeSubject === 'Informatika') {
+        gradeSelect.value = '7';
+      } else {
+        gradeSelect.value = '1';
+      }
+
       autoSelectSubjectByGrade();
       document.getElementById('addModal').classList.remove('hidden');
     }
@@ -1423,10 +1384,10 @@
         practice: practiceArray,
         quiz: [
           {
-            question: `Pertanyaan latihan awal untuk materi: ${title}?`,
-            options: ["Pilihan A (Benar)", "Pilihan B", "Pilihan C", "Pilihan D"],
+            question: `Latihan soal evaluasi untuk materi: ${title}?`,
+            options: ["Pilihan Jawaban A (Benar)", "Pilihan B", "Pilihan C", "Pilihan D"],
             answer: 0,
-            explanation: "Pembahasan untuk latihan soal yang baru ditambahkan."
+            explanation: "Pembahasan untuk latihan soal."
           }
         ]
       };
@@ -1434,7 +1395,12 @@
       materials.unshift(newLesson);
       saveStorage();
       closeAddModal();
-      renderApp();
+
+      // If user is inside the subject dashboard, refresh it
+      if (activeSubject) {
+        renderSubjectDashboard();
+      }
+
       showToast("Materi ajar baru berhasil disimpan!");
     }
 
